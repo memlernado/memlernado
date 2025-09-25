@@ -16,7 +16,7 @@ import {
   type InsertTask,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, desc, aliasedTable } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 
@@ -61,6 +61,8 @@ export class DatabaseStorage implements IStorage {
     this.sessionStore = new PostgresSessionStore({
       conString: process.env.DATABASE_URL,
       createTableIfMissing: true,
+      pruneSessionInterval: 60, // Prune expired sessions every 60 seconds
+      errorLog: console.error,
     });
   }
 
@@ -142,14 +144,24 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSprint(insertSprint: InsertSprint): Promise<Sprint> {
-    const [sprint] = await db.insert(sprints).values(insertSprint).returning();
+    const sprintData = {
+      ...insertSprint,
+      startDate: new Date(insertSprint.startDate),
+      endDate: new Date(insertSprint.endDate),
+    };
+    const [sprint] = await db.insert(sprints).values(sprintData).returning();
     return sprint;
   }
 
   async updateSprint(id: string, updates: Partial<InsertSprint>): Promise<Sprint> {
+    const updateData: Partial<InsertSprint & { startDate?: Date; endDate?: Date }> = { ...updates,
+      startDate: updates.startDate ? new Date(updates.startDate) : undefined,
+      endDate: updates.endDate ? new Date(updates.endDate) : undefined,
+     };
+    
     const [sprint] = await db
       .update(sprints)
-      .set(updates)
+      .set(updateData)
       .where(eq(sprints.id, id))
       .returning();
     return sprint;
