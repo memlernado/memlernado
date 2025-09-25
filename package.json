@@ -10,7 +10,20 @@
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
-    "railway:deploy": "railway up"
+    "railway:deploy": "railway up",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:detached": "docker-compose -f docker-compose.dev.yml up -d --build",
+    "docker:stop": "docker-compose -f docker-compose.dev.yml down",
+    "docker:clean": "docker-compose -f docker-compose.dev.yml down -v",
+    "docker:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:db:push": "docker-compose -f docker-compose.dev.yml exec app npm run db:push",
+    "docker:db:studio": "docker-compose -f docker-compose.dev.yml exec app npx drizzle-kit studio",
+    "docker:db:seed": "docker-compose -f docker-compose.dev.yml exec app npm run seed",
+    "docker:db:seed:minimal": "docker-compose -f docker-compose.dev.yml exec app npm run seed:minimal",
+    "seed": "tsx scripts/seed.ts",
+    "seed:minimal": "tsx scripts/seed-minimal.ts",
+    "studio": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/memlernado_dev npx drizzle-kit studio",
+    "dev:docker": "npm run docker:dev && npm run docker:db:push && npm run docker:db:seed"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

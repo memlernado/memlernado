@@ -5,3 +5,16 @@ server/public
 vite.config.ts.*
 *.tar.gz
 .env
+.env.local
+.env.docker
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Database
+*.db
+*.sqlite
