@@ -1,0 +1,73 @@
+
+I want you to help me build an MVP for a **Homeschool SCRUM Platform** the initial name for the product is “Memlernado”. The MVP needs to focus only on the **core functionality**, with a clean, simple UI and modular structure so we can expand later. Please follow the details below.
+
+***
+
+### Context
+This app is like a simplified Jira/Trello but designed for homeschool teams. Families or groups of families create “workspaces,” then plan “sprints” of learning tasks, which are organized on a Kanban board (To Do, In Progress, Done). Parents/educators (facilitators) create tasks, but learners (kids/students) can move them across the board and check their progress.  
+
+The MVP should cover:
+- User accounts (Family, Parent/Facilitator, Learner/Child)
+- Workspaces for families/multi-family groups
+- Ability to create, edit, delete learning tasks
+- Kanban board: To Do, In Progress, Done
+- Sprint creation & tracking (start and end dates, list of tasks included)
+- Basic progress dashboard (per learner, % of tasks completed in sprint)
+
+***
+
+### Technical Requirements
+- **Stack preference:**  
+  - Frontend: React (with TypeScript) or Next.js, styled for a child-friendly and simple UI (cards, colors, icons).  
+  - Backend: Node.js with Express (or Fastify) for APIs.  NestJS is a good idea 
+  - Database: MongoDB or PostgreSQL (pick whichever is easier for quick prototyping).  
+  - Auth: JWT-based authentication for user roles (Parent, Learner).  
+- **Structure:** Organize code cleanly into modular folders (frontend, backend, db, api routes).  
+- **Dev Experience:** Include a `docker-compose` setup for local dev (backend + DB).  
+- **Seed ** Provide some mock seed users (e.g., a Parent with 2 children and a test sprint with sample tasks).  
+
+***
+
+### Features (MVP Scope)
+1. **Authentication & Users**  
+   - Sign up/login for Facilitator and Learners.  
+   - Role distinction: Facilitator can create/assign tasks, Learner can only move tasks on the board and mark as done. User can have both roles.
+
+2. **Workspaces**  
+   - Workspace creation (like a homeschool group).  
+   - Invite other families by email (for MVP, just mock it—don’t implement real email yet).  
+
+3. **Tasks & Sprints**  
+   - Parent can create tasks with: title, description, subject (optional), assigned learner.  
+   - Tasks are linked to a sprint or backlog.  
+   - Basic Kanban board with drag-and-drop for task status (To Do, In Progress, Done).  
+
+4. **Sprint Management**  
+   - Create a sprint with start and end dates.  
+   - Assign a set of tasks to a sprint.  
+   - View sprint progress overview (% tasks done).  
+
+5. **Dashboard**  
+   - Show per-learner progress for current sprint.  
+   - Show percentage of tasks completed.  
+
+***
+
+### Deliverables
+- A working web MVP running locally with:  
+  - React/Next.js frontend  
+  - Node.js/Express backend (NestJS maybe) 
+  - Database integration with either PostgreSQL or MongoDB  
+- Seeded demo workspace with a Parent and 2 Learners
+- Instructions in `README.md` on how to spin up locally (ideally with `docker-compose up`)  
+
+***
+
+### Next Tasks for You (Replit AI)
+1. Scaffold the project with the above stack.  
+2. Implement user authentication and role-based access.  
+3. Build workspace + sprint + task models in database.  
+4. Create endpoints for CRUD operations (tasks, sprints, workspaces).  
+5. Implement a simple React frontend with a Trello-style board (drag-and-drop columns).  
+6. Include a simple dashboard view of learner progress.  
+
