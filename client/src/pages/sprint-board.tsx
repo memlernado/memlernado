@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { Sprint, TaskWithRelations } from "@shared/schema";
 import { useLocation } from "wouter";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -14,6 +15,7 @@ import { Plus, BarChart3, Calendar, PlusCircle, CheckCircle } from "lucide-react
 
 
 function EmptySprintState() {
+  const { t } = useTranslation();
   const [, setLocation] = useLocation();
 
   const handleCreateSprint = () => {
@@ -27,9 +29,9 @@ function EmptySprintState() {
           <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
             <Calendar className="h-8 w-8 text-muted-foreground" />
           </div>
-          <CardTitle>No Active Sprint</CardTitle>
+          <CardTitle>{t('sprintBoard.emptyState.title')}</CardTitle>
           <CardDescription>
-            This workspace doesn't have an active sprint yet. Create a sprint to start organizing your learning tasks.
+            {t('sprintBoard.emptyState.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="text-center space-y-4">
@@ -39,10 +41,10 @@ function EmptySprintState() {
             data-testid="button-create-sprint"
           >
             <PlusCircle className="h-4 w-4 mr-2" />
-            Create New Sprint
+            {t('sprintBoard.emptyState.createButton')}
           </Button>
           <p className="text-xs text-muted-foreground">
-            In SCRUM methodology, all work is organized around sprints - focused periods for completing specific learning goals.
+            {t('sprintBoard.emptyState.scrumInfo')}
           </p>
         </CardContent>
       </Card>
@@ -51,6 +53,7 @@ function EmptySprintState() {
 }
 
 export default function SprintBoard() {
+  const { t } = useTranslation();
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showProgressModal, setShowProgressModal] = useState(false);
   const { selectedWorkspaceId } = useWorkspace();
@@ -73,7 +76,7 @@ export default function SprintBoard() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('sprintBoard.loading')}</p>
         </div>
       </MainLayout>
     );
@@ -85,8 +88,8 @@ export default function SprintBoard() {
       <MainLayout>
         <div className="space-y-6">
           <div className="bg-card border-b border-border px-6 py-4 -mx-6">
-            <h1 className="text-2xl font-bold text-foreground">Sprint Board</h1>
-            <p className="text-muted-foreground mt-1">Organize your learning tasks with SCRUM methodology</p>
+            <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
+            <p className="text-muted-foreground mt-1">{t('sprintBoard.subtitle')}</p>
           </div>
           <EmptySprintState />
         </div>
@@ -100,8 +103,8 @@ export default function SprintBoard() {
       <MainLayout>
         <div className="space-y-6">
           <div className="bg-card border-b border-border px-6 py-4 -mx-6">
-            <h1 className="text-2xl font-bold text-foreground">Sprint Board</h1>
-            <p className="text-muted-foreground mt-1">This sprint has been completed</p>
+            <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
+            <p className="text-muted-foreground mt-1">{t('sprintBoard.completedState.description')}</p>
           </div>
           <div className="flex items-center justify-center min-h-[400px]">
             <Card className="w-full max-w-md">
@@ -109,14 +112,14 @@ export default function SprintBoard() {
                 <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
                   <CheckCircle className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <CardTitle>Sprint Completed</CardTitle>
+                <CardTitle>{t('sprintBoard.completedState.title')}</CardTitle>
                 <CardDescription>
-                  This sprint has been completed. Visit Sprint Planning to start a new sprint.
+                  {t('sprintBoard.completedState.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <Button onClick={() => setLocation("/sprint-planning")}>
-                  Go to Sprint Planning
+                  {t('sprintBoard.completedState.goToPlanning')}
                 </Button>
               </CardContent>
             </Card>
@@ -143,7 +146,7 @@ export default function SprintBoard() {
         <div className="bg-card border-b border-border px-6 py-4 -mx-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Sprint Board</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
               <p className="text-muted-foreground mt-1">
                 {activeSprint.name} • {startDate} - {endDate}
               </p>
@@ -155,14 +158,14 @@ export default function SprintBoard() {
                 data-testid="button-add-task"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Add Task
+                {t('sprintBoard.addTask')}
               </Button>
               <Button 
                 onClick={() => setShowProgressModal(true)}
                 data-testid="button-view-progress"
               >
                 <BarChart3 className="h-4 w-4 mr-2" />
-                View Progress
+                {t('sprintBoard.viewProgress')}
               </Button>
             </div>
           </div>
@@ -171,18 +174,18 @@ export default function SprintBoard() {
           <div className="mt-4 flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-muted rounded-full"></div>
-              <span className="text-sm text-muted-foreground">To Do: {todoCount}</span>
+              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.todo')}: {todoCount}</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-chart-4 rounded-full"></div>
-              <span className="text-sm text-muted-foreground">In Progress: {inProgressCount}</span>
+              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.inProgress')}: {inProgressCount}</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-accent rounded-full"></div>
-              <span className="text-sm text-muted-foreground">Done: {doneCount}</span>
+              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.done')}: {doneCount}</span>
             </div>
             <div className="ml-auto">
-              <Badge variant="secondary">Sprint Progress: {completionRate}%</Badge>
+              <Badge variant="secondary">{t('sprintBoard.progress.sprintProgress', { rate: completionRate })}</Badge>
             </div>
           </div>
         </div>

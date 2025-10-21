@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Target, TrendingUp, Clock, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
 import type { TaskWithRelations, WorkspaceMemberWithUser } from "@shared/schema";
 
@@ -16,6 +17,7 @@ interface ProgressModalProps {
 
 
 export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressModalProps) {
+  const { t } = useTranslation();
   const { selectedWorkspaceId } = useWorkspace();
 
   // Fetch sprint tasks
@@ -126,7 +128,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xl font-bold text-foreground">
-              Sprint Progress Dashboard
+              {t('modals.progress.title')}
             </DialogTitle>           
         </DialogHeader>
         
@@ -134,7 +136,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
           <div className="flex items-center justify-center py-12">
             <div className="flex items-center space-x-2">
               <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="text-muted-foreground">Loading progress data...</span>
+              <span className="text-muted-foreground">{t('modals.progress.loading')}</span>
             </div>
           </div>
         ) : (
@@ -145,14 +147,14 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
             <Card className="bg-muted/30">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-foreground">Total Tasks</CardTitle>
+                  <CardTitle className="text-sm font-medium text-foreground">{t('modals.progress.stats.totalTasks')}</CardTitle>
                   <Target className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{sprintStats.totalTasks}</div>
                 <p className="text-sm text-muted-foreground">
-                  {sprintStats.todoTasks} To Do, {sprintStats.inProgressTasks} In Progress, {sprintStats.completedTasks} Done
+                  {sprintStats.todoTasks} {t('common.status.todo')}, {sprintStats.inProgressTasks} {t('common.status.inProgress')}, {sprintStats.completedTasks} {t('common.status.done')}
                 </p>
               </CardContent>
             </Card>
@@ -160,13 +162,13 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
             <Card className="bg-accent/10">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-foreground">Completion Rate</CardTitle>
+                  <CardTitle className="text-sm font-medium text-foreground">{t('modals.progress.stats.completionRate')}</CardTitle>
                   <TrendingUp className="h-4 w-4 text-accent" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-accent">{sprintStats.completionRate}%</div>
-                <p className="text-sm text-muted-foreground">Above target (60%)</p>
+                <p className="text-sm text-muted-foreground">{t('modals.progress.stats.aboveTarget')}</p>
                 <Progress value={sprintStats.completionRate} className="mt-2" />
               </CardContent>
             </Card>
@@ -174,14 +176,14 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
             <Card className="bg-chart-4/10">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-foreground">Time Spent</CardTitle>
+                  <CardTitle className="text-sm font-medium text-foreground">{t('modals.progress.stats.timeSpent')}</CardTitle>
                   <Clock className="h-4 w-4 text-chart-4" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-chart-4">{sprintStats.timeSpent}</div>
                 <p className="text-sm text-muted-foreground">
-                  Target: {sprintStats.weeklyTarget} this week
+                  {t('modals.progress.stats.target', { target: sprintStats.weeklyTarget })}
                 </p>
               </CardContent>
             </Card>
@@ -189,12 +191,12 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
 
           {/* Individual Learner Progress */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">Individual Progress</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('modals.progress.individualProgress')}</h3>
             
             {learners.length === 0 ? (
               <Card className="border border-border">
                 <CardContent className="py-8 text-center">
-                  <p className="text-muted-foreground">No learners found in this workspace.</p>
+                  <p className="text-muted-foreground">{t('modals.progress.noLearners')}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -221,7 +223,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                       <div className="text-right">
                         <div className="text-xl font-bold text-accent">{learner.completionRate}%</div>
                         <p className="text-sm text-muted-foreground">
-                          {learner.tasksCompleted}/{learner.totalTasks} tasks done
+                          {learner.tasksCompleted}/{learner.totalTasks} {t('common.labels.tasks')} {t('common.status.done')}
                         </p>
                       </div>
                     </div>
@@ -239,7 +241,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                           </div>
                           <p className="text-sm font-medium text-foreground">{subject}</p>
                           <p className="text-xs text-muted-foreground">
-                            {stats.completed}/{stats.total} tasks
+                            {stats.completed}/{stats.total} {t('common.labels.tasks')}
                           </p>
                         </div>
                       ))}
@@ -254,21 +256,21 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
           {/* Sprint Summary */}
           <Card className="bg-primary/5 border-primary/20">
             <CardHeader>
-              <CardTitle className="text-lg text-foreground">Sprint Summary</CardTitle>
+              <CardTitle className="text-lg text-foreground">{t('modals.progress.sprintSummary.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-xl font-bold text-primary">{sprintStats.completedTasks}</div>
-                  <p className="text-sm text-muted-foreground">Tasks Completed</p>
+                  <p className="text-sm text-muted-foreground">{t('modals.progress.sprintSummary.tasksCompleted')}</p>
                 </div>
                 <div>
                   <div className="text-xl font-bold text-chart-4">{sprintStats.inProgressTasks}</div>
-                  <p className="text-sm text-muted-foreground">In Progress</p>
+                  <p className="text-sm text-muted-foreground">{t('modals.progress.sprintSummary.inProgress')}</p>
                 </div>
                 <div>
                   <div className="text-xl font-bold text-muted-foreground">{sprintStats.todoTasks}</div>
-                  <p className="text-sm text-muted-foreground">Remaining Tasks</p>
+                  <p className="text-sm text-muted-foreground">{t('modals.progress.sprintSummary.remainingTasks')}</p>
                 </div>
               </div>
             </CardContent>

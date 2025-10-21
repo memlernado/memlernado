@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { DashboardStats } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { Link } from "wouter";
@@ -14,6 +15,7 @@ import type { Workspace } from "@shared/schema";
 
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -45,10 +47,10 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground">
-              Welcome back, {user?.firstName}! 👋
+              {t('home.welcome', { name: user?.firstName })}
             </h1>
             <p className="text-muted-foreground mt-1">
-              Here's what's happening with your homeschool journey
+              {t('home.subtitle')}
             </p>
           </div>
           <div className="flex items-center space-x-3">
@@ -56,14 +58,14 @@ export default function HomePage() {
               <Link href="/sprint-planning">
                 <Button data-testid="button-new-sprint">
                   <Plus className="h-4 w-4 mr-2" />
-                  New Sprint
+                  {t('home.newSprint')}
                 </Button>
               </Link>
             )}
             <Link href="/sprint-board">
               <Button variant="outline" data-testid="button-view-board">
                 <BookOpen className="h-4 w-4 mr-2" />
-                View Board
+                {t('home.viewBoard')}
               </Button>
             </Link>
           </div>
@@ -73,13 +75,13 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Task Completion</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('home.stats.taskCompletion')}</CardTitle>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-accent">{completionRate}%</div>
               <p className="text-xs text-muted-foreground">
-                {stats.completedTasks} of {stats.totalTasks} tasks done
+                {t('home.stats.tasksDone', { completed: stats.completedTasks, total: stats.totalTasks })}
               </p>
               <Progress value={completionRate} className="mt-2" />
             </CardContent>
@@ -87,39 +89,39 @@ export default function HomePage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Sprints</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('home.stats.activeSprints')}</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-primary">{stats.activeSprints}</div>
               <p className="text-xs text-muted-foreground">
-                {stats.totalSprints} total sprints
+                {t('home.stats.totalSprints', { total: stats.totalSprints })}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Learners</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('home.stats.learners')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-secondary">{stats.totalLearners}</div>
               <p className="text-xs text-muted-foreground">
-                Active in current sprints
+                {t('home.stats.activeInSprints')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">This Week</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('home.stats.thisWeek')}</CardTitle>
               <GraduationCap className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-chart-4">{stats.weeklyHours}h</div>
               <p className="text-xs text-muted-foreground">
-                Learning time logged
+                {t('home.stats.learningTime')}
               </p>
             </CardContent>
           </Card>
@@ -128,7 +130,7 @@ export default function HomePage() {
         {/* Workspaces Section */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-foreground">Your Workspaces</h2>
+            <h2 className="text-xl font-semibold text-foreground">{t('home.workspaces.title')}</h2>
             {user?.role === 'facilitator' && (
               <Button 
                 variant="outline" 
@@ -137,7 +139,7 @@ export default function HomePage() {
                 onClick={() => setIsCreateModalOpen(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Create Workspace
+                {t('home.workspaces.createWorkspace')}
               </Button>
             )}
           </div>
@@ -146,16 +148,16 @@ export default function HomePage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <GraduationCap className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">No workspaces yet</h3>
+                <h3 className="text-lg font-medium text-foreground mb-2">{t('home.workspaces.noWorkspaces.title')}</h3>
                 <p className="text-muted-foreground text-center mb-4">
-                  Create your first workspace to start organizing your homeschool journey
+                  {t('home.workspaces.noWorkspaces.description')}
                 </p>
                 <Button 
                   data-testid="button-create-first-workspace"
                   onClick={() => setIsCreateModalOpen(true)}
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Create Your First Workspace
+                  {t('home.workspaces.noWorkspaces.button')}
                 </Button>
               </CardContent>
             </Card>
@@ -166,19 +168,19 @@ export default function HomePage() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{workspace.name}</CardTitle>
-                      <Badge variant="secondary">Active</Badge>
+                      <Badge variant="secondary">{t('home.workspaces.workspace.active')}</Badge>
                     </div>
                     <CardDescription>{workspace.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>{workspace.learnerCount || 0} learner{workspace.learnerCount !== 1 ? 's' : ''}</span>
-                      <span>{workspace.activeSprintCount || 0} active sprint{workspace.activeSprintCount !== 1 ? 's' : ''}</span>
+                      <span>{t('home.workspaces.workspace.learners', { count: workspace.learnerCount || 0 })}</span>
+                      <span>{t('home.workspaces.workspace.sprints', { count: workspace.activeSprintCount || 0 })}</span>
                     </div>
                     <div className="mt-3">
                       <Link href="/sprint-board">
                         <Button size="sm" className="w-full" data-testid={`button-enter-workspace-${workspace.id}`}>
-                          Enter Workspace
+                          {t('home.workspaces.workspace.enterWorkspace')}
                         </Button>
                       </Link>
                     </div>
@@ -191,16 +193,16 @@ export default function HomePage() {
 
         {/* Recent Activity */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Recent Activity</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('home.recentActivity.title')}</h2>
           <Card>
             <CardContent className="py-12">
               <div className="text-center">
                 <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
                   <BookOpen className="h-4 w-4 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No activity yet</h3>
+                <h3 className="text-lg font-medium text-foreground mb-2">{t('home.recentActivity.noActivity.title')}</h3>
                 <p className="text-muted-foreground">
-                  Start working on tasks to see recent activity here
+                  {t('home.recentActivity.noActivity.description')}
                 </p>
               </div>
             </CardContent>

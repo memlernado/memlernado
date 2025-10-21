@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useLocation } from "wouter";
 import type { Sprint } from "@shared/schema";
@@ -18,6 +19,7 @@ import CompleteSprintModal from "@/components/modals/complete-sprint-modal";
 import AssignTasksModal from "@/components/modals/assign-tasks-modal";
 
 export default function SprintPlanning() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { selectedWorkspaceId, selectedWorkspace } = useWorkspace();
@@ -54,8 +56,8 @@ export default function SprintPlanning() {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints"] });
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints", "active"] });
       toast({
-        title: "Sprint created",
-        description: "Your new sprint has been created successfully.",
+        title: t('messages.success.sprintCreated'),
+        description: t('messages.success.sprintCreatedDescription'),
       });
       setShowCreateForm(false);
       setFormData({
@@ -67,7 +69,7 @@ export default function SprintPlanning() {
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to create sprint",
+        title: t('messages.error.sprintCreateFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -83,14 +85,14 @@ export default function SprintPlanning() {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints"] });
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints", "active"] });
       toast({
-        title: "Sprint updated",
-        description: "Sprint has been updated successfully.",
+        title: t('messages.success.sprintUpdated'),
+        description: t('messages.success.sprintUpdatedDescription'),
       });
       setEditingSprintId(null);
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to update sprint",
+        title: t('messages.error.sprintUpdateFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -106,15 +108,15 @@ export default function SprintPlanning() {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints"] });
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints", "active"] });
       toast({
-        title: "Sprint started",
-        description: "Sprint is now active and ready for use.",
+        title: t('messages.success.sprintStarted'),
+        description: t('messages.success.sprintStartedDescription'),
       });
       // Redirect to sprint board
       setLocation("/sprint-board");
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to start sprint",
+        title: t('messages.error.sprintStartFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -125,8 +127,8 @@ export default function SprintPlanning() {
     e.preventDefault();
     if (!selectedWorkspaceId) {
       toast({
-        title: "No workspace selected",
-        description: "Please select a workspace to create a sprint.",
+        title: t('messages.error.noWorkspaceSelected'),
+        description: t('messages.error.noWorkspaceSelectedDescription'),
         variant: "destructive",
       });
       return;
@@ -202,9 +204,9 @@ export default function SprintPlanning() {
         {/* Header */}
         <div className="flex items-center justify-between">
 
-          <h1 className="text-2xl font-bold text-foreground">Sprint Planning</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('sprint.planning.title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Create and manage learning sprints for your workspace
+            {t('sprint.planning.subtitle')}
           </p>
         </div>
       </div>
@@ -213,30 +215,30 @@ export default function SprintPlanning() {
       {showCreateForm && (
         <Card>
           <CardHeader>
-            <CardTitle>{editingSprintId ? "Edit Sprint" : "Create New Sprint"}</CardTitle>
+            <CardTitle>{editingSprintId ? t('sprint.planning.editSprint') : t('sprint.planning.createSprint')}</CardTitle>
             <CardDescription>
-              Plan a focused learning period with specific goals and tasks
+              {t('sprint.planning.subtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="sprint-name">Sprint Name</Label>
+                  <Label htmlFor="sprint-name">{t('sprint.planning.sprintName')}</Label>
                   <Input
                     id="sprint-name"
                     data-testid="input-sprint-name"
-                    placeholder="e.g., Week 4: History & Geography"
+                    placeholder={t('sprint.planning.sprintNamePlaceholder')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="sprint-workspace">Workspace</Label>
+                  <Label htmlFor="sprint-workspace">{t('sprint.planning.workspace')}</Label>
                   <Input
                     id="sprint-workspace"
-                    value={selectedWorkspace?.name || "No workspace selected"}
+                    value={selectedWorkspace?.name || t('messages.error.noWorkspaceSelected')}
                     disabled
                     className="bg-muted"
                   />
@@ -244,11 +246,11 @@ export default function SprintPlanning() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="sprint-description">Description</Label>
+                <Label htmlFor="sprint-description">{t('sprint.planning.sprintDescription')}</Label>
                 <Textarea
                   id="sprint-description"
                   data-testid="textarea-sprint-description"
-                  placeholder="Describe the focus and goals for this sprint..."
+                  placeholder={t('sprint.planning.sprintDescriptionPlaceholder')}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
@@ -256,7 +258,7 @@ export default function SprintPlanning() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="sprint-start-date">Start Date</Label>
+                  <Label htmlFor="sprint-start-date">{t('sprint.planning.startDate')}</Label>
                   <Input
                     id="sprint-start-date"
                     data-testid="input-sprint-start-date"
@@ -267,7 +269,7 @@ export default function SprintPlanning() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="sprint-end-date">End Date</Label>
+                  <Label htmlFor="sprint-end-date">{t('sprint.planning.endDate')}</Label>
                   <Input
                     id="sprint-end-date"
                     data-testid="input-sprint-end-date"
@@ -286,7 +288,7 @@ export default function SprintPlanning() {
                   onClick={handleCancelEdit}
                   data-testid="button-cancel-sprint"
                 >
-                  Cancel
+                  {t('common.buttons.cancel')}
                 </Button>
                 <Button
                   type="submit"
@@ -294,8 +296,8 @@ export default function SprintPlanning() {
                   data-testid="button-save-sprint"
                 >
                   {editingSprintId
-                    ? (updateSprintMutation.isPending ? "Updating..." : "Update Sprint")
-                    : (createSprintMutation.isPending ? "Creating..." : "Create Sprint")
+                    ? (updateSprintMutation.isPending ? t('common.buttons.loading') : t('sprint.planning.editSprint'))
+                    : (createSprintMutation.isPending ? t('common.buttons.loading') : t('sprint.planning.createSprint'))
                   }
                 </Button>
               </div>
@@ -309,7 +311,7 @@ export default function SprintPlanning() {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
             <CheckCircle className="h-5 w-5 text-accent" />
-            Active Sprint
+            {t('sprint.planning.activeSprint')}
           </h2>
           <Card className="border-accent/20 bg-accent/5">
             <CardHeader className="pb-3">
@@ -317,12 +319,12 @@ export default function SprintPlanning() {
                 <div className="flex items-center space-x-3">
                   <CardTitle className="text-lg">{activeSprint.name}</CardTitle>
                   <Badge variant="default" className="bg-accent text-accent-foreground">
-                    Active
+                    {t('common.status.active')}
                   </Badge>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-accent">{activeSprint.completionRate}%</div>
-                  <p className="text-sm text-muted-foreground">completion</p>
+                  <p className="text-sm text-muted-foreground">{t('common.labels.completion')}</p>
                 </div>
               </div>
               <CardDescription>{activeSprint.description}</CardDescription>
@@ -338,7 +340,7 @@ export default function SprintPlanning() {
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>{activeSprint.taskCount} tasks</span>
+                    <span>{activeSprint.taskCount} {t('common.labels.tasks')}</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -349,7 +351,7 @@ export default function SprintPlanning() {
                     data-testid={`button-view-sprint-${activeSprint.id}`}
                   >
                     <Eye className="h-4 w-4 mr-1" />
-                    View Board
+                    {t('sprint.planning.viewBoard')}
                   </Button>
                   <Button
                     size="sm"
@@ -358,7 +360,7 @@ export default function SprintPlanning() {
                     data-testid={`button-complete-sprint-${activeSprint.id}`}
                   >
                     <CheckCircle className="h-4 w-4 mr-1" />
-                    Complete Sprint
+                    {t('sprint.planning.completeSprint')}
                   </Button>
                 </div>
               </div>
@@ -371,23 +373,23 @@ export default function SprintPlanning() {
       <div className="mt-6 space-y-4">
         <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
           <Calendar className="h-5 w-5" />
-          Draft Sprints
+          {t('sprint.planning.draftSprints')}
         </h2>
 
         {draftSprints.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
               <Calendar className="h-8 w-8 text-muted-foreground mb-3" />
-              <h3 className="text-lg font-medium text-foreground mb-2">No draft sprints</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('sprint.planning.noDraftSprints')}</h3>
               <p className="text-muted-foreground text-center mb-4">
-                Create a new sprint to plan your next learning cycle
+                {t('sprint.planning.noDraftSprintsDescription')}
               </p>
               <Button
                 onClick={() => setShowCreateForm(true)}
                 data-testid="button-create-draft-sprint"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Create Draft Sprint
+                {t('sprint.planning.createDraftSprint')}
               </Button>
             </CardContent>
           </Card>
@@ -399,11 +401,11 @@ export default function SprintPlanning() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <CardTitle className="text-lg">{sprint.name}</CardTitle>
-                      <Badge variant="secondary">Draft</Badge>
+                      <Badge variant="secondary">{t('common.status.draft')}</Badge>
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-bold text-muted-foreground">{sprint.taskCount}</div>
-                      <p className="text-sm text-muted-foreground">planned tasks</p>
+                      <p className="text-sm text-muted-foreground">{t('sprint.planning.plannedTasks')}</p>
                     </div>
                   </div>
                   <CardDescription>{sprint.description}</CardDescription>
@@ -426,7 +428,7 @@ export default function SprintPlanning() {
                         data-testid={`button-assign-tasks-${sprint.id}`}
                       >
                         <ListPlus className="h-4 w-4 mr-1" />
-                        Assign Tasks
+                        {t('sprint.planning.assignTasks')}
                       </Button>
                       <Button
                         size="sm"
@@ -436,7 +438,7 @@ export default function SprintPlanning() {
                         data-testid={`button-start-sprint-${sprint.id}`}
                       >
                         <Play className="h-4 w-4 mr-1" />
-                        {startSprintMutation.isPending ? "Starting..." : "Start Sprint"}
+                        {startSprintMutation.isPending ? t('sprint.planning.starting') : t('sprint.planning.startSprint')}
                       </Button>
                       <Button
                         size="sm"
@@ -445,13 +447,13 @@ export default function SprintPlanning() {
                         data-testid={`button-edit-sprint-${sprint.id}`}
                       >
                         <Edit2 className="h-4 w-4 mr-1" />
-                        Edit
+                        {t('sprint.planning.edit')}
                       </Button>
                     </div>
                   </div>
                   {!!activeSprint && (
                     <div className="mt-2 text-xs text-muted-foreground">
-                      Cannot start sprint while another sprint is active
+                      {t('sprint.planning.cannotStartSprint')}
                     </div>
                   )}
                 </CardContent>
@@ -474,7 +476,7 @@ export default function SprintPlanning() {
                     <ChevronRight className="h-5 w-5" />
                   )}
                   <CheckCircle className="h-5 w-5 text-muted-foreground" />
-                  Completed Sprints ({completedSprints.length})
+                  {t('sprint.planning.completedSprints')} ({completedSprints.length})
                 </h2>
               </Button>
             </CollapsibleTrigger>
@@ -485,11 +487,11 @@ export default function SprintPlanning() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <CardTitle className="text-lg">{sprint.name}</CardTitle>
-                        <Badge variant="outline">Completed</Badge>
+                        <Badge variant="outline">{t('common.status.completed')}</Badge>
                       </div>
                       <div className="text-right">
                         <div className="text-lg font-bold text-accent">{sprint.completionRate}%</div>
-                        <p className="text-sm text-muted-foreground">final completion</p>
+                        <p className="text-sm text-muted-foreground">{t('sprint.planning.finalCompletion')}</p>
                       </div>
                     </div>
                     <CardDescription>{sprint.description}</CardDescription>
@@ -505,11 +507,11 @@ export default function SprintPlanning() {
                         </div>
                         <div className="flex items-center space-x-1 text-muted-foreground">
                           <Clock className="h-4 w-4" />
-                          <span>{sprint.taskCount} tasks</span>
+                          <span>{sprint.taskCount} {t('common.labels.tasks')}</span>
                         </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        Read-only • Completed sprint
+                        {t('sprint.planning.readOnly')}
                       </div>
                     </div>
                   </CardContent>

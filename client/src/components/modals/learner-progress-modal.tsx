@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Target, TrendingUp, Clock, Loader2, Calendar, BookOpen, User } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
 import type { TaskWithRelations } from "@shared/schema";
 
@@ -16,6 +17,7 @@ interface LearnerProgressModalProps {
 }
 
 export default function LearnerProgressModal({ isOpen, onClose, userId, userName }: LearnerProgressModalProps) {
+  const { t } = useTranslation();
   const { selectedWorkspaceId } = useWorkspace();
 
   // Fetch all tasks for this specific user
@@ -114,9 +116,9 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
             </Avatar>
             <div>
               <DialogTitle className="text-xl font-bold text-foreground">
-                {userName}'s Progress
+                {t('modals.learnerProgress.title', { name: userName })}
               </DialogTitle>
-              <p className="text-sm text-muted-foreground">Individual learning progress</p>
+              <p className="text-sm text-muted-foreground">{t('modals.learnerProgress.subtitle')}</p>
             </div>
           </div>
         </DialogHeader>
@@ -125,7 +127,7 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
           <div className="flex items-center justify-center py-12">
             <div className="flex items-center space-x-2">
               <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="text-muted-foreground">Loading progress data...</span>
+              <span className="text-muted-foreground">{t('modals.learnerProgress.loading')}</span>
             </div>
           </div>
         ) : (
@@ -136,14 +138,14 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
               <Card className="bg-muted/30">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-foreground">Total Tasks</CardTitle>
+                    <CardTitle className="text-sm font-medium text-foreground">{t('modals.learnerProgress.stats.totalTasks')}</CardTitle>
                     <Target className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-foreground">{userStats.totalTasks}</div>
                   <p className="text-sm text-muted-foreground">
-                    {userStats.todoTasks} To Do, {userStats.inProgressTasks} In Progress, {userStats.completedTasks} Done
+                    {userStats.todoTasks} {t('common.status.todo')}, {userStats.inProgressTasks} {t('common.status.inProgress')}, {userStats.completedTasks} {t('common.status.done')}
                   </p>
                 </CardContent>
               </Card>
@@ -151,13 +153,13 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
               <Card className="bg-accent/10">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-foreground">Completion Rate</CardTitle>
+                    <CardTitle className="text-sm font-medium text-foreground">{t('modals.learnerProgress.stats.completionRate')}</CardTitle>
                     <TrendingUp className="h-4 w-4 text-accent" />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-accent">{userStats.completionRate}%</div>
-                  <p className="text-sm text-muted-foreground">Overall progress</p>
+                  <p className="text-sm text-muted-foreground">{t('modals.learnerProgress.stats.overallProgress')}</p>
                   <Progress value={userStats.completionRate} className="mt-2" />
                 </CardContent>
               </Card>
@@ -165,14 +167,14 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
               <Card className="bg-chart-4/10">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-foreground">Time Spent</CardTitle>
+                    <CardTitle className="text-sm font-medium text-foreground">{t('modals.learnerProgress.stats.timeSpent')}</CardTitle>
                     <Clock className="h-4 w-4 text-chart-4" />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-chart-4">{userStats.timeSpent}</div>
                   <p className="text-sm text-muted-foreground">
-                    Total learning time
+                    {t('modals.learnerProgress.stats.totalLearningTime')}
                   </p>
                 </CardContent>
               </Card>
@@ -180,14 +182,14 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
               <Card className="bg-chart-1/10">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium text-foreground">Sprints</CardTitle>
+                    <CardTitle className="text-sm font-medium text-foreground">{t('modals.learnerProgress.stats.sprints')}</CardTitle>
                     <Calendar className="h-4 w-4 text-chart-1" />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-chart-1">{userStats.totalSprints}</div>
                   <p className="text-sm text-muted-foreground">
-                    Participated in
+                    {t('modals.learnerProgress.stats.participatedIn')}
                   </p>
                 </CardContent>
               </Card>
@@ -195,13 +197,13 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
 
             {/* Subject Progress */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground">Subject Progress</h3>
+              <h3 className="text-lg font-semibold text-foreground">{t('modals.learnerProgress.subjectProgress')}</h3>
 
               {Object.keys(subjects).length === 0 ? (
                 <Card className="border border-border">
                   <CardContent className="py-8 text-center">
                     <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No tasks assigned yet.</p>
+                    <p className="text-muted-foreground">{t('modals.learnerProgress.noTasks')}</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -225,9 +227,9 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
                             />
                           </div>
                           <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Completed:</span>
+                            <span className="text-muted-foreground">{t('common.labels.completion')}:</span>
                             <span className="text-foreground font-medium">
-                              {stats.completed}/{stats.total} tasks
+                              {stats.completed}/{stats.total} {t('common.labels.tasks')}
                             </span>
                           </div>
                         </div>
@@ -243,22 +245,22 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
               <CardHeader>
                 <CardTitle className="text-lg text-foreground flex items-center">
                   <User className="h-5 w-5 mr-2" />
-                  Learning Summary
+                  {t('modals.learnerProgress.learningSummary.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                   <div>
                     <div className="text-xl font-bold text-primary">{userStats.completedTasks}</div>
-                    <p className="text-sm text-muted-foreground">Tasks Completed</p>
+                    <p className="text-sm text-muted-foreground">{t('modals.learnerProgress.learningSummary.tasksCompleted')}</p>
                   </div>
                   <div>
                     <div className="text-xl font-bold text-chart-4">{userStats.inProgressTasks}</div>
-                    <p className="text-sm text-muted-foreground">Currently Working On</p>
+                    <p className="text-sm text-muted-foreground">{t('modals.learnerProgress.learningSummary.currentlyWorking')}</p>
                   </div>
                   <div>
                     <div className="text-xl font-bold text-muted-foreground">{userStats.todoTasks}</div>
-                    <p className="text-sm text-muted-foreground">Upcoming Tasks</p>
+                    <p className="text-sm text-muted-foreground">{t('modals.learnerProgress.learningSummary.upcomingTasks')}</p>
                   </div>
                 </div>
               </CardContent>

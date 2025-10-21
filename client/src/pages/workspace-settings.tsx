@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type {  WorkspaceMemberWithUser, WorkspaceWithStats } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -16,6 +17,7 @@ import { Settings, Users, Trash2, UserMinus, UserPlus } from "lucide-react";
 
 
 export default function WorkspaceSettings() {
+  const { t } = useTranslation();
   const { selectedWorkspaceId } = useWorkspace();
   const { toast } = useToast();
   const [workspaceName, setWorkspaceName] = useState("");
@@ -63,14 +65,14 @@ export default function WorkspaceSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces"] });
       toast({
-        title: "Success",
-        description: "Workspace updated successfully",
+        title: t('common.buttons.save'),
+        description: t('settings.success.workspaceUpdated'),
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to update workspace",
+        title: t('common.buttons.error'),
+        description: t('settings.errors.workspaceUpdateFailed'),
         variant: "destructive",
       });
     },
@@ -96,14 +98,14 @@ export default function WorkspaceSettings() {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces"] });
       setNewMemberEmail("");
       toast({
-        title: "Success",
-        description: "Student added to workspace successfully",
+        title: t('common.buttons.save'),
+        description: t('settings.success.memberAdded'),
       });
     },
     onError: (error: Error) => {
       console.error("Error adding member:", error);
       toast({
-        title: "Error",
+        title: t('common.buttons.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -122,8 +124,8 @@ export default function WorkspaceSettings() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Workspace Settings</h1>
-              <p className="text-muted-foreground mt-1">Loading workspace settings...</p>
+              <h1 className="text-2xl font-bold text-foreground">{t('settings.title')}</h1>
+              <p className="text-muted-foreground mt-1">{t('settings.loading')}</p>
             </div>
           </div>
           <div className="grid gap-6">
@@ -144,14 +146,14 @@ export default function WorkspaceSettings() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Workspace Settings</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t('settings.title')}</h1>
             <p className="text-muted-foreground mt-1">
-              Manage your workspace configuration and members
+              {t('settings.subtitle')}
             </p>
           </div>
           <div className="flex items-center space-x-2">
             <Settings className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Settings</span>
+            <span className="text-sm text-muted-foreground">{t('navigation.settings')}</span>
           </div>
         </div>
 
@@ -159,30 +161,30 @@ export default function WorkspaceSettings() {
           {/* Workspace Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Workspace Details</CardTitle>
+              <CardTitle>{t('settings.workspaceDetails.title')}</CardTitle>
               <CardDescription>
-                Update your workspace name and description
+                {t('settings.workspaceDetails.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleUpdateWorkspace} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="workspace-name">Workspace Name</Label>
+                  <Label htmlFor="workspace-name">{t('settings.workspaceDetails.name')}</Label>
                   <Input
                     id="workspace-name"
                     value={workspaceName}
                     onChange={(e) => setWorkspaceName(e.target.value)}
-                    placeholder="Enter workspace name"
+                    placeholder={t('settings.workspaceDetails.namePlaceholder')}
                     data-testid="input-workspace-name"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="workspace-description">Description</Label>
+                  <Label htmlFor="workspace-description">{t('settings.workspaceDetails.description')}</Label>
                   <Textarea
                     id="workspace-description"
                     value={workspaceDescription}
                     onChange={(e) => setWorkspaceDescription(e.target.value)}
-                    placeholder="Enter workspace description"
+                    placeholder={t('settings.workspaceDetails.descriptionPlaceholder')}
                     rows={3}
                     data-testid="input-workspace-description"
                   />
@@ -192,7 +194,7 @@ export default function WorkspaceSettings() {
                   disabled={updateWorkspaceMutation.isPending}
                   data-testid="button-save-workspace"
                 >
-                  {updateWorkspaceMutation.isPending ? "Saving..." : "Save Changes"}
+                  {updateWorkspaceMutation.isPending ? t('settings.workspaceDetails.saving') : t('settings.workspaceDetails.saveChanges')}
                 </Button>
               </form>
             </CardContent>
@@ -203,10 +205,10 @@ export default function WorkspaceSettings() {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Users className="h-5 w-5" />
-                <span>Workspace Members</span>
+                <span>{t('settings.members.title')}</span>
               </CardTitle>
               <CardDescription>
-                Manage who has access to this workspace
+                {t('settings.members.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -214,13 +216,13 @@ export default function WorkspaceSettings() {
               <div className="mb-6 p-4 border rounded-lg bg-muted/30">
                 <h4 className="font-medium text-foreground mb-3 flex items-center space-x-2">
                   <UserPlus className="h-4 w-4" />
-                  <span>Add Student by Email</span>
+                  <span>{t('settings.members.addMember.title')}</span>
                 </h4>
                 <form onSubmit={handleAddMember} className="flex space-x-2">
                   <div className="flex-1">
                     <Input
                       type="email"
-                      placeholder="Enter student's email address"
+                      placeholder={t('settings.members.addMember.placeholder')}
                       value={newMemberEmail}
                       onChange={(e) => setNewMemberEmail(e.target.value)}
                       data-testid="input-member-email"
@@ -231,11 +233,11 @@ export default function WorkspaceSettings() {
                     disabled={addMemberMutation.isPending || !newMemberEmail.trim()}
                     data-testid="button-add-member"
                   >
-                    {addMemberMutation.isPending ? "Adding..." : "Add Student"}
+                    {addMemberMutation.isPending ? t('settings.members.addMember.adding') : t('settings.members.addMember.button')}
                   </Button>
                 </form>
                 <p className="text-xs text-muted-foreground mt-2">
-                  The student must already have an account in the system
+                  {t('settings.members.addMember.note')}
                 </p>
               </div>
 
@@ -255,8 +257,8 @@ export default function WorkspaceSettings() {
               ) : members.length === 0 ? (
                 <div className="text-center py-8">
                   <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-foreground mb-2">No members yet</h3>
-                  <p className="text-muted-foreground">Add students to collaborate on this workspace</p>
+                  <h3 className="text-lg font-medium text-foreground mb-2">{t('settings.members.noMembers.title')}</h3>
+                  <p className="text-muted-foreground">{t('settings.members.noMembers.description')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -277,7 +279,7 @@ export default function WorkspaceSettings() {
                       </div>
                       <div className="flex items-center space-x-3">
                         <Badge variant={member.user.role === 'facilitator' ? 'default' : 'secondary'}>
-                          {member.user.role}
+                          {t(`common.roles.${member.user.role}`)}
                         </Badge>
                         <Button
                           size="sm"
@@ -300,26 +302,25 @@ export default function WorkspaceSettings() {
             <CardHeader>
               <CardTitle className="text-destructive flex items-center space-x-2">
                 <Trash2 className="h-5 w-5" />
-                <span>Danger Zone</span>
+                <span>{t('settings.dangerZone.title')}</span>
               </CardTitle>
               <CardDescription>
-                Irreversible and destructive actions
+                {t('settings.dangerZone.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="p-4 border border-destructive/20 rounded-lg">
-                  <h4 className="font-medium text-foreground mb-2">Delete Workspace</h4>
+                  <h4 className="font-medium text-foreground mb-2">{t('settings.dangerZone.deleteWorkspace.title')}</h4>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Once you delete a workspace, there is no going back. This will permanently delete 
-                    the workspace and all its data including tasks, sprints, and member associations.
+                    {t('settings.dangerZone.deleteWorkspace.description')}
                   </p>
                   <Button 
                     variant="destructive" 
                     disabled
                     data-testid="button-delete-workspace"
                   >
-                    Delete Workspace (Coming Soon)
+                    {t('settings.dangerZone.deleteWorkspace.button')}
                   </Button>
                 </div>
               </div>

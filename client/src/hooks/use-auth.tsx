@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { User as SelectUser, InsertUser, LoginData, AuthContextType } from "@shared/schema";
 import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import i18n from "../lib/i18n";
 
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -16,6 +17,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["/api/user"],
     queryFn: getQueryFn({ on401: "returnNull" }),
   });
+
+  // Update i18n language when user data changes
+  useEffect(() => {
+    if (user?.language && user.language !== i18n.language) {
+      i18n.changeLanguage(user.language);
+    }
+  }, [user?.language]);
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {

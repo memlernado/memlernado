@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useLocation } from "wouter";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import CreateWorkspaceModal from "@/components/modals/create-workspace-modal";
+import LanguageSelector from "@/components/language-selector";
 import { GraduationCap, LogOut, Plus } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Navigation() {
+  const { t } = useTranslation();
   const { user, logoutMutation } = useAuth();
   const { selectedWorkspaceId, workspaces, setSelectedWorkspaceId } = useWorkspace();
   const [, setLocation] = useLocation();
@@ -53,8 +56,8 @@ export default function Navigation() {
               <GraduationCap className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-primary">Memlernado</h1>
-              <p className="text-xs text-muted-foreground">Homeschool SCRUM</p>
+              <h1 className="text-xl font-bold text-primary">{t('navigation.brand')}</h1>
+              <p className="text-xs text-muted-foreground">{t('navigation.tagline')}</p>
             </div>
           </div>
 
@@ -87,6 +90,9 @@ export default function Navigation() {
 
           {/* User Profile */}
           <div className="flex items-center space-x-4">
+            {/* Language Selector */}
+            <LanguageSelector />
+            
             {/* Notifications feature - commented out until implemented */}
             {/* <Button variant="ghost" size="sm" className="relative" data-testid="button-notifications">
               <Bell className="h-4 w-4" />
@@ -111,11 +117,11 @@ export default function Navigation() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={handleProfileSettings} data-testid="menu-profile">
-                  Profile Settings
+                  {t('navigation.profileSettings')}
                 </DropdownMenuItem>
                 {user?.role === 'facilitator' && (
                   <DropdownMenuItem onClick={handleWorkspaceSettings} data-testid="menu-workspace-settings">
-                    Workspace Settings
+                    {t('navigation.workspaceSettings')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
@@ -125,7 +131,7 @@ export default function Navigation() {
                   data-testid="menu-logout"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  Sign out
+                  {t('common.buttons.signOut')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

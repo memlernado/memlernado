@@ -381,6 +381,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User preferences routes
+  app.patch("/api/users/:id/preferences", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Users can only update their own preferences
+    if (req.user!.id !== req.params.id) {
+      return res.status(403).json({ message: "Can only update your own preferences" });
+    }
+
+    try {
+      const { language, timezone } = req.body;
+      
+      // Validate language if provided
+      if (language && !['en', 'es', 'pl'].includes(language)) {
+        return res.status(400).json({ message: "Invalid language. Must be 'en', 'es', or 'pl'" });
+      }
+
+      const updates: any = {};
+      if (language !== undefined) updates.language = language;
+      if (timezone !== undefined) updates.timezone = timezone;
+
+      const updatedUser = await storage.updateUser(req.params.id, updates);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user preferences:", error);
+      res.status(400).json({ message: "Failed to update preferences" });
+    }
+  });
+
   // Global dashboard analytics route
   app.get("/api/dashboard", async (req, res) => {
     if (!req.isAuthenticated()) {

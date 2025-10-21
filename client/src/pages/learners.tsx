@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import type { WorkspaceMemberWithUser } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -13,6 +14,7 @@ import { Users, Plus, Mail } from "lucide-react";
 
 
 export default function Learners() {
+  const { t } = useTranslation();
   const { selectedWorkspaceId } = useWorkspace();
   const [, setLocation] = useLocation();
   const [selectedLearner, setSelectedLearner] = useState<{id: string, name: string} | null>(null);
@@ -32,9 +34,9 @@ export default function Learners() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Learners</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t('learners.title')}</h1>
               <p className="text-muted-foreground mt-1">
-                Loading workspace members...
+                {t('learners.loading')}
               </p>
             </div>
           </div>
@@ -56,9 +58,9 @@ export default function Learners() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Learners</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t('learners.title')}</h1>
             <p className="text-muted-foreground mt-1">
-              Manage workspace members and invite new learners
+              {t('learners.subtitle')}
             </p>
           </div>
           <Button 
@@ -66,7 +68,7 @@ export default function Learners() {
             onClick={() => setLocation('/settings')}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Invite Learner
+            {t('learners.inviteLearner')}
           </Button>
         </div>
 
@@ -74,56 +76,56 @@ export default function Learners() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Learners</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('learners.stats.totalLearners')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{learners.length}</div>
-              <p className="text-sm text-muted-foreground">Active in workspace</p>
+              <p className="text-sm text-muted-foreground">{t('learners.stats.activeInWorkspace')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Facilitators</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('learners.stats.facilitators')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{facilitators.length}</div>
-              <p className="text-sm text-muted-foreground">Managing workspace</p>
+              <p className="text-sm text-muted-foreground">{t('learners.stats.managingWorkspace')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('learners.stats.totalMembers')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{members.length}</div>
-              <p className="text-sm text-muted-foreground">In workspace</p>
+              <p className="text-sm text-muted-foreground">{t('learners.stats.inWorkspace')}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Learners Section */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Learners</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('learners.title')}</h2>
           
           {learners.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Users className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">No learners yet</h3>
+                <h3 className="text-lg font-medium text-foreground mb-2">{t('learners.noLearners.title')}</h3>
                 <p className="text-muted-foreground text-center mb-4">
-                  Invite learners to start tracking their progress and assigning tasks
+                  {t('learners.noLearners.description')}
                 </p>
                 <Button 
                   data-testid="button-invite-first-learner"
                   onClick={() => setLocation('/settings')}
                 >
                   <Mail className="h-4 w-4 mr-2" />
-                  Invite Your First Learner
+                  {t('learners.noLearners.inviteFirstLearner')}
                 </Button>
               </CardContent>
             </Card>
@@ -142,15 +144,15 @@ export default function Learners() {
                         <CardTitle className="text-lg">{member.user.firstName} {member.user.lastName}</CardTitle>
                         <CardDescription>{member.user.email}</CardDescription>
                       </div>
-                      <Badge variant="secondary">Learner</Badge>
+                      <Badge variant="secondary">{t('common.roles.learner')}</Badge>
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Joined:</span>
+                        <span className="text-muted-foreground">{t('learners.joined')}</span>
                         <span className="text-foreground">
-                          {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : 'Unknown'}
+                          {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : t('settings.members.unknown')}
                         </span>
                       </div>
                       <div className="flex space-x-2 pt-2">
@@ -164,7 +166,7 @@ export default function Learners() {
                             name: `${member.user.firstName} ${member.user.lastName}`
                           })}
                         >
-                          View Progress
+                          {t('learners.viewProgress')}
                         </Button>
                       </div>
                     </div>
@@ -177,7 +179,7 @@ export default function Learners() {
 
         {/* Facilitators Section */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Facilitators</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('learners.stats.facilitators')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {facilitators.map((member, index) => (
@@ -193,15 +195,15 @@ export default function Learners() {
                       <CardTitle className="text-lg">{member.user.firstName} {member.user.lastName}</CardTitle>
                       <CardDescription>{member.user.email}</CardDescription>
                     </div>
-                    <Badge variant="default">Facilitator</Badge>
+                    <Badge variant="default">{t('common.roles.facilitator')}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Joined:</span>
+                      <span className="text-muted-foreground">{t('learners.joined')}</span>
                       <span className="text-foreground">
-                        {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : 'Unknown'}
+                        {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : t('settings.members.unknown')}
                       </span>
                     </div>
                   </div>

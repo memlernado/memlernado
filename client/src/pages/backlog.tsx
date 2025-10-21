@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { TaskWithRelations } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
@@ -11,6 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Plus, Archive, Users, Clock } from "lucide-react";
 
 function EmptyBacklogState() {
+  const { t } = useTranslation();
+  
   return (
     <div className="flex items-center justify-center min-h-[500px]">
       <Card className="w-full max-w-md">
@@ -18,15 +21,14 @@ function EmptyBacklogState() {
           <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
             <Archive className="h-8 w-8 text-muted-foreground" />
           </div>
-          <CardTitle>Empty Backlog</CardTitle>
+          <CardTitle>{t('backlog.emptyState.title')}</CardTitle>
           <CardDescription>
-            No tasks in the backlog yet. Create tasks here to plan future work.
+            {t('backlog.emptyState.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="text-center space-y-4">
           <p className="text-xs text-muted-foreground">
-            The backlog is where you organize tasks before assigning them to sprints. 
-            Tasks here can be refined, prioritized, and moved to active sprints during sprint planning.
+            {t('backlog.emptyState.info')}
           </p>
         </CardContent>
       </Card>
@@ -35,6 +37,7 @@ function EmptyBacklogState() {
 }
 
 export default function Backlog() {
+  const { t } = useTranslation();
   const [showTaskModal, setShowTaskModal] = useState(false);
   const { selectedWorkspaceId } = useWorkspace();
 
@@ -49,7 +52,7 @@ export default function Backlog() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('common.buttons.loading')}</p>
         </div>
       </MainLayout>
     );
@@ -68,9 +71,9 @@ export default function Backlog() {
         <div className="bg-card border-b border-border px-6 py-4 -mx-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Product Backlog</h1>
+                <h1 className="text-2xl font-bold text-foreground">{t('backlog.title')}</h1>
                 <p className="text-muted-foreground mt-1">
-                  Organize and prioritize tasks for future sprints
+                  {t('backlog.subtitle')}
                 </p>
               </div>
               <div className="flex items-center space-x-3">
@@ -79,7 +82,7 @@ export default function Backlog() {
                   data-testid="button-add-backlog-task"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Task
+                  {t('backlog.addTask')}
                 </Button>
               </div>
             </div>
@@ -89,20 +92,20 @@ export default function Backlog() {
             <div className="mt-4 flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-muted rounded-full"></div>
-                <span className="text-sm text-muted-foreground">To Do: {todoCount}</span>
+                <span className="text-sm text-muted-foreground">{t('backlog.stats.toDo')}: {todoCount}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-chart-4 rounded-full"></div>
-                <span className="text-sm text-muted-foreground">In Progress: {inProgressCount}</span>
+                <span className="text-sm text-muted-foreground">{t('backlog.stats.inProgress')}: {inProgressCount}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-accent rounded-full"></div>
-                <span className="text-sm text-muted-foreground">Done: {doneCount}</span>
+                <span className="text-sm text-muted-foreground">{t('backlog.stats.done')}: {doneCount}</span>
               </div>
               <div className="ml-auto">
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Archive className="h-3 w-3" />
-                  {totalTasks} total tasks
+                  {totalTasks} {t('backlog.stats.totalTasks')}
                 </Badge>
               </div>
             </div>
@@ -117,25 +120,25 @@ export default function Backlog() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Archive className="h-5 w-5" />
-                Backlog Tasks
+                {t('backlog.infoCard.title')}
               </CardTitle>
               <CardDescription>
-                These tasks are not yet assigned to any sprint. Use the Sprint Planning page to move tasks from the backlog to active sprints.
+                {t('backlog.infoCard.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Users className="h-4 w-4" />
-                  <span>Tasks can be assigned to learners</span>
+                  <span>{t('backlog.infoCard.features.assignable')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  <span>Estimate time and set priorities</span>
+                  <span>{t('backlog.infoCard.features.estimates')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Plus className="h-4 w-4" />
-                  <span>Move to sprints during planning</span>
+                  <span>{t('backlog.infoCard.features.movable')}</span>
                 </div>
               </div>
             </CardContent>

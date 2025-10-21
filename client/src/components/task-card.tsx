@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
@@ -18,6 +19,7 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, onMove, isLoading, isDragging = false, onClick }: TaskCardProps) {
+  const { t } = useTranslation();
   const {
     attributes,
     listeners,
@@ -106,14 +108,14 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
       </div>
 
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-        {task.description || "No description"}
+        {task.description || t('components.taskCard.noDescription')}
       </p>
 
       {/* Progress bar for in-progress tasks */}
       {task.status === "in_progress" && task.progress !== undefined && (
         <div className="mb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-            <span>Progress</span>
+            <span>{t('components.taskCard.progress')}</span>
             <span>{task.progress}%</span>
           </div>
           <Progress value={task.progress} className="h-2" />
@@ -141,10 +143,10 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
             <Clock className="h-3 w-3" />
             <span className="text-xs">
               {task.status === "done" 
-                ? `Completed in ${task.estimatedTime || "Unknown"}`
+                ? t('components.taskCard.completedIn', { time: task.estimatedTime || "Unknown" })
                 : task.timeSpent 
-                  ? `${task.timeSpent}/${task.estimatedTime || "?"}`
-                  : task.estimatedTime || "No estimate"
+                  ? t('components.taskCard.timeSpent', { spent: task.timeSpent, estimated: task.estimatedTime || "?" })
+                  : task.estimatedTime || t('components.taskCard.noEstimate')
               }
             </span>
           </div>

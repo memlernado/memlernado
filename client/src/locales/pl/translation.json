@@ -1,0 +1,629 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "create": "Utwórz",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "close": "Zamknij",
+      "submit": "Wyślij",
+      "loading": "Ładowanie...",
+      "signIn": "Zaloguj się",
+      "signOut": "Wyloguj się",
+      "signUp": "Zarejestruj się",
+      "add": "Dodaj",
+      "view": "Zobacz",
+      "start": "Rozpocznij",
+      "complete": "Ukończ",
+      "assign": "Przypisz"
+    },
+    "labels": {
+      "name": "Nazwa",
+      "email": "Email",
+      "password": "Hasło",
+      "username": "Nazwa użytkownika",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "role": "Rola",
+      "description": "Opis",
+      "date": "Data",
+      "time": "Czas",
+      "status": "Status",
+      "progress": "Postęp",
+      "completion": "Ukończenie",
+      "tasks": "zadania",
+      "noTasksAssigned": "Brak przypisanych zadań"
+    },
+    "status": {
+      "active": "Aktywny",
+      "inactive": "Nieaktywny",
+      "completed": "Ukończony",
+      "draft": "Szkic",
+      "todo": "Do zrobienia",
+      "inProgress": "W trakcie",
+      "done": "Gotowe"
+    },
+    "roles": {
+      "facilitator": "Facylitator/Rodzic",
+      "learner": "Uczeń/Student"
+    },
+    "subjects": {
+      "math": "Matematyka",
+      "science": "Przyroda",
+      "english": "Język angielski",
+      "history": "Historia",
+      "spanish": "Język hiszpański",
+      "art": "Sztuka",
+      "music": "Muzyka",
+      "physicalEducation": "Wychowanie fizyczne"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Witaj ponownie",
+      "subtitle": "Zaloguj się do swojego konta Memlernado",
+      "username": "Nazwa użytkownika",
+      "password": "Hasło",
+      "button": "Zaloguj się",
+      "buttonLoading": "Logowanie..."
+    },
+    "register": {
+      "title": "Utwórz konto",
+      "subtitle": "Dołącz do Memlernado, aby rozpocząć organizowanie swojej podróży edukacyjnej w domu",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "email": "Email",
+      "username": "Nazwa użytkownika",
+      "password": "Hasło",
+      "role": "Rola",
+      "button": "Utwórz konto",
+      "buttonLoading": "Tworzenie konta..."
+    },
+    "hero": {
+      "title": "Zorganizuj swoją Podróż Edukacyjną w Domu",
+      "subtitle": "Przekształć swoje doświadczenie edukacji domowej dzięki metodologii SCRUM. Twórz sprinty, śledź postęp i świętuj osiągnięcia razem.",
+      "features": {
+        "workspaces": {
+          "title": "Przestrzenie Robocze Rodzinne",
+          "description": "Współpracuj z wieloma rodzinami"
+        },
+        "sprints": {
+          "title": "Planowanie Sprintów",
+          "description": "Organizuj naukę w skupionych sprintach"
+        },
+        "progress": {
+          "title": "Śledzenie Postępu",
+          "description": "Wizualne tablice postępu"
+        },
+        "childFriendly": {
+          "title": "Przyjazny Dzieciom",
+          "description": "Zaprojektowany dla młodych uczniów"
+        }
+      }
+    }
+  },
+  "navigation": {
+    "brand": "Memlernado",
+    "tagline": "Edukacyjny SCRUM",
+    "dashboard": "Tablica",
+    "backlog": "Zaległości",
+    "sprintBoard": "Tablica Sprintu",
+    "sprintPlanning": "Planowanie Sprintu",
+    "learners": "Uczniowie",
+    "settings": "Ustawienia Przestrzeni",
+    "profileSettings": "Ustawienia Profilu",
+    "workspaceSettings": "Ustawienia Przestrzeni",
+    "currentSprint": "Aktualny Sprint",
+    "noActiveSprint": "Brak aktywnego sprintu",
+    "activeLearners": "Aktywni Uczniowie",
+    "noLearners": "Brak uczniów w przestrzeni"
+  },
+  "dashboard": {
+    "title": "Tablica Postępu",
+    "subtitle": "Śledź postęp nauki i wydajność sprintu",
+    "loading": "Ładowanie danych postępu...",
+    "stats": {
+      "totalTasks": "Wszystkie Zadania",
+      "completionRate": "Wskaźnik Ukończenia",
+      "sprintProgress": "Postęp Sprintu",
+      "aboveTarget": "Powyżej celu (60%)",
+      "onTrack": "Na dobrej drodze (40%+)",
+      "belowTarget": "Poniżej celu (40%)"
+    },
+    "individualProgress": "Postęp Indywidualny",
+    "recentAchievements": "Ostatnie Osiągnięcia",
+    "noAchievements": "Brak osiągnięć",
+    "noAchievementsDescription": "Zacznij ukończać zadania, aby zobaczyć osiągnięcia i kamienie milowe tutaj"
+  },
+  "sprint": {
+    "board": {
+      "title": "Tablica Sprintu",
+      "subtitle": "Organizuj zadania edukacyjne z metodologią SCRUM",
+      "noActiveSprint": "Brak Aktywnego Sprintu",
+      "noActiveSprintDescription": "Ta przestrzeń robocza nie ma jeszcze aktywnego sprintu. Utwórz sprint, aby rozpocząć organizowanie zadań edukacyjnych.",
+      "createNewSprint": "Utwórz Nowy Sprint",
+      "scrumDescription": "W metodologii SCRUM cała praca jest organizowana wokół sprintów - skupionych okresów na ukończenie konkretnych celów edukacyjnych.",
+      "sprintCompleted": "Sprint Ukończony",
+      "sprintCompletedDescription": "Ten sprint został ukończony. Odwiedź Planowanie Sprintu, aby rozpocząć nowy sprint.",
+      "goToSprintPlanning": "Przejdź do Planowania Sprintu",
+      "addTask": "Dodaj Zadanie",
+      "viewProgress": "Zobacz Postęp",
+      "columns": {
+        "todo": "Do zrobienia",
+        "inProgress": "W trakcie",
+        "done": "Gotowe"
+      },
+      "progress": {
+        "sprintProgress": "Postęp Sprintu"
+      }
+    },
+    "planning": {
+      "title": "Planowanie Sprintu",
+      "subtitle": "Twórz i zarządzaj sprintami edukacyjnymi dla swojej przestrzeni roboczej",
+      "createSprint": "Utwórz Nowy Sprint",
+      "editSprint": "Edytuj Sprint",
+      "sprintName": "Nazwa Sprintu",
+      "sprintNamePlaceholder": "np., Tydzień 4: Historia i Geografia",
+      "workspace": "Przestrzeń Robocza",
+      "sprintDescription": "Opis",
+      "sprintDescriptionPlaceholder": "Opisz skupienie i cele dla tego sprintu...",
+      "startDate": "Data Rozpoczęcia",
+      "endDate": "Data Zakończenia",
+      "activeSprint": "Aktywny Sprint",
+      "draftSprints": "Sprinty Szkicowe",
+      "completedSprints": "Ukończone Sprinty",
+      "noDraftSprints": "Brak sprintów szkicowych",
+      "noDraftSprintsDescription": "Utwórz nowy sprint, aby zaplanować swój następny cykl nauki",
+      "createDraftSprint": "Utwórz Sprint Szkicowy",
+      "assignTasks": "Przypisz Zadania",
+      "startSprint": "Rozpocznij Sprint",
+      "starting": "Rozpoczynanie...",
+      "viewBoard": "Zobacz Tablicę",
+      "completeSprint": "Ukończ Sprint",
+      "edit": "Edytuj",
+      "cannotStartSprint": "Nie można rozpocząć sprintu, gdy inny sprint jest aktywny",
+      "plannedTasks": "zaplanowane zadania",
+      "finalCompletion": "końcowe ukończenie",
+      "readOnly": "Tylko do odczytu • Ukończony sprint"
+    }
+  },
+  "learners": {
+    "title": "Uczniowie",
+    "subtitle": "Zarządzaj członkami przestrzeni roboczej i zapraszaj nowych uczniów",
+    "loading": "Ładowanie członków przestrzeni roboczej...",
+    "inviteLearner": "Zaproś Ucznia",
+    "stats": {
+      "totalLearners": "Wszyscy Uczniowie",
+      "facilitators": "Facylitatorzy",
+      "totalMembers": "Wszyscy Członkowie",
+      "activeInWorkspace": "Aktywni w przestrzeni",
+      "managingWorkspace": "Zarządzający przestrzenią",
+      "inWorkspace": "W przestrzeni"
+    },
+    "noLearners": {
+      "title": "Brak uczniów",
+      "description": "Zaproś uczniów, aby rozpocząć śledzenie ich postępu i przypisywanie zadań",
+      "inviteFirstLearner": "Zaproś Pierwszego Ucznia"
+    },
+    "joined": "Dołączył:",
+    "viewProgress": "Zobacz Postęp"
+  },
+  "modals": {
+    "task": {
+      "createTitle": "Utwórz Nowe Zadanie",
+      "createDescription": "Dodaj nowe zadanie edukacyjne do aktualnego sprintu",
+      "taskTitle": "Tytuł Zadania",
+      "taskTitlePlaceholder": "Wprowadź tytuł zadania...",
+      "taskDescription": "Opis",
+      "taskDescriptionPlaceholder": "Opisz, co uczeń musi zrobić...",
+      "subject": "Przedmiot",
+      "selectSubject": "Wybierz przedmiot",
+      "estimatedTime": "Szacowany Czas",
+      "estimatedTimePlaceholder": "np., 30min, 1h",
+      "assignToLearner": "Przypisz do Ucznia",
+      "selectLearner": "Wybierz ucznia",
+      "createTask": "Utwórz Zadanie",
+      "creating": "Tworzenie...",
+      "validation": {
+        "titleRequired": "Tytuł zadania jest wymagany.",
+        "subjectRequired": "Proszę wybrać przedmiot.",
+        "assigneeRequired": "Proszę przypisać zadanie do ucznia."
+      }
+    },
+    "workspace": {
+      "createTitle": "Utwórz Nową Przestrzeń Roboczą",
+      "createDescription": "Skonfiguruj nową przestrzeń roboczą dla swojej grupy edukacji domowej",
+      "workspaceName": "Nazwa Przestrzeni Roboczej",
+      "workspaceNamePlaceholder": "Wprowadź nazwę przestrzeni roboczej...",
+      "workspaceDescription": "Opis",
+      "workspaceDescriptionPlaceholder": "Opisz swoją przestrzeń roboczą...",
+      "createWorkspace": "Utwórz Przestrzeń Roboczą",
+      "creating": "Tworzenie..."
+    }
+  },
+  "backlog": {
+    "title": "Zaległości Produktu",
+    "subtitle": "Organizuj i priorytetyzuj zadania dla przyszłych sprintów",
+    "emptyState": {
+      "title": "Puste Zaległości",
+      "description": "Brak zadań w zaległościach. Utwórz zadania tutaj, aby zaplanować przyszłą pracę.",
+      "info": "Zaległości to miejsce, gdzie organizujesz zadania przed przypisaniem ich do sprintów. Zadania tutaj mogą być dopracowane, priorytetyzowane i przenoszone do aktywnych sprintów podczas planowania sprintu."
+    },
+    "addTask": "Dodaj Zadanie",
+    "stats": {
+      "toDo": "Do zrobienia",
+      "inProgress": "W trakcie", 
+      "done": "Gotowe",
+      "totalTasks": "wszystkich zadań"
+    },
+    "infoCard": {
+      "title": "Zadania Zaległości",
+      "description": "Te zadania nie są jeszcze przypisane do żadnego sprintu. Użyj strony Planowania Sprintu, aby przenieść zadania z zaległości do aktywnych sprintów.",
+      "features": {
+        "assignable": "Zadania mogą być przypisane uczniom",
+        "estimates": "Oszacuj czas i ustaw priorytety",
+        "movable": "Przenieś do sprintów podczas planowania"
+      }
+    }
+  },
+  "home": {
+    "welcome": "Witaj ponownie, {{name}}! 👋",
+    "subtitle": "Oto co dzieje się z Twoją podróżą edukacyjną w domu",
+    "newSprint": "Nowy Sprint",
+    "viewBoard": "Zobacz Tablicę",
+    "stats": {
+      "taskCompletion": "Ukończenie Zadań",
+      "activeSprints": "Aktywne Sprinty",
+      "learners": "Uczniowie",
+      "thisWeek": "Ten Tydzień",
+      "tasksDone": "{{completed}} z {{total}} zadań ukończonych",
+      "totalSprints": "{{total}} wszystkich sprintów",
+      "activeInSprints": "Aktywni w aktualnych sprintach",
+      "learningTime": "Zarejestrowany czas nauki"
+    },
+    "workspaces": {
+      "title": "Twoje Przestrzenie Robocze",
+      "createWorkspace": "Utwórz Przestrzeń Roboczą",
+      "noWorkspaces": {
+        "title": "Brak przestrzeni roboczych",
+        "description": "Utwórz swoją pierwszą przestrzeń roboczą, aby rozpocząć organizowanie swojej podróży edukacyjnej w domu",
+        "button": "Utwórz Swoją Pierwszą Przestrzeń Roboczą"
+      },
+      "workspace": {
+        "active": "Aktywna",
+        "learners": "{{count}} uczeń{{count, plural, one {} other {}}",
+        "sprints": "{{count}} aktywny sprint{{count, plural, one {} other {}}",
+        "enterWorkspace": "Wejdź do Przestrzeni"
+      }
+    },
+    "recentActivity": {
+      "title": "Ostatnia Aktywność",
+      "noActivity": {
+        "title": "Brak aktywności",
+        "description": "Zacznij pracować nad zadaniami, aby zobaczyć ostatnią aktywność tutaj"
+      }
+    }
+  },
+  "sprintBoard": {
+    "title": "Tablica Sprintu",
+    "subtitle": "Organizuj zadania edukacyjne z metodologią SCRUM",
+    "loading": "Ładowanie...",
+    "emptyState": {
+      "title": "Brak Aktywnego Sprintu",
+      "description": "Ta przestrzeń robocza nie ma jeszcze aktywnego sprintu. Utwórz sprint, aby rozpocząć organizowanie zadań edukacyjnych.",
+      "createButton": "Utwórz Nowy Sprint",
+      "scrumInfo": "W metodologii SCRUM cała praca jest organizowana wokół sprintów - skupionych okresów na ukończenie konkretnych celów edukacyjnych."
+    },
+    "completedState": {
+      "title": "Sprint Ukończony",
+      "description": "Ten sprint został ukończony. Odwiedź Planowanie Sprintu, aby rozpocząć nowy sprint.",
+      "goToPlanning": "Przejdź do Planowania Sprintu"
+    },
+    "addTask": "Dodaj Zadanie",
+    "viewProgress": "Zobacz Postęp",
+    "progress": {
+      "sprintProgress": "Postęp Sprintu: {{rate}}%"
+    },
+    "columns": {
+      "todo": "Do zrobienia",
+      "inProgress": "W trakcie",
+      "done": "Gotowe"
+    }
+  },
+  "settings": {
+    "title": "Ustawienia Przestrzeni Roboczej",
+    "subtitle": "Zarządzaj konfiguracją swojej przestrzeni roboczej i członkami",
+    "loading": "Ładowanie ustawień przestrzeni roboczej...",
+    "workspaceDetails": {
+      "title": "Szczegóły Przestrzeni Roboczej",
+      "description": "Zaktualizuj nazwę i opis swojej przestrzeni roboczej",
+      "name": "Nazwa Przestrzeni Roboczej",
+      "namePlaceholder": "Wprowadź nazwę przestrzeni roboczej",
+      "description": "Opis",
+      "descriptionPlaceholder": "Wprowadź opis przestrzeni roboczej",
+      "saveChanges": "Zapisz Zmiany",
+      "saving": "Zapisywanie..."
+    },
+    "members": {
+      "title": "Członkowie Przestrzeni Roboczej",
+      "description": "Zarządzaj, kto ma dostęp do tej przestrzeni roboczej",
+      "addMember": {
+        "title": "Dodaj Ucznia przez Email",
+        "placeholder": "Wprowadź adres email ucznia",
+        "button": "Dodaj Ucznia",
+        "adding": "Dodawanie...",
+        "note": "Uczeń musi już mieć konto w systemie"
+      },
+      "noMembers": {
+        "title": "Brak członków",
+        "description": "Dodaj uczniów, aby współpracować w tej przestrzeni roboczej"
+      },
+      "joined": "Dołączył:",
+      "unknown": "Nieznany"
+    },
+    "dangerZone": {
+      "title": "Strefa Niebezpieczeństwa",
+      "description": "Nieodwracalne i destrukcyjne działania",
+      "deleteWorkspace": {
+        "title": "Usuń Przestrzeń Roboczą",
+        "description": "Po usunięciu przestrzeni roboczej nie ma powrotu. To trwale usunie przestrzeń roboczą i wszystkie jej dane, w tym zadania, sprinty i skojarzenia członków.",
+        "button": "Usuń Przestrzeń Roboczą (Wkrótce)"
+      }
+    },
+    "success": {
+      "workspaceUpdated": "Przestrzeń robocza została pomyślnie zaktualizowana",
+      "memberAdded": "Uczeń został pomyślnie dodany do przestrzeni roboczej"
+    },
+    "errors": {
+      "workspaceUpdateFailed": "Błąd podczas aktualizacji przestrzeni roboczej",
+      "memberAddFailed": "Błąd podczas dodawania członka"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "404 Strona Nie Znaleziona",
+      "description": "Czy zapomniałeś dodać stronę do routera?"
+    }
+  },
+  "modals": {
+    "task": {
+      "createTitle": "Utwórz Nowe Zadanie",
+      "createDescription": "Dodaj nowe zadanie edukacyjne do aktualnego sprintu",
+      "taskTitle": "Tytuł Zadania",
+      "taskTitlePlaceholder": "Wprowadź tytuł zadania...",
+      "taskDescription": "Opis",
+      "taskDescriptionPlaceholder": "Opisz, co uczeń musi zrobić...",
+      "subject": "Przedmiot",
+      "selectSubject": "Wybierz przedmiot",
+      "estimatedTime": "Szacowany Czas",
+      "estimatedTimePlaceholder": "np., 30min, 1h",
+      "assignToLearner": "Przypisz do Ucznia",
+      "selectLearner": "Wybierz ucznia",
+      "createTask": "Utwórz Zadanie",
+      "creating": "Tworzenie...",
+      "validation": {
+        "titleRequired": "Tytuł zadania jest wymagany.",
+        "subjectRequired": "Proszę wybrać przedmiot.",
+        "assigneeRequired": "Proszę przypisać zadanie do ucznia."
+      }
+    },
+    "taskDetails": {
+      "title": "Szczegóły Zadania",
+      "noSubject": "Brak Przedmiotu",
+      "assignee": "Nieprzypisane",
+      "progress": "Postęp",
+      "timeSpent": "Spędzony czas: {{time}}",
+      "close": "Zamknij",
+      "editTask": "Edytuj Zadanie",
+      "cancel": "Anuluj",
+      "saveChanges": "Zapisz Zmiany",
+      "saving": "Zapisywanie...",
+      "editTitle": "Tytuł Zadania",
+      "editDescription": "Opis",
+      "editSubject": "Przedmiot",
+      "editEstimatedTime": "Szacowany Czas",
+      "editAssignee": "Przypisz do Ucznia",
+      "editProgress": "Postęp: {{progress}}%"
+    },
+    "workspace": {
+      "createTitle": "Utwórz Nową Przestrzeń Roboczą",
+      "createDescription": "Utwórz nową przestrzeń roboczą dla swojej rodziny edukacji domowej lub kooperatywy. To będzie Twoja dedykowana przestrzeń do organizowania działań edukacyjnych i śledzenia postępu.",
+      "workspaceName": "Nazwa Przestrzeni Roboczej",
+      "workspaceNamePlaceholder": "np., Przestrzeń Robocza Rodziny Johnson",
+      "workspaceDescription": "Opis (Opcjonalny)",
+      "workspaceDescriptionPlaceholder": "Krótki opis swojej przestrzeni roboczej...",
+      "createWorkspace": "Utwórz Przestrzeń Roboczą",
+      "creating": "Tworzenie...",
+      "cancel": "Anuluj"
+    },
+    "progress": {
+      "title": "Tablica Postępu Sprintu",
+      "loading": "Ładowanie danych postępu...",
+      "stats": {
+        "totalTasks": "Wszystkie Zadania",
+        "completionRate": "Wskaźnik Ukończenia",
+        "timeSpent": "Spędzony Czas",
+        "aboveTarget": "Powyżej celu (60%)",
+        "target": "Cel: {{target}} w tym tygodniu"
+      },
+      "individualProgress": "Postęp Indywidualny",
+      "noLearners": "Nie znaleziono uczniów w tej przestrzeni roboczej.",
+      "sprintSummary": {
+        "title": "Podsumowanie Sprintu",
+        "tasksCompleted": "Zadania Ukończone",
+        "inProgress": "W Trakcie",
+        "remainingTasks": "Pozostałe Zadania"
+      }
+    },
+    "completeSprint": {
+      "title": "Ukończ Sprint",
+      "description": "Czy jesteś gotowy ukończyć ten sprint? Nieukończone zadania zostaną automatycznie przeniesione do zaległości.",
+      "sprintSummary": "Podsumowanie Sprintu",
+      "completed": "Ukończone",
+      "incomplete": "Nieukończone",
+      "overallProgress": "Ogólny Postęp",
+      "incompleteWarning": {
+        "title": "Nieukończone Zadania",
+        "description": "{{count}} zadanie{{count, plural, one {} other {}}} zostanie skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\"."
+      },
+      "cancel": "Anuluj",
+      "complete": "Ukończ Sprint",
+      "completing": "Ukończanie..."
+    },
+    "assignTasks": {
+      "title": "Przypisz Zadania do Sprintu",
+      "description": "Wybierz zadania z zaległości, aby przypisać do tego sprintu.",
+      "draft": "Szkic",
+      "noTasks": {
+        "title": "Brak zadań w zaległościach",
+        "description": "Najpierw utwórz zadania w zaległościach, a następnie przypisz je do sprintów."
+      },
+      "selectAll": "Wybierz Wszystkie ({{count}} zadań)",
+      "selected": "{{count}} wybranych",
+      "tasksInSubject": "{{count}} zadanie{{count, plural, one {} other {}}}",
+      "cancel": "Anuluj",
+      "assign": "Przypisz {{count}} Zadanie{{count, plural, one {} other {}}}",
+      "assigning": "Przypisywanie..."
+    },
+    "learnerProgress": {
+      "title": "Postęp {{name}}",
+      "subtitle": "Indywidualny postęp edukacyjny",
+      "loading": "Ładowanie danych postępu...",
+      "stats": {
+        "totalTasks": "Wszystkie Zadania",
+        "completionRate": "Wskaźnik Ukończenia",
+        "timeSpent": "Spędzony Czas",
+        "sprints": "Sprinty",
+        "overallProgress": "Ogólny postęp",
+        "totalLearningTime": "Całkowity czas nauki",
+        "participatedIn": "Uczestniczył w"
+      },
+      "subjectProgress": "Postęp według Przedmiotu",
+      "noTasks": "Brak przypisanych zadań.",
+      "learningSummary": {
+        "title": "Podsumowanie Nauki",
+        "tasksCompleted": "Zadania Ukończone",
+        "currentlyWorking": "Obecnie Pracuje Nad",
+        "upcomingTasks": "Nadchodzące Zadania"
+      }
+    },
+    "progress": {
+      "title": "Panel Postępu Sprintu",
+      "loading": "Ładowanie danych postępu...",
+      "stats": {
+        "totalTasks": "Łączna Liczba Zadań",
+        "completionRate": "Wskaźnik Ukończenia",
+        "aboveTarget": "Powyżej celu (60%)",
+        "timeSpent": "Czas Spędzony",
+        "target": "Cel: {{target}} w tym tygodniu"
+      },
+      "individualProgress": "Postęp Indywidualny",
+      "noLearners": "Nie znaleziono uczniów w tej przestrzeni roboczej.",
+      "sprintSummary": {
+        "title": "Podsumowanie Sprintu",
+        "tasksCompleted": "Zadania Ukończone",
+        "inProgress": "W Trakcie",
+        "remainingTasks": "Pozostałe Zadania"
+      }
+    },
+    "taskDetails": {
+      "title": "Szczegóły Zadania",
+      "noSubject": "Brak Przedmiotu",
+      "assignee": "Nieprzypisane",
+      "progress": "Postęp",
+      "timeSpent": "Czas spędzony: {{time}}",
+      "close": "Zamknij",
+      "editTask": "Edytuj Zadanie",
+      "editTitle": "Tytuł Zadania",
+      "editDescription": "Opis",
+      "editSubject": "Przedmiot",
+      "editEstimatedTime": "Szacowany Czas",
+      "editAssignee": "Przypisz do Ucznia",
+      "editProgress": "Postęp: {{progress}}%",
+      "cancel": "Anuluj",
+      "saving": "Zapisywanie...",
+      "saveChanges": "Zapisz Zmiany"
+    },
+    "assignTasks": {
+      "title": "Przypisz Zadania do Sprintu",
+      "description": "Wybierz zadania z zaległości, aby przypisać je do tego sprintu.",
+      "draft": "Szkic",
+      "noTasks": {
+        "title": "Brak zadań w zaległościach",
+        "description": "Najpierw utwórz zadania w zaległościach, a następnie przypisz je do sprintów."
+      },
+      "selectAll": "Wybierz Wszystkie ({{count}} zadań)",
+      "selected": "{{count}} wybranych",
+      "taskCount": "{{count}} zadanie",
+      "cancel": "Anuluj",
+      "assigning": "Przypisywanie...",
+      "assignTasks": "Przypisz {{count}} Zadanie"
+    },
+    "completeSprint": {
+      "title": "Ukończ Sprint",
+      "description": "Czy jesteś gotowy do ukończenia tego sprintu? Nieukończone zadania zostaną automatycznie przeniesione do zaległości.",
+      "sprintSummary": "Podsumowanie Sprintu",
+      "completed": "Ukończone",
+      "incomplete": "Nieukończone",
+      "completionRate": "{{rate}}% Ukończone",
+      "overallProgress": "Ogólny Postęp",
+      "incompleteTasks": "Nieukończone Zadania",
+      "incompleteTasksDescription": "{{count}} zadanie{{count, plural, one {} other {}}} zostanie skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\".",
+      "cancel": "Anuluj",
+      "completing": "Ukończanie...",
+      "completeSprint": "Ukończ Sprint"
+    }
+  },
+  "components": {
+    "taskCard": {
+      "noDescription": "Brak opisu",
+      "progress": "Postęp",
+      "completedIn": "Ukończone w {{time}}",
+      "timeSpent": "{{spent}}/{{estimated}}",
+      "noEstimate": "Brak oszacowania",
+      "timeEstimate": "{{time}}"
+    },
+    "kanban": {
+      "loading": "Ładowanie...",
+      "columns": {
+        "todo": "Do zrobienia",
+        "inProgress": "W trakcie",
+        "done": "Gotowe"
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "taskCreated": "Zadanie utworzone",
+      "taskCreatedDescription": "Nowe zadanie zostało pomyślnie utworzone.",
+      "taskUpdated": "Zadanie zaktualizowane",
+      "taskUpdatedDescription": "Status zadania został pomyślnie zaktualizowany.",
+      "sprintCreated": "Sprint utworzony",
+      "sprintCreatedDescription": "Twój nowy sprint został pomyślnie utworzony.",
+      "sprintUpdated": "Sprint zaktualizowany",
+      "sprintUpdatedDescription": "Sprint został pomyślnie zaktualizowany.",
+      "sprintStarted": "Sprint rozpoczęty",
+      "sprintStartedDescription": "Sprint jest teraz aktywny i gotowy do użycia.",
+      "workspaceCreated": "Przestrzeń robocza została pomyślnie utworzona!",
+      "tasksAssigned": "{{count}} zadanie{{count, plural, one {} other {}}} przypisane{{count, plural, one {} other {}}} do {{sprintName}}.",
+      "sprintCompleted": "Sprint ukończony",
+      "sprintCompletedDescription": "Sprint został ukończony, a nieukończone zadania przeniesione do zaległości."
+    },
+    "error": {
+      "taskCreateFailed": "Błąd podczas tworzenia zadania",
+      "taskUpdateFailed": "Błąd podczas aktualizacji zadania",
+      "sprintCreateFailed": "Błąd podczas tworzenia sprintu",
+      "sprintUpdateFailed": "Błąd podczas aktualizacji sprintu",
+      "sprintStartFailed": "Błąd podczas rozpoczynania sprintu",
+      "validationError": "Błąd Walidacji",
+      "noWorkspaceSelected": "Nie wybrano przestrzeni",
+      "noWorkspaceSelectedDescription": "Proszę wybrać przestrzeń roboczą, aby utworzyć sprint.",
+      "workspaceCreateFailed": "Błąd podczas tworzenia przestrzeni roboczej",
+      "taskAssignFailed": "Błąd podczas przypisywania zadań",
+      "noTasksSelected": "Nie wybrano zadań",
+      "noTasksSelectedDescription": "Proszę wybrać co najmniej jedno zadanie do przypisania.",
+      "sprintCompleteFailed": "Błąd podczas ukończenia sprintu"
+    }
+  }
+}

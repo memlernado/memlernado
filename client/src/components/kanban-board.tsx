@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { TaskWithRelations } from "@shared/schema";
 import {
   DndContext,
@@ -48,6 +49,7 @@ function DroppableColumn({ column, children }: { column: any; children: React.Re
 }
 
 export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }: KanbanBoardProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
@@ -83,13 +85,13 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
       toast({
-        title: "Task updated",
-        description: "Task status has been updated successfully.",
+        title: t('messages.success.taskUpdated'),
+        description: t('messages.success.taskUpdatedDescription'),
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to update task",
+        title: t('messages.error.taskUpdateFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -164,7 +166,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   const columns = [
     {
       id: "todo",
-      title: "To Do",
+      title: t('components.kanban.columns.todo'),
       tasks: todoTasks,
       color: "bg-muted/30",
       dotColor: "bg-muted",
@@ -172,7 +174,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
     },
     {
       id: "in_progress",
-      title: "In Progress", 
+      title: t('components.kanban.columns.inProgress'), 
       tasks: inProgressTasks,
       color: "bg-chart-4/10",
       dotColor: "bg-chart-4",
@@ -180,7 +182,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
     },
     {
       id: "done",
-      title: "Done",
+      title: t('components.kanban.columns.done'),
       tasks: doneTasks,
       color: "bg-accent/10",
       dotColor: "bg-accent",
@@ -192,7 +194,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   if (tasksLoading && propTasks.length === 0) {
     return (
       <div className="flex space-x-6 min-w-max">
-        {["To Do", "In Progress", "Done"].map((title) => (
+        {[t('components.kanban.columns.todo'), t('components.kanban.columns.inProgress'), t('components.kanban.columns.done')].map((title) => (
           <div key={title} className="w-80 bg-muted/30 rounded-xl p-4">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-3 h-3 bg-muted rounded-full" />

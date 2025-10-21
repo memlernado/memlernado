@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { TaskWithRelations } from "@shared/schema";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ export default function TaskDetailsModal({
   workspaceId,
   sprintId 
 }: TaskDetailsModalProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
@@ -78,14 +80,14 @@ export default function TaskDetailsModal({
     onSuccess: () => {
       sprintId && queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
       toast({
-        title: "Task updated",
-        description: "Task has been updated successfully.",
+        title: t('messages.success.taskUpdated'),
+        description: t('messages.success.taskUpdatedDescription'),
       });
       setIsEditing(false);
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to update task",
+        title: t('messages.error.taskUpdateFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -97,8 +99,8 @@ export default function TaskDetailsModal({
     
     if (!formData.title.trim()) {
       toast({
-        title: "Validation Error",
-        description: "Task title is required.",
+        title: t('messages.error.validationError'),
+        description: t('modals.task.validation.titleRequired'),
         variant: "destructive",
       });
       return;
@@ -151,11 +153,11 @@ export default function TaskDetailsModal({
   const getStatusLabel = (status: string) => {
     switch (status) {
       case "todo":
-        return "To Do";
+        return t('common.status.todo');
       case "in_progress":
-        return "In Progress";
+        return t('common.status.inProgress');
       case "done":
-        return "Done";
+        return t('common.status.done');
       default:
         return status;
     }
@@ -183,10 +185,10 @@ export default function TaskDetailsModal({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Task Details</span>
+            <span>{t('modals.taskDetails.title')}</span>
             <div className="flex items-center space-x-2">
               <Badge className={getSubjectColor(task.subject || "")}>
-                {task.subject || "No Subject"}
+                {task.subject || t('modals.taskDetails.noSubject')}
               </Badge>
               <Badge className={getStatusColor(task.status)}>
                 {getStatusLabel(task.status)}
@@ -218,7 +220,7 @@ export default function TaskDetailsModal({
                     </AvatarFallback>
                   </Avatar>
                   <span className="text-sm">
-                    {task.assignee ? `${task.assignee.firstName} ${task.assignee.lastName}` : "Unassigned"}
+                    {task.assignee ? `${task.assignee.firstName} ${task.assignee.lastName}` : t('modals.taskDetails.assignee')}
                   </span>
                 </div>
               </div>
@@ -236,7 +238,7 @@ export default function TaskDetailsModal({
             {task.status === "in_progress" && task.progress !== undefined && (
               <div>
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-                  <span>Progress</span>
+                  <span>{t('modals.taskDetails.progress')}</span>
                   <span>{task.progress}%</span>
                 </div>
                 <Progress value={task.progress} className="h-3" />
@@ -247,16 +249,16 @@ export default function TaskDetailsModal({
             {task.timeSpent && (
               <div className="flex items-center space-x-3">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Time spent: {task.timeSpent}</span>
+                <span className="text-sm">{t('modals.taskDetails.timeSpent', { time: task.timeSpent })}</span>
               </div>
             )}
 
             <div className="flex justify-end space-x-3 pt-4 border-t">
               <Button variant="outline" onClick={handleClose} data-testid="button-close-task-details">
-                Close
+                {t('modals.taskDetails.close')}
               </Button>
               <Button onClick={() => setIsEditing(true)} data-testid="button-edit-task">
-                Edit Task
+                {t('modals.taskDetails.editTask')}
               </Button>
             </div>
           </div>
@@ -264,11 +266,11 @@ export default function TaskDetailsModal({
           // Edit Mode
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="task-title">Task Title</Label>
+              <Label htmlFor="task-title">{t('modals.taskDetails.editTitle')}</Label>
               <Input
                 id="task-title"
                 data-testid="input-edit-task-title"
-                placeholder="Enter task title..."
+                placeholder={t('modals.task.taskTitlePlaceholder')}
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
@@ -276,11 +278,11 @@ export default function TaskDetailsModal({
             </div>
 
             <div>
-              <Label htmlFor="task-description">Description</Label>
+              <Label htmlFor="task-description">{t('modals.taskDetails.editDescription')}</Label>
               <Textarea
                 id="task-description"
                 data-testid="textarea-edit-task-description"
-                placeholder="Describe what the learner needs to do..."
+                placeholder={t('modals.task.taskDescriptionPlaceholder')}
                 className="h-24 resize-none"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -289,13 +291,13 @@ export default function TaskDetailsModal({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="task-subject">Subject</Label>
+                <Label htmlFor="task-subject">{t('modals.taskDetails.editSubject')}</Label>
                 <Select 
                   value={formData.subject} 
                   onValueChange={(value) => setFormData({ ...formData, subject: value })}
                 >
                   <SelectTrigger data-testid="select-edit-task-subject">
-                    <SelectValue placeholder="Select subject" />
+                    <SelectValue placeholder={t('modals.task.selectSubject')} />
                   </SelectTrigger>
                   <SelectContent>
                     {subjects.map((subject) => (
@@ -308,11 +310,11 @@ export default function TaskDetailsModal({
               </div>
 
               <div>
-                <Label htmlFor="task-estimated-time">Estimated Time</Label>
+                <Label htmlFor="task-estimated-time">{t('modals.taskDetails.editEstimatedTime')}</Label>
                 <Input
                   id="task-estimated-time"
                   data-testid="input-edit-task-estimated-time"
-                  placeholder="e.g., 30min, 1h"
+                  placeholder={t('modals.task.estimatedTimePlaceholder')}
                   value={formData.estimatedTime}
                   onChange={(e) => setFormData({ ...formData, estimatedTime: e.target.value })}
                 />
@@ -320,13 +322,13 @@ export default function TaskDetailsModal({
             </div>
 
             <div>
-              <Label htmlFor="task-assignee">Assign to Learner</Label>
+              <Label htmlFor="task-assignee">{t('modals.taskDetails.editAssignee')}</Label>
               <Select 
                 value={formData.assignedTo} 
                 onValueChange={(value) => setFormData({ ...formData, assignedTo: value })}
               >
                 <SelectTrigger data-testid="select-edit-task-assignee">
-                  <SelectValue placeholder="Select learner" />
+                  <SelectValue placeholder={t('modals.task.selectLearner')} />
                 </SelectTrigger>
                 <SelectContent>
                   {availableLearners.map((learner: any) => (
@@ -341,7 +343,7 @@ export default function TaskDetailsModal({
             {/* Progress slider for in-progress tasks */}
             {task.status === "in_progress" && (
               <div>
-                <Label htmlFor="task-progress">Progress: {formData.progress}%</Label>
+                <Label htmlFor="task-progress">{t('modals.taskDetails.editProgress', { progress: formData.progress })}</Label>
                 <Input
                   id="task-progress"
                   type="range"
@@ -362,14 +364,14 @@ export default function TaskDetailsModal({
                 onClick={() => setIsEditing(false)}
                 data-testid="button-cancel-edit"
               >
-                Cancel
+                {t('modals.taskDetails.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={updateTaskMutation.isPending}
                 data-testid="button-save-task"
               >
-                {updateTaskMutation.isPending ? "Saving..." : "Save Changes"}
+                {updateTaskMutation.isPending ? t('modals.taskDetails.saving') : t('modals.taskDetails.saveChanges')}
               </Button>
             </div>
           </form>

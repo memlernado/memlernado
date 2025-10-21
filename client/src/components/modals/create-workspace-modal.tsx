@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,6 +32,7 @@ interface CreateWorkspaceModalProps {
 }
 
 export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspaceModalProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -50,16 +52,16 @@ export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspac
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces"] });
       toast({
-        title: "Success",
-        description: "Workspace created successfully!",
+        title: t('common.buttons.save'),
+        description: t('messages.success.workspaceCreated'),
       });
       form.reset();
       onClose();
     },
     onError: (error: any) => {
       toast({
-        title: "Error",
-        description: error.message || "Failed to create workspace",
+        title: t('common.buttons.error'),
+        description: error.message || t('messages.error.workspaceCreateFailed'),
         variant: "destructive",
       });
     },
@@ -78,9 +80,9 @@ export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspac
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle data-testid="title-create-workspace">Create New Workspace</DialogTitle>
+          <DialogTitle data-testid="title-create-workspace">{t('modals.workspace.createTitle')}</DialogTitle>
           <DialogDescription>
-            Create a new workspace for your homeschool family or co-op. This will be your dedicated space for organizing learning activities and tracking progress.
+            {t('modals.workspace.createDescription')}
           </DialogDescription>
         </DialogHeader>
         
@@ -91,12 +93,12 @@ export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspac
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Workspace Name</FormLabel>
+                  <FormLabel>{t('modals.workspace.workspaceName')}</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="e.g., Johnson Family Workspace" 
+                    <Input
+                      placeholder={t('modals.workspace.workspaceNamePlaceholder')}
                       data-testid="input-workspace-name"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -109,10 +111,10 @@ export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspac
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description (Optional)</FormLabel>
+                  <FormLabel>{t('modals.workspace.workspaceDescription')}</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Brief description of your workspace..."
+                    <Textarea
+                      placeholder={t('modals.workspace.workspaceDescriptionPlaceholder')}
                       className="min-h-[80px]"
                       data-testid="input-workspace-description"
                       value={field.value || ""}
@@ -134,14 +136,14 @@ export default function CreateWorkspaceModal({ isOpen, onClose }: CreateWorkspac
                 data-testid="button-cancel-workspace"
                 disabled={createWorkspaceMutation.isPending}
               >
-                Cancel
+                {t('modals.workspace.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 data-testid="button-create-workspace-confirm"
                 disabled={createWorkspaceMutation.isPending}
               >
-                {createWorkspaceMutation.isPending ? "Creating..." : "Create Workspace"}
+                {createWorkspaceMutation.isPending ? t('modals.workspace.creating') : t('modals.workspace.createWorkspace')}
               </Button>
             </DialogFooter>
           </form>

@@ -13,6 +13,8 @@ export const users = pgTable("users", {
   lastName: text("last_name").notNull(),
   email: text("email").notNull().unique(),
   role: text("role").notNull(), // 'facilitator' or 'learner'
+  language: text("language").notNull().default("en"), // 'en', 'es', 'pl'
+  timezone: text("timezone"), // for future use
   createdAt: timestamp("created_at").defaultNow(),
 });
 

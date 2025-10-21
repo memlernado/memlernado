@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useLocation } from "wouter";
 import type { Sprint, TaskWithRelations } from "@shared/schema";
@@ -16,6 +17,7 @@ interface CompleteSprintModalProps {
 }
 
 export default function CompleteSprintModal({ isOpen, onClose, sprint }: CompleteSprintModalProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { selectedWorkspaceId } = useWorkspace();
@@ -39,8 +41,8 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints", "active"] });
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "backlog"] });
       toast({
-        title: "Sprint completed",
-        description: "Sprint has been completed and incomplete tasks moved to backlog.",
+        title: t('messages.success.sprintCompleted'),
+        description: t('messages.success.sprintCompletedDescription'),
       });
       onClose();
       // Redirect to sprint planning to see the completed sprint
@@ -48,7 +50,7 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to complete sprint",
+        title: t('messages.error.sprintCompleteFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -76,10 +78,10 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="h-5 w-5 text-accent" />
-            Complete Sprint
+            {t('modals.completeSprint.title')}
           </DialogTitle>
           <DialogDescription>
-            Are you ready to complete this sprint? Incomplete tasks will be automatically moved to the backlog.
+            {t('modals.completeSprint.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -98,22 +100,22 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
 
           {/* Task Statistics */}
           <div className="space-y-3">
-            <h4 className="font-medium text-foreground">Sprint Summary</h4>
+            <h4 className="font-medium text-foreground">{t('modals.completeSprint.sprintSummary')}</h4>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-3 bg-accent/10 rounded-lg">
                 <div className="text-2xl font-bold text-accent">{completedTasks}</div>
-                <div className="text-sm text-muted-foreground">Completed</div>
+                <div className="text-sm text-muted-foreground">{t('modals.completeSprint.completed')}</div>
               </div>
               <div className="text-center p-3 bg-chart-4/10 rounded-lg">
                 <div className="text-2xl font-bold text-chart-4">{incompleteTasks}</div>
-                <div className="text-sm text-muted-foreground">Incomplete</div>
+                <div className="text-sm text-muted-foreground">{t('modals.completeSprint.incomplete')}</div>
               </div>
             </div>
 
             <div className="text-center p-3 bg-muted rounded-lg">
-              <div className="text-lg font-semibold text-foreground">{completionRate}% Complete</div>
-              <div className="text-sm text-muted-foreground">Overall Progress</div>
+              <div className="text-lg font-semibold text-foreground">{t('modals.completeSprint.completionRate', { rate: completionRate })}</div>
+              <div className="text-sm text-muted-foreground">{t('modals.completeSprint.overallProgress')}</div>
             </div>
           </div>
 
@@ -122,9 +124,9 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
             <div className="flex items-start gap-2 p-3 bg-chart-4/10 border border-chart-4/20 rounded-lg">
               <AlertCircle className="h-4 w-4 text-chart-4 mt-0.5 flex-shrink-0" />
               <div className="text-sm">
-                <p className="font-medium text-chart-4">Incomplete Tasks</p>
+                <p className="font-medium text-chart-4">{t('modals.completeSprint.incompleteTasks')}</p>
                 <p className="text-muted-foreground">
-                  {incompleteTasks} task{incompleteTasks !== 1 ? 's' : ''} will be copied to the backlog and reset to "To Do" status.
+                  {t('modals.completeSprint.incompleteTasksDescription', { count: incompleteTasks })}
                 </p>
               </div>
             </div>
@@ -137,14 +139,14 @@ export default function CompleteSprintModal({ isOpen, onClose, sprint }: Complet
             onClick={onClose}
             disabled={isCompleting}
           >
-            Cancel
+            {t('modals.completeSprint.cancel')}
           </Button>
           <Button 
             onClick={handleComplete}
             disabled={isCompleting}
             className="bg-accent hover:bg-accent/90"
           >
-            {isCompleting ? "Completing..." : "Complete Sprint"}
+            {isCompleting ? t('modals.completeSprint.completing') : t('modals.completeSprint.completeSprint')}
           </Button>
         </DialogFooter>
       </DialogContent>

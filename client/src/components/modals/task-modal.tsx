@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,7 @@ interface TaskModalProps {
 }
 
 export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: TaskModalProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
@@ -50,14 +52,14 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     onSuccess: () => {
       sprintId && queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
       toast({
-        title: "Task created",
-        description: "New task has been created successfully.",
+        title: t('messages.success.taskCreated'),
+        description: t('messages.success.taskCreatedDescription'),
       });
       handleClose();
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to create task",
+        title: t('messages.error.taskCreateFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -70,8 +72,8 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     // Validate required fields
     if (!formData.title.trim()) {
       toast({
-        title: "Validation Error",
-        description: "Task title is required.",
+        title: t('messages.error.validationError'),
+        description: t('modals.task.validation.titleRequired'),
         variant: "destructive",
       });
       return;
@@ -79,8 +81,8 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     
     if (!formData.subject) {
       toast({
-        title: "Validation Error", 
-        description: "Please select a subject.",
+        title: t('messages.error.validationError'), 
+        description: t('modals.task.validation.subjectRequired'),
         variant: "destructive",
       });
       return;
@@ -88,8 +90,8 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     
     if (!formData.assignedTo) {
       toast({
-        title: "Validation Error",
-        description: "Please assign the task to a learner.",
+        title: t('messages.error.validationError'),
+        description: t('modals.task.validation.assigneeRequired'),
         variant: "destructive",
       });
       return;
@@ -129,19 +131,19 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create New Task</DialogTitle>
+          <DialogTitle>{t('modals.task.createTitle')}</DialogTitle>
           <DialogDescription>
-            Add a new learning task to the current sprint
+            {t('modals.task.createDescription')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="task-title">Task Title</Label>
+            <Label htmlFor="task-title">{t('modals.task.taskTitle')}</Label>
             <Input
               id="task-title"
               data-testid="input-task-title"
-              placeholder="Enter task title..."
+              placeholder={t('modals.task.taskTitlePlaceholder')}
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               required
@@ -149,11 +151,11 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
           </div>
 
           <div>
-            <Label htmlFor="task-description">Description</Label>
+            <Label htmlFor="task-description">{t('modals.task.taskDescription')}</Label>
             <Textarea
               id="task-description"
               data-testid="textarea-task-description"
-              placeholder="Describe what the learner needs to do..."
+              placeholder={t('modals.task.taskDescriptionPlaceholder')}
               className="h-24 resize-none"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -162,13 +164,13 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="task-subject">Subject</Label>
+              <Label htmlFor="task-subject">{t('modals.task.subject')}</Label>
               <Select 
                 value={formData.subject} 
                 onValueChange={(value) => setFormData({ ...formData, subject: value })}
               >
                 <SelectTrigger data-testid="select-task-subject">
-                  <SelectValue placeholder="Select subject" />
+                  <SelectValue placeholder={t('modals.task.selectSubject')} />
                 </SelectTrigger>
                 <SelectContent>
                   {subjects.map((subject) => (
@@ -181,11 +183,11 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
             </div>
 
             <div>
-              <Label htmlFor="task-estimated-time">Estimated Time</Label>
+              <Label htmlFor="task-estimated-time">{t('modals.task.estimatedTime')}</Label>
               <Input
                 id="task-estimated-time"
                 data-testid="input-task-estimated-time"
-                placeholder="e.g., 30min, 1h"
+                placeholder={t('modals.task.estimatedTimePlaceholder')}
                 value={formData.estimatedTime}
                 onChange={(e) => setFormData({ ...formData, estimatedTime: e.target.value })}
               />
@@ -193,13 +195,13 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
           </div>
 
           <div>
-            <Label htmlFor="task-assignee">Assign to Learner</Label>
+            <Label htmlFor="task-assignee">{t('modals.task.assignToLearner')}</Label>
             <Select 
               value={formData.assignedTo} 
               onValueChange={(value) => setFormData({ ...formData, assignedTo: value })}
             >
               <SelectTrigger data-testid="select-task-assignee">
-                <SelectValue placeholder="Select learner" />
+                <SelectValue placeholder={t('modals.task.selectLearner')} />
               </SelectTrigger>
               <SelectContent>
                 {availableLearners.map((learner) => (
@@ -218,14 +220,14 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
               onClick={handleClose}
               data-testid="button-cancel-task"
             >
-              Cancel
+              {t('common.buttons.cancel')}
             </Button>
             <Button 
               type="submit" 
               disabled={createTaskMutation.isPending}
               data-testid="button-create-task"
             >
-              {createTaskMutation.isPending ? "Creating..." : "Create Task"}
+              {createTaskMutation.isPending ? t('modals.task.creating') : t('modals.task.createTask')}
             </Button>
           </div>
         </form>

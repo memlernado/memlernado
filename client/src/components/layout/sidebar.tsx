@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { Sprint } from "@shared/schema";
 import { Link, useLocation } from "wouter";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -18,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 
 export default function Sidebar() {
+  const { t } = useTranslation();
   const [location] = useLocation();
   const { selectedWorkspaceId } = useWorkspace();
   const { user } = useAuth();
@@ -44,42 +46,42 @@ export default function Sidebar() {
 
   const allNavigationItems = [
     {
-      name: "Dashboard", 
+      name: t('navigation.dashboard'), 
       href: "/dashboard",
       icon: BarChart3,
       current: location === "/dashboard",
       roles: ["facilitator", "learner"],
     },
     {
-      name: "Backlog",
+      name: t('navigation.backlog'),
       href: "/backlog",
       icon: Archive,
       current: location === "/backlog",
       roles: ["facilitator"],
     },
     {
-      name: "Sprint Board",
+      name: t('navigation.sprintBoard'),
       href: "/sprint-board",
       icon: LayoutGrid,
       current: location === "/sprint-board",
       roles: ["facilitator", "learner"],
     },
     {
-      name: "Sprint Planning",
+      name: t('navigation.sprintPlanning'),
       href: "/sprint-planning", 
       icon: Calendar,
       current: location === "/sprint-planning",
       roles: ["facilitator"],
     },
     {
-      name: "Learners",
+      name: t('navigation.learners'),
       href: "/learners",
       icon: Users,
       current: location === "/learners",
       roles: ["facilitator"],
     },
     {
-      name: "Workspace Settings",
+      name: t('navigation.settings'),
       href: "/settings",
       icon: Settings,
       current: location === "/settings",
@@ -98,12 +100,12 @@ export default function Sidebar() {
         {/* Sprint Selector */}
         <div>
           <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-            Current Sprint
+            {t('navigation.currentSprint')}
           </label>
           {activeSprint ? (
                 <p className="text-sm text-foreground">{activeSprint.name}</p>
               ) : (
-                <p className="text-sm text-muted-foreground">No active sprint</p>
+                <p className="text-sm text-muted-foreground">{t('navigation.noActiveSprint')}</p>
               )}
         </div>
 
@@ -133,12 +135,12 @@ export default function Sidebar() {
         {user?.role === 'facilitator' && (
           <div>
             <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-              Active Learners
+              {t('navigation.activeLearners')}
             </label>
             <div className="mt-3 space-y-3">
               {learners.length === 0 ? (
                 <div className="text-sm text-muted-foreground text-center py-4">
-                  No learners in workspace
+                  {t('navigation.noLearners')}
                 </div>
               ) : (
                 learners.map((learner: any) => (

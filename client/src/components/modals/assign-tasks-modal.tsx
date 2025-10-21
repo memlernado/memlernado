@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
 import type { Sprint, TaskWithRelations } from "@shared/schema";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -19,6 +20,7 @@ interface AssignTasksModalProps {
 }
 
 export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTasksModalProps) {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { selectedWorkspaceId } = useWorkspace();
@@ -45,15 +47,15 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "backlog"] });
       queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints"] });
       toast({
-        title: "Tasks assigned",
-        description: `${assignedTaskIds.length} task${assignedTaskIds.length !== 1 ? 's' : ''} assigned to ${sprint.name}.`,
+        title: t('messages.success.tasksAssigned', { count: assignedTaskIds.length, sprintName: sprint.name }),
+        description: t('messages.success.tasksAssigned', { count: assignedTaskIds.length, sprintName: sprint.name }),
       });
       setSelectedTaskIds([]);
       onClose();
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to assign tasks",
+        title: t('messages.error.taskAssignFailed'),
         description: error.message,
         variant: "destructive",
       });
@@ -79,8 +81,8 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
   const handleAssign = () => {
     if (selectedTaskIds.length === 0) {
       toast({
-        title: "No tasks selected",
-        description: "Please select at least one task to assign.",
+        title: t('messages.error.noTasksSelected'),
+        description: t('messages.error.noTasksSelectedDescription'),
         variant: "destructive",
       });
       return;
@@ -112,10 +114,10 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Plus className="h-5 w-5 text-accent" />
-            Assign Tasks to Sprint
+            {t('modals.assignTasks.title')}
           </DialogTitle>
           <DialogDescription>
-            Select tasks from the backlog to assign to this sprint.
+            {t('modals.assignTasks.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -129,7 +131,7 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
                 <Calendar className="h-4 w-4" />
                 <span>{startDate} - {endDate}</span>
               </div>
-              <Badge variant="secondary">Draft</Badge>
+              <Badge variant="secondary">{t('modals.assignTasks.draft')}</Badge>
             </div>
           </div>
 
@@ -137,9 +139,9 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
           {backlogTasks.length === 0 ? (
             <div className="text-center py-8">
               <Archive className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">No tasks in backlog</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('modals.assignTasks.noTasks.title')}</h3>
               <p className="text-muted-foreground">
-                Create tasks in the backlog first, then assign them to sprints.
+                {t('modals.assignTasks.noTasks.description')}
               </p>
             </div>
           ) : (
@@ -153,11 +155,11 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
                     onCheckedChange={handleSelectAll}
                   />
                   <label htmlFor="select-all" className="text-sm font-medium">
-                    Select All ({backlogTasks.length} tasks)
+                    {t('modals.assignTasks.selectAll', { count: backlogTasks.length })}
                   </label>
                 </div>
                 <Badge variant="outline">
-                  {selectedTaskIds.length} selected
+                  {t('modals.assignTasks.selected', { count: selectedTaskIds.length })}
                 </Badge>
               </div>
 
@@ -171,7 +173,7 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
                       <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
                         {subject}
                         <Badge variant="outline" className="text-xs">
-                          {tasks.length} task{tasks.length !== 1 ? 's' : ''}
+                          {t('modals.assignTasks.taskCount', { count: tasks.length })}
                         </Badge>
                       </h4>
                       <div className="space-y-2 ml-4">
@@ -229,14 +231,14 @@ export default function AssignTasksModal({ isOpen, onClose, sprint }: AssignTask
             onClick={handleClose}
             disabled={assignTasksMutation.isPending}
           >
-            Cancel
+            {t('modals.assignTasks.cancel')}
           </Button>
           <Button 
             onClick={handleAssign}
             disabled={assignTasksMutation.isPending || selectedTaskIds.length === 0}
             className="bg-accent hover:bg-accent/90"
           >
-            {assignTasksMutation.isPending ? "Assigning..." : `Assign ${selectedTaskIds.length} Task${selectedTaskIds.length !== 1 ? 's' : ''}`}
+            {assignTasksMutation.isPending ? t('modals.assignTasks.assigning') : t('modals.assignTasks.assignTasks', { count: selectedTaskIds.length })}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { DashboardData } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
@@ -9,6 +10,7 @@ import { Target, TrendingUp, Calendar } from "lucide-react";
 
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { selectedWorkspaceId } = useWorkspace();
   
   const { data: dashboardData, isLoading } = useQuery<DashboardData>({
@@ -66,9 +68,9 @@ export default function Dashboard() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Progress Dashboard</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t('dashboard.title')}</h1>
               <p className="text-muted-foreground mt-1">
-                Loading progress data...
+                {t('dashboard.loading')}
               </p>
             </div>
           </div>
@@ -90,9 +92,9 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Progress Dashboard</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t('dashboard.title')}</h1>
             <p className="text-muted-foreground mt-1">
-              Track learning progress and sprint performance
+              {t('dashboard.subtitle')}
             </p>
           </div>
         </div>
@@ -101,28 +103,28 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.stats.totalTasks')}</CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{sprintStats.totalTasks}</div>
               <p className="text-sm text-muted-foreground">
-                {sprintStats.todoTasks} To Do, {sprintStats.inProgressTasks} In Progress, {sprintStats.completedTasks} Done
+                {sprintStats.todoTasks} {t('common.status.todo')}, {sprintStats.inProgressTasks} {t('common.status.inProgress')}, {sprintStats.completedTasks} {t('common.status.done')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.stats.completionRate')}</CardTitle>
               <TrendingUp className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-accent">{overallProgress}%</div>
               <p className="text-sm text-muted-foreground">
-                {overallProgress >= 60 ? 'Above target (60%)' : 
-                 overallProgress >= 40 ? 'On track (40%+)' : 
-                 'Below target (40%)'}
+                {overallProgress >= 60 ? t('dashboard.stats.aboveTarget') : 
+                 overallProgress >= 40 ? t('dashboard.stats.onTrack') : 
+                 t('dashboard.stats.belowTarget')}
               </p>
               <Progress value={overallProgress} className="mt-2" />
             </CardContent>
@@ -130,7 +132,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sprint Progress</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.stats.sprintProgress')}</CardTitle>
               <Calendar className="h-4 w-4 text-chart-4" />
             </CardHeader>
             <CardContent>
@@ -138,7 +140,7 @@ export default function Dashboard() {
                 {sprintStats.activeSprint ? `${sprintDays.current}/${sprintDays.total}` : '0/0'}
               </div>
               <p className="text-sm text-muted-foreground">
-                {sprintStats.activeSprint ? sprintDays.text : 'No active sprint'}
+                {sprintStats.activeSprint ? sprintDays.text : t('navigation.noActiveSprint')}
               </p>
             </CardContent>
           </Card>
@@ -146,7 +148,7 @@ export default function Dashboard() {
 
         {/* Individual Learner Progress */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Individual Progress</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('dashboard.individualProgress')}</h2>
           
           <div className="space-y-4">
             {learnersWithColors.map((learner) => (
@@ -162,14 +164,14 @@ export default function Dashboard() {
                       <div>
                         <CardTitle className="text-lg">{learner.name}</CardTitle>
                         <CardDescription>
-                          {learner.totalTasks > 0 ? `${learner.totalTasks} tasks assigned` : 'No tasks assigned'}
+                          {learner.totalTasks > 0 ? `${learner.totalTasks} ${t('common.labels.tasks')} assigned` : t('common.labels.noTasksAssigned')}
                         </CardDescription>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="text-2xl font-bold text-accent">{learner.completionRate}%</div>
                       <p className="text-sm text-muted-foreground">
-                        {learner.tasksCompleted}/{learner.totalTasks} tasks done
+                        {learner.tasksCompleted}/{learner.totalTasks} {t('common.labels.tasks')} done
                       </p>
                     </div>
                   </div>
@@ -192,7 +194,7 @@ export default function Dashboard() {
                         </div>
                         <p className="text-sm font-medium text-foreground">{subject}</p>
                         <p className="text-xs text-muted-foreground">
-                          {stats.completed}/{stats.total} tasks
+                          {stats.completed}/{stats.total} {t('common.labels.tasks')}
                         </p>
                       </div>
                     ))}
@@ -206,16 +208,16 @@ export default function Dashboard() {
         {/* Recent Achievements */}
         {learnersWithColors.some(learner => learner.completionRate > 0) && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground">Recent Achievements</h2>
+            <h2 className="text-xl font-semibold text-foreground">{t('dashboard.recentAchievements')}</h2>
             <Card>
               <CardContent className="py-12">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
                     <span className="text-2xl">🎉</span>
                   </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">No achievements yet</h3>
+                  <h3 className="text-lg font-medium text-foreground mb-2">{t('dashboard.noAchievements')}</h3>
                   <p className="text-muted-foreground">
-                    Start completing tasks to see achievements and milestones here
+                    {t('dashboard.noAchievementsDescription')}
                   </p>
                 </div>
               </CardContent>
