@@ -173,6 +173,16 @@ export type InsertWorkspaceMember = z.infer<typeof insertWorkspaceMemberSchema>;
 export type Sprint = typeof sprints.$inferSelect;
 export type InsertSprint = z.infer<typeof insertSprintSchema>;
 
+export type SprintWithStats = Sprint & {
+  taskStats: {
+    totalTasks: number;
+    completedTasks: number;
+    inProgressTasks: number;
+    todoTasks: number;
+    completionRate: number;
+  };
+};
+
 export type Task = typeof tasks.$inferSelect;
 export type InsertTask = z.infer<typeof insertTaskSchema>;
 

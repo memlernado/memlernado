@@ -16,6 +16,7 @@ import {
   type InsertTask,
   type TaskWithRelations,
   type WorkspaceMemberWithUser,
+  type SprintWithStats,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
@@ -43,6 +44,7 @@ export interface IStorage {
   // Sprint operations
   getSprint(id: string): Promise<Sprint | undefined>;
   getWorkspaceSprints(workspaceId: string): Promise<Sprint[]>;
+  getWorkspaceSprintsWithStats(workspaceId: string): Promise<SprintWithStats[]>;
   getActiveSprint(workspaceId: string): Promise<Sprint | undefined>;
   createSprint(sprint: InsertSprint): Promise<Sprint>;
   updateSprint(id: string, updates: Partial<InsertSprint>): Promise<Sprint>;
@@ -160,6 +162,50 @@ export class DatabaseStorage implements IStorage {
       .from(sprints)
       .where(eq(sprints.workspaceId, workspaceId))
       .orderBy(desc(sprints.createdAt));
+  }
+
+  async getWorkspaceSprintsWithStats(workspaceId: string): Promise<SprintWithStats[]> {
+    // Get all sprints for the workspace
+    const workspaceSprints = await this.getWorkspaceSprints(workspaceId);
+    
+    if (workspaceSprints.length === 0) {
+      return [];
+    }
+
+    // Get all tasks for the workspace in a single raw query (no user enrichment needed for stats)
+    const allTasks = await db.select().from(tasks).where(eq(tasks.workspaceId, workspaceId));
+    
+    // Group tasks by sprint ID
+    const tasksBySprint = new Map<string, Task[]>();
+    allTasks.forEach(task => {
+      if (task.sprintId) {
+        if (!tasksBySprint.has(task.sprintId)) {
+          tasksBySprint.set(task.sprintId, []);
+        }
+        tasksBySprint.get(task.sprintId)!.push(task);
+      }
+    });
+    
+    // Calculate statistics for each sprint
+    return workspaceSprints.map(sprint => {
+      const sprintTasks = tasksBySprint.get(sprint.id) || [];
+      const totalTasks = sprintTasks.length;
+      const completedTasks = sprintTasks.filter(task => task.status === 'done').length;
+      const inProgressTasks = sprintTasks.filter(task => task.status === 'in_progress').length;
+      const todoTasks = sprintTasks.filter(task => task.status === 'todo').length;
+      const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+      
+      return {
+        ...sprint,
+        taskStats: {
+          totalTasks,
+          completedTasks,
+          inProgressTasks,
+          todoTasks,
+          completionRate,
+        },
+      };
+    });
   }
 
   async getActiveSprint(workspaceId: string): Promise<Sprint | undefined> {

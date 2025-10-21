@@ -165,7 +165,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const sprints = await storage.getWorkspaceSprints(req.params.workspaceId);
+      const sprints = await storage.getWorkspaceSprintsWithStats(req.params.workspaceId);
       res.json(sprints);
     } catch (error) {
       console.error("Error fetching sprints:", error);

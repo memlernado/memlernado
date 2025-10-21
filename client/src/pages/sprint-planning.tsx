@@ -174,39 +174,12 @@ export default function SprintPlanning() {
     });
   };
 
-  // Get tasks for each sprint to calculate stats
-  const { data: allSprintTasks = {} } = useQuery({
-    queryKey: ["/api/sprints", "tasks"],
-    enabled: sprints.length > 0,
-    queryFn: async () => {
-      const tasksBySprint: Record<string, any[]> = {};
-      await Promise.all(
-        sprints.map(async (sprint) => {
-          try {
-            const res = await apiRequest("GET", `/api/sprints/${sprint.id}/tasks`);
-            tasksBySprint[sprint.id] = await res.json();
-          } catch (error) {
-            console.error(`Error fetching tasks for sprint ${sprint.id}:`, error);
-            tasksBySprint[sprint.id] = [];
-          }
-        })
-      );
-      return tasksBySprint;
-    },
-  });
-
-  // Calculate task counts and completion rates for each sprint
-  const sprintsWithStats = sprints.map((sprint: Sprint) => {
-    const sprintTasks = allSprintTasks[sprint.id] || [];
-    const completedTasks = sprintTasks.filter(task => task.status === 'done').length;
-    const completionRate = sprintTasks.length > 0 ? Math.round((completedTasks / sprintTasks.length) * 100) : 0;
-    
-    return {
-      ...sprint,
-      taskCount: sprintTasks.length,
-      completionRate,
-    };
-  });
+  // Sprints now come with task stats from the server
+  const sprintsWithStats = sprints.map((sprint: any) => ({
+    ...sprint,
+    taskCount: sprint.taskStats?.totalTasks || 0,
+    completionRate: sprint.taskStats?.completionRate || 0,
+  }));
 
   return (
     <MainLayout>
