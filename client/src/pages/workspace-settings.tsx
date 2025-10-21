@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,18 +42,21 @@ export default function WorkspaceSettings() {
   const [workspaceDescription, setWorkspaceDescription] = useState("");
 
   // Fetch workspace details
-  const { data: workspace, isLoading: isWorkspaceLoading } = useQuery<Workspace>({
-    queryKey: ["/api/workspaces", selectedWorkspaceId],
+  const { data: workspaces, isLoading: isWorkspaceLoading } = useQuery<Workspace[]>({
+    queryKey: ["/api/workspaces"],
     enabled: !!selectedWorkspaceId,
   });
 
   // Update state when workspace data changes
   useEffect(() => {
-    if (workspace) {
-      setWorkspaceName(workspace.name);
-      setWorkspaceDescription(workspace.description);
+    if (workspaces && workspaces.length > 0) {
+      const workspace = workspaces.find(w => w.id === selectedWorkspaceId);
+      if (workspace) {
+        setWorkspaceName(workspace.name);
+        setWorkspaceDescription(workspace.description);
+      }
     }
-  }, [workspace]);
+  }, [workspaces, selectedWorkspaceId]);
 
   // Fetch workspace members
   const { data: members = [], isLoading: isMembersLoading } = useQuery<WorkspaceMember[]>({
