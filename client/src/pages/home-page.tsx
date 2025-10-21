@@ -136,15 +136,17 @@ export default function HomePage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-foreground">Your Workspaces</h2>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              data-testid="button-create-workspace"
-              onClick={() => setIsCreateModalOpen(true)}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Create Workspace
-            </Button>
+            {user?.role === 'facilitator' && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                data-testid="button-create-workspace"
+                onClick={() => setIsCreateModalOpen(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create Workspace
+              </Button>
+            )}
           </div>
 
           {workspaces.length === 0 ? (
