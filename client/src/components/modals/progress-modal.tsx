@@ -4,7 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Target, TrendingUp, Clock, X } from "lucide-react";
+import { Target, TrendingUp, Clock, X, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useWorkspace } from "@/hooks/use-workspace";
 
 interface ProgressModalProps {
   isOpen: boolean;
@@ -12,71 +14,176 @@ interface ProgressModalProps {
   sprintId: string;
 }
 
+interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  subject?: string;
+  status: 'todo' | 'in_progress' | 'done';
+  estimatedTime?: string;
+  timeSpent?: string;
+  progress: number;
+  sprintId?: string;
+  workspaceId: string;
+  assignedTo?: string;
+  createdBy: string;
+  completedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  assignee?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  };
+  creator: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  };
+}
+
+interface WorkspaceMember {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  role: string;
+  joinedAt: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  };
+}
+
 export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressModalProps) {
-  // Mock data for MVP demonstration - matches the design reference exactly
+  const { selectedWorkspaceId } = useWorkspace();
+
+  // Fetch sprint tasks
+  const { data: tasks = [], isLoading: tasksLoading } = useQuery<Task[]>({
+    queryKey: ["/api/sprints", sprintId, "tasks"],
+    enabled: !!sprintId && isOpen,
+  });
+
+  // Fetch workspace members (learners)
+  const { data: members = [], isLoading: membersLoading } = useQuery<WorkspaceMember[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
+    enabled: !!selectedWorkspaceId && isOpen,
+  });
+
+  const isLoading = tasksLoading || membersLoading;
+
+  // Calculate sprint statistics from real data
+  const todoTasks = tasks.filter(task => task.status === 'todo').length;
+  const inProgressTasks = tasks.filter(task => task.status === 'in_progress').length;
+  const completedTasks = tasks.filter(task => task.status === 'done').length;
+  const totalTasks = tasks.length;
+  const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // Calculate total time spent from tasks
+  const totalTimeSpent = tasks.reduce((total, task) => {
+    if (task.timeSpent) {
+      // Parse time strings like "30min", "1h", "1.5h"
+      const timeStr = task.timeSpent.toLowerCase();
+      if (timeStr.includes('h')) {
+        const hours = parseFloat(timeStr.replace('h', ''));
+        return total + (hours * 60); // Convert to minutes
+      } else if (timeStr.includes('min')) {
+        const minutes = parseFloat(timeStr.replace('min', ''));
+        return total + minutes;
+      }
+    }
+    return total;
+  }, 0);
+
+  const timeSpentHours = Math.round((totalTimeSpent / 60) * 10) / 10; // Round to 1 decimal
+  const timeSpentDisplay = timeSpentHours > 0 ? `${timeSpentHours}h` : "0h";
+
   const sprintStats = {
-    totalTasks: 24,
-    todoTasks: 8,
-    inProgressTasks: 4,
-    completedTasks: 12,
-    completionRate: 67,
-    timeSpent: "14.5h",
-    weeklyTarget: "20h",
+    totalTasks,
+    todoTasks,
+    inProgressTasks,
+    completedTasks,
+    completionRate,
+    timeSpent: timeSpentDisplay,
+    weeklyTarget: "20h", // This could be made configurable
   };
 
-  const learners = [
-    {
-      id: "1",
-      name: "Emma Johnson",
-      initials: "EM",
-      grade: "5th Grade",
-      completionRate: 75,
-      tasksCompleted: 9,
-      totalTasks: 12,
-      avatarColor: "bg-secondary",
-      subjects: {
-        Math: { completed: 4, total: 5, rate: 80, color: "bg-chart-2" },
-        Science: { completed: 3, total: 3, rate: 100, color: "bg-accent" },
-        English: { completed: 2, total: 3, rate: 67, color: "bg-destructive" },
-        Spanish: { completed: 1, total: 2, rate: 50, color: "bg-chart-1" },
-      },
-    },
-    {
-      id: "2", 
-      name: "Liam Johnson",
-      initials: "LJ",
-      grade: "3rd Grade",
-      completionRate: 60,
-      tasksCompleted: 6,
-      totalTasks: 10,
-      avatarColor: "bg-chart-4",
-      subjects: {
-        Math: { completed: 2, total: 4, rate: 50, color: "bg-chart-2" },
-        Science: { completed: 3, total: 4, rate: 75, color: "bg-accent" },
-        English: { completed: 2, total: 2, rate: 100, color: "bg-destructive" },
-        History: { completed: 0, total: 2, rate: 0, color: "bg-chart-5" },
-      },
-    },
-  ];
+  // Filter learners from workspace members
+  const learners = members
+    .filter(member => member.user.role === 'learner')
+    .map(member => {
+      const userTasks = tasks.filter(task => task.assignedTo === member.user.id);
+      const completedUserTasks = userTasks.filter(task => task.status === 'done');
+      const userCompletionRate = userTasks.length > 0 ? Math.round((completedUserTasks.length / userTasks.length) * 100) : 0;
+
+      // Group tasks by subject
+      const subjects: Record<string, { completed: number; total: number; rate: number; color: string }> = {};
+      const subjectColors = {
+        Math: "bg-chart-2",
+        Science: "bg-accent", 
+        English: "bg-destructive",
+        Spanish: "bg-chart-1",
+        History: "bg-chart-5",
+        Art: "bg-chart-3",
+        Music: "bg-chart-4",
+      };
+
+      userTasks.forEach(task => {
+        const subject = task.subject || 'Other';
+        if (!subjects[subject]) {
+          subjects[subject] = { completed: 0, total: 0, rate: 0, color: subjectColors[subject as keyof typeof subjectColors] || "bg-muted" };
+        }
+        subjects[subject].total++;
+        if (task.status === 'done') {
+          subjects[subject].completed++;
+        }
+      });
+
+      // Calculate rates for each subject
+      Object.values(subjects).forEach(subject => {
+        subject.rate = subject.total > 0 ? Math.round((subject.completed / subject.total) * 100) : 0;
+      });
+
+      const initials = `${member.user.firstName[0]}${member.user.lastName[0]}`.toUpperCase();
+      const avatarColors = ["bg-secondary", "bg-chart-4", "bg-chart-1", "bg-chart-2", "bg-chart-3", "bg-chart-5"];
+      const avatarColor = avatarColors[member.user.id.charCodeAt(0) % avatarColors.length];
+
+      return {
+        id: member.user.id,
+        name: `${member.user.firstName} ${member.user.lastName}`,
+        initials,
+        grade: "Student", // Could be made configurable
+        completionRate: userCompletionRate,
+        tasksCompleted: completedUserTasks.length,
+        totalTasks: userTasks.length,
+        avatarColor,
+        subjects,
+      };
+    });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b border-border pb-4">
-          <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold text-foreground">
               Sprint Progress Dashboard
-            </DialogTitle>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={onClose}
-              data-testid="button-close-progress-modal"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+            </DialogTitle>           
         </DialogHeader>
+        
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="flex items-center space-x-2">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              <span className="text-muted-foreground">Loading progress data...</span>
+            </div>
+          </div>
+        ) : (
         
         <div className="space-y-6 pt-6">
           {/* Overall Sprint Progress */}
@@ -130,6 +237,13 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">Individual Progress</h3>
             
+            {learners.length === 0 ? (
+              <Card className="border border-border">
+                <CardContent className="py-8 text-center">
+                  <p className="text-muted-foreground">No learners found in this workspace.</p>
+                </CardContent>
+              </Card>
+            ) : (
             <div className="space-y-4">
               {learners.map((learner) => (
                 <Card key={learner.id} className="border border-border">
@@ -180,6 +294,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                 </Card>
               ))}
             </div>
+            )}
           </div>
 
           {/* Sprint Summary */}
@@ -205,6 +320,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
             </CardContent>
           </Card>
         </div>
+        )}
       </DialogContent>
     </Dialog>
   );

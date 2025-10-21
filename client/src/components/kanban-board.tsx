@@ -234,17 +234,12 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
       <div className="flex space-x-6 min-w-max">
         {columns.map((column) => (
           <DroppableColumn key={column.id} column={column}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mb-4">
                 <div className={`w-3 h-3 ${column.dotColor} rounded-full`} />
                 <h3 className="font-semibold text-foreground">{column.title}</h3>
                 <Badge className={column.badgeColor}>
                   {column.tasks.length}
                 </Badge>
-              </div>
-              <Button variant="ghost" size="sm" data-testid={`button-add-task-${column.id}`}>
-                <Plus className="h-4 w-4" />
-              </Button>
             </div>
 
             <SortableContext items={column.tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>

@@ -123,6 +123,9 @@ export default function SprintBoard() {
   const totalTasks = tasks.length;
   const completionRate = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
 
+  const startDate = activeSprint.startDate && new Date(activeSprint.startDate).toISOString().split('T')[0] || 'Start Date';
+  const endDate = activeSprint.endDate && new Date(activeSprint.endDate).toISOString().split('T')[0] || 'End Date';
+
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -132,7 +135,7 @@ export default function SprintBoard() {
             <div>
               <h1 className="text-2xl font-bold text-foreground">Sprint Board</h1>
               <p className="text-muted-foreground mt-1">
-                {activeSprint.name} • {activeSprint.startDate || 'Start Date'} - {activeSprint.endDate || 'End Date'}
+                {activeSprint.name} • {startDate} - {endDate}
               </p>
             </div>
             <div className="flex items-center space-x-3">

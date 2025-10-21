@@ -46,7 +46,7 @@ export default function Navigation() {
 
   return (
     <nav className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center space-x-4">
@@ -62,7 +62,7 @@ export default function Navigation() {
           {/* Workspace Selector */}
           <div className="hidden md:flex items-center space-x-3">
             <Select value={displayWorkspaceId} onValueChange={setSelectedWorkspaceId}>
-              <SelectTrigger className="w-[200px]" data-testid="select-workspace">
+              <SelectTrigger className="w-[250px]" data-testid="select-workspace">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
