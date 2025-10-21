@@ -8,6 +8,8 @@ import { WorkspaceProvider } from "@/hooks/use-workspace";
 import { ProtectedRoute } from "@/lib/protected-route";
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
+import ForgotPasswordPage from "@/pages/forgot-password";
+import ResetPasswordPage from "@/pages/reset-password";
 import HomePage from "@/pages/home-page";
 import SprintBoard from "@/pages/sprint-board";
 import Dashboard from "@/pages/dashboard";
@@ -27,6 +29,8 @@ function Router() {
       <ProtectedRoute path="/learners" component={Learners} allowedRoles={["facilitator"]} />
       <ProtectedRoute path="/settings" component={WorkspaceSettings} allowedRoles={["facilitator"]} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
       <Route component={NotFound} />
     </Switch>
   );

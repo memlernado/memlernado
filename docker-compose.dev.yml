@@ -37,6 +37,8 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/memlernado_dev
       - SESSION_SECRET=local-dev-session-secret-change-in-production
       - PORT=5460
+      - BREVO_API_KEY=${BREVO_API_KEY}
+      - BASE_URL=http://localhost:5460
     volumes:
       - .:/app
       - /app/node_modules

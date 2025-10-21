@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GraduationCap, Users, Calendar, BarChart3 } from "lucide-react";
+import AuthLanguageSelector from "@/components/auth-language-selector";
 
 export default function AuthPage() {
   const { t } = useTranslation();
@@ -23,7 +24,9 @@ export default function AuthPage() {
     lastName: "",
     email: "",
     role: "facilitator",
+    language: "en",
   });
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
   // Redirect if already logged in
   if (user) {
@@ -38,11 +41,23 @@ export default function AuthPage() {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    registerMutation.mutate(registerData);
+    registerMutation.mutate({ ...registerData, language: selectedLanguage });
+  };
+
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguage(language);
   };
 
   return (
     <div className="min-h-screen flex">
+      {/* Language selector in top right */}
+      <div className="absolute top-4 right-4 z-10">
+        <AuthLanguageSelector 
+          onLanguageChange={handleLanguageChange}
+          selectedLanguage={selectedLanguage}
+        />
+      </div>
+      
       {/* Left side - Auth forms */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
@@ -104,6 +119,15 @@ export default function AuthPage() {
                     >
                       {loginMutation.isPending ? t('auth.login.buttonLoading') : t('auth.login.button')}
                     </Button>
+                    <div className="text-center">
+                      <Button
+                        variant="link"
+                        onClick={() => setLocation("/forgot-password")}
+                        className="text-sm"
+                      >
+                        {t('auth.forgotPassword.forgotLink')}
+                      </Button>
+                    </div>
                   </form>
                 </CardContent>
               </Card>

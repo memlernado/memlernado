@@ -4,6 +4,7 @@ import {
   workspaceMembers,
   sprints,
   tasks,
+  passwordResetTokens,
   type User,
   type InsertUser,
   type Workspace,
@@ -17,11 +18,15 @@ import {
   type TaskWithRelations,
   type WorkspaceMemberWithUser,
   type SprintWithStats,
+  type PasswordResetToken,
+  type InsertPasswordResetToken,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, desc, sql, isNull, or } from "drizzle-orm";
+import { eq, and, desc, sql, isNull, or, lt } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
+import { randomBytes, scrypt, timingSafeEqual } from "crypto";
+import { promisify } from "util";
 
 const PostgresSessionStore = connectPg(session);
 
@@ -60,6 +65,12 @@ export interface IStorage {
   createTask(task: InsertTask): Promise<Task>;
   updateTask(id: string, updates: Partial<InsertTask>): Promise<Task>;
   deleteTask(id: string): Promise<void>;
+
+  // Password reset token operations
+  createPasswordResetToken(userId: string): Promise<{ token: string; tokenRecord: PasswordResetToken }>;
+  getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined>;
+  invalidatePasswordResetToken(tokenId: string): Promise<void>;
+  cleanupExpiredTokens(): Promise<void>;
 
   // Session store
   sessionStore: any;
@@ -417,6 +428,76 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTask(id: string): Promise<void> {
     await db.delete(tasks).where(eq(tasks.id, id));
+  }
+
+  // Password reset token operations
+  async createPasswordResetToken(userId: string): Promise<{ token: string; tokenRecord: PasswordResetToken }> {
+    const scryptAsync = promisify(scrypt);
+    
+    // Generate a secure random token
+    const token = randomBytes(32).toString('hex');
+    
+    // Hash the token for storage
+    const salt = randomBytes(16).toString('hex');
+    const hashedToken = (await scryptAsync(token, salt, 64)) as Buffer;
+    const tokenHash = `${hashedToken.toString('hex')}.${salt}`;
+    
+    // Set expiration to 1 hour from now
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    
+    // Invalidate any existing tokens for this user
+    await db.update(passwordResetTokens)
+      .set({ used: true })
+      .where(and(
+        eq(passwordResetTokens.userId, userId),
+        eq(passwordResetTokens.used, false)
+      ));
+    
+    // Create new token
+    const [tokenRecord] = await db.insert(passwordResetTokens).values({
+      tokenHash,
+      userId,
+      expiresAt,
+      used: false,
+    }).returning();
+    
+    return { token, tokenRecord };
+  }
+
+  async getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined> {
+    const scryptAsync = promisify(scrypt);
+    
+    // Get all tokens that haven't been used and haven't expired
+    const tokens = await db.select()
+      .from(passwordResetTokens)
+      .where(and(
+        eq(passwordResetTokens.used, false),
+        sql`${passwordResetTokens.expiresAt} > NOW()`
+      ));
+    
+    // Check each token to see if it matches
+    for (const tokenRecord of tokens) {
+      const [hashed, salt] = tokenRecord.tokenHash.split('.');
+      const hashedBuf = Buffer.from(hashed, 'hex');
+      const suppliedBuf = (await scryptAsync(token, salt, 64)) as Buffer;
+      
+      if (timingSafeEqual(hashedBuf, suppliedBuf)) {
+        return tokenRecord;
+      }
+    }
+    
+    return undefined;
+  }
+
+  async invalidatePasswordResetToken(tokenId: string): Promise<void> {
+    await db.update(passwordResetTokens)
+      .set({ used: true })
+      .where(eq(passwordResetTokens.id, tokenId));
+  }
+
+  async cleanupExpiredTokens(): Promise<void> {
+    await db.delete(passwordResetTokens)
+      .where(lt(passwordResetTokens.expiresAt, new Date()));
   }
 }
 

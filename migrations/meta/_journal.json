@@ -15,6 +15,13 @@
       "when": 1760731262044,
       "tag": "0001_steady_human_cannonball",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1761074680298,
+      "tag": "0002_light_moira_mactaggert",
+      "breakpoints": true
     }
   ]
 }
