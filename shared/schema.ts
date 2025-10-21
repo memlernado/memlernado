@@ -175,3 +175,72 @@ export type InsertSprint = z.infer<typeof insertSprintSchema>;
 
 export type Task = typeof tasks.$inferSelect;
 export type InsertTask = z.infer<typeof insertTaskSchema>;
+
+// Extended types for enriched data
+export type TaskWithRelations = Task & { 
+  assignee?: User; 
+  creator: User; 
+};
+
+export type WorkspaceMemberWithUser = WorkspaceMember & { 
+  user: User; 
+};
+
+export type WorkspaceWithStats = Workspace & {
+  learnerCount: number;
+  activeSprintCount: number;
+};
+
+// Dashboard types
+export interface DashboardStats {
+  totalTasks: number;
+  completedTasks: number;
+  totalSprints: number;
+  activeSprints: number;
+  totalLearners: number;
+  weeklyHours: number;
+}
+
+export interface DashboardData {
+  sprintStats: {
+    totalTasks: number;
+    completedTasks: number;
+    inProgressTasks: number;
+    todoTasks: number;
+    activeSprint: {
+      id: string;
+      name: string;
+      description: string;
+    } | null;
+  };
+  learners: Array<{
+    id: string;
+    name: string;
+    initials: string;
+    completionRate: number;
+    tasksCompleted: number;
+    totalTasks: number;
+    subjects: Record<string, { completed: number; total: number; rate: number }>;
+  }>;
+}
+
+// Auth types
+export type LoginData = Pick<InsertUser, "username" | "password">;
+
+// Component prop types
+export interface WorkspaceContextType {
+  selectedWorkspaceId: string | null;
+  selectedWorkspace: Workspace | null;
+  workspaces: Workspace[];
+  setSelectedWorkspaceId: (id: string) => void;
+  isLoading: boolean;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  isLoading: boolean;
+  error: Error | null;
+  loginMutation: any; // UseMutationResult<SelectUser, Error, LoginData>;
+  logoutMutation: any; // UseMutationResult<void, Error, void>;
+  registerMutation: any; // UseMutationResult<SelectUser, Error, InsertUser>;
+}

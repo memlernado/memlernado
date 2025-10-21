@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import type { DashboardStats } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -11,14 +12,6 @@ import MainLayout from "@/components/layout/main-layout";
 import CreateWorkspaceModal from "@/components/modals/create-workspace-modal";
 import type { Workspace } from "@shared/schema";
 
-interface DashboardStats {
-  totalTasks: number;
-  completedTasks: number;
-  totalSprints: number;
-  activeSprints: number;
-  totalLearners: number;
-  weeklyHours: number;
-}
 
 export default function HomePage() {
   const { user } = useAuth();

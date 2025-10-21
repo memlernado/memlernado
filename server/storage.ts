@@ -14,6 +14,8 @@ import {
   type InsertSprint,
   type Task,
   type InsertTask,
+  type TaskWithRelations,
+  type WorkspaceMemberWithUser,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
@@ -35,7 +37,7 @@ export interface IStorage {
   createWorkspace(workspace: InsertWorkspace): Promise<Workspace>;
   updateWorkspace(id: string, updates: Partial<InsertWorkspace>): Promise<Workspace>;
   addWorkspaceMember(member: InsertWorkspaceMember): Promise<WorkspaceMember>;
-  getWorkspaceMembers(workspaceId: string): Promise<(WorkspaceMember & { user: User })[]>;
+  getWorkspaceMembers(workspaceId: string): Promise<WorkspaceMemberWithUser[]>;
   isWorkspaceMember(workspaceId: string, userId: string): Promise<boolean>;
 
   // Sprint operations
@@ -47,8 +49,8 @@ export interface IStorage {
 
   // Task operations
   getTask(id: string): Promise<Task | undefined>;
-  getSprintTasks(sprintId: string): Promise<(Task & { assignee?: User; creator: User })[]>;
-  getWorkspaceTasks(workspaceId: string): Promise<(Task & { assignee?: User; creator: User })[]>;
+  getSprintTasks(sprintId: string): Promise<TaskWithRelations[]>;
+  getWorkspaceTasks(workspaceId: string): Promise<TaskWithRelations[]>;
   createTask(task: InsertTask): Promise<Task>;
   updateTask(id: string, updates: Partial<InsertTask>): Promise<Task>;
   deleteTask(id: string): Promise<void>;
@@ -124,7 +126,7 @@ export class DatabaseStorage implements IStorage {
     return workspaceMember;
   }
 
-  async getWorkspaceMembers(workspaceId: string): Promise<(WorkspaceMember & { user: User })[]> {
+  async getWorkspaceMembers(workspaceId: string): Promise<WorkspaceMemberWithUser[]> {
     const members = await db
       .select()
       .from(workspaceMembers)
@@ -198,7 +200,7 @@ export class DatabaseStorage implements IStorage {
     return task;
   }
 
-  async getSprintTasks(sprintId: string): Promise<(Task & { assignee?: User; creator: User })[]> {
+  async getSprintTasks(sprintId: string): Promise<TaskWithRelations[]> {
     const taskList = await db.select().from(tasks).where(eq(tasks.sprintId, sprintId));
     
     const enrichedTasks = [];
@@ -216,7 +218,7 @@ export class DatabaseStorage implements IStorage {
     return enrichedTasks;
   }
 
-  async getWorkspaceTasks(workspaceId: string): Promise<(Task & { assignee?: User; creator: User })[]> {
+  async getWorkspaceTasks(workspaceId: string): Promise<TaskWithRelations[]> {
     const taskList = await db.select().from(tasks).where(eq(tasks.workspaceId, workspaceId));
     
     const enrichedTasks = [];

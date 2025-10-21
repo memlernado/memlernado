@@ -6,26 +6,12 @@ import { Clock, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  subject: string;
-  status: "todo" | "in_progress" | "done";
-  estimatedTime?: string;
-  timeSpent?: string;
-  progress?: number;
-  assignee?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-}
+import type { TaskWithRelations } from "@shared/schema";
+// Updated to use TaskWithRelations type
 
 interface TaskCardProps {
-  task: Task;
-  onMove: (taskId: string, newStatus: Task["status"]) => void;
+  task: TaskWithRelations;
+  onMove: (taskId: string, newStatus: TaskWithRelations["status"]) => void;
   isLoading?: boolean;
   isDragging?: boolean;
   onClick?: () => void;
@@ -61,7 +47,7 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
     return assigneeId === "user-learner-1" ? "bg-secondary" : "bg-chart-4";
   };
 
-  const getNextStatus = (currentStatus: Task["status"]): Task["status"] | null => {
+  const getNextStatus = (currentStatus: TaskWithRelations["status"]): TaskWithRelations["status"] | null => {
     switch (currentStatus) {
       case "todo":
         return "in_progress";
@@ -108,9 +94,11 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
           {task.title}
         </h4>
         <div className="flex items-center space-x-1 flex-shrink-0">
-          <Badge className={cn("text-xs", getSubjectColor(task.subject))}>
-            {task.subject}
-          </Badge>
+          {task.subject && (
+            <Badge className={cn("text-xs", getSubjectColor(task.subject))}>
+              {task.subject}
+            </Badge>
+          )}
           {task.status === "done" && (
             <Check className="h-4 w-4 text-accent" />
           )}
@@ -118,7 +106,7 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
       </div>
 
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-        {task.description}
+        {task.description || "No description"}
       </p>
 
       {/* Progress bar for in-progress tasks */}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import type { Sprint, TaskWithRelations } from "@shared/schema";
 import { useLocation } from "wouter";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
@@ -11,30 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, BarChart3, Calendar, PlusCircle } from "lucide-react";
 
-interface Sprint {
-  id: string;
-  name: string;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  isActive?: boolean;
-}
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  subject: string;
-  status: "todo" | "in_progress" | "done";
-  estimatedTime?: string;
-  timeSpent?: string;
-  progress?: number;
-  assignee?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-}
 
 function EmptySprintState() {
   const [, setLocation] = useLocation();
@@ -85,7 +62,7 @@ export default function SprintBoard() {
   });
 
   // Only fetch tasks if we have an active sprint
-  const { data: tasks = [] } = useQuery<Task[]>({
+  const { data: tasks = [] } = useQuery<TaskWithRelations[]>({
     queryKey: ["/api/sprints", activeSprint?.id, "tasks"],
     enabled: !!activeSprint?.id,
   });

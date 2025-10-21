@@ -1,15 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { Workspace } from "@shared/schema";
+import type { Workspace, WorkspaceContextType } from "@shared/schema";
 import { useAuth } from "./use-auth";
 
-interface WorkspaceContextType {
-  selectedWorkspaceId: string | null;
-  selectedWorkspace: Workspace | null;
-  workspaces: Workspace[];
-  setSelectedWorkspaceId: (id: string) => void;
-  isLoading: boolean;
-}
 
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 

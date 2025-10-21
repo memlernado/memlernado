@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { TaskWithRelations } from "@shared/schema";
 import {
   DndContext,
   DragEndEvent,
@@ -19,26 +20,11 @@ import { Plus } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  subject: string;
-  status: "todo" | "in_progress" | "done";
-  estimatedTime?: string;
-  timeSpent?: string;
-  progress?: number;
-  assignee?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-}
 
 interface KanbanBoardProps {
   workspaceId: string;
   sprintId: string;
-  tasks: Task[];
+  tasks: TaskWithRelations[];
 }
 
 // Droppable column component
@@ -71,7 +57,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   const [activeId, setActiveId] = useState<string | null>(null);
   
   // Task details modal state
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<TaskWithRelations | null>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   
   const sensors = useSensors(
@@ -83,16 +69,16 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   );
   
   // Fetch sprint tasks from API
-  const { data: sprintTasks = [], isLoading: tasksLoading } = useQuery<Task[]>({
+  const { data: sprintTasks = [], isLoading: tasksLoading } = useQuery<TaskWithRelations[]>({
     queryKey: ['/api/sprints', sprintId, 'tasks'],
     enabled: !!sprintId,
   });
 
   // Use prop tasks if provided, otherwise use fetched sprint tasks
-  const tasks: Task[] = propTasks.length > 0 ? propTasks : sprintTasks;
+  const tasks: TaskWithRelations[] = propTasks.length > 0 ? propTasks : sprintTasks;
 
   const updateTaskMutation = useMutation({
-    mutationFn: async ({ taskId, updates }: { taskId: string; updates: Partial<Task> }) => {
+    mutationFn: async ({ taskId, updates }: { taskId: string; updates: Partial<TaskWithRelations> }) => {
       const res = await apiRequest("PATCH", `/api/tasks/${taskId}`, updates);
       return await res.json();
     },
@@ -116,7 +102,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   const inProgressTasks = tasks.filter(task => task.status === "in_progress");
   const doneTasks = tasks.filter(task => task.status === "done");
 
-  const handleTaskMove = (taskId: string, newStatus: Task["status"]) => {
+  const handleTaskMove = (taskId: string, newStatus: TaskWithRelations["status"]) => {
     updateTaskMutation.mutate({
       taskId,
       updates: { status: newStatus },
@@ -137,12 +123,12 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
     }
 
     const taskId = active.id as string;
-    let newStatus: Task["status"];
+    let newStatus: TaskWithRelations["status"];
     
     // Check if we dropped over a column or a task
     if (["todo", "in_progress", "done"].includes(over.id as string)) {
       // Dropped over a column
-      newStatus = over.id as Task["status"];
+      newStatus = over.id as TaskWithRelations["status"];
     } else {
       // Dropped over a task - find which column the target task belongs to
       const targetTask = tasks.find(task => task.id === over.id);
@@ -167,7 +153,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   const activeTask = activeId ? tasks.find(task => task.id === activeId) : null;
 
   // Task modal handlers
-  const handleTaskClick = (task: Task) => {
+  const handleTaskClick = (task: TaskWithRelations) => {
     setSelectedTask(task);
     setIsTaskModalOpen(true);
   };

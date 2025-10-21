@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Target, TrendingUp, Clock, X, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useWorkspace } from "@/hooks/use-workspace";
+import type { TaskWithRelations, WorkspaceMemberWithUser } from "@shared/schema";
 
 interface ProgressModalProps {
   isOpen: boolean;
@@ -14,64 +15,19 @@ interface ProgressModalProps {
   sprintId: string;
 }
 
-interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  subject?: string;
-  status: 'todo' | 'in_progress' | 'done';
-  estimatedTime?: string;
-  timeSpent?: string;
-  progress: number;
-  sprintId?: string;
-  workspaceId: string;
-  assignedTo?: string;
-  createdBy: string;
-  completedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-  assignee?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-  creator: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-}
 
-interface WorkspaceMember {
-  id: string;
-  workspaceId: string;
-  userId: string;
-  role: string;
-  joinedAt: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-}
 
 export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressModalProps) {
   const { selectedWorkspaceId } = useWorkspace();
 
   // Fetch sprint tasks
-  const { data: tasks = [], isLoading: tasksLoading } = useQuery<Task[]>({
+  const { data: tasks = [], isLoading: tasksLoading } = useQuery<TaskWithRelations[]>({
     queryKey: ["/api/sprints", sprintId, "tasks"],
     enabled: !!sprintId && isOpen,
   });
 
   // Fetch workspace members (learners)
-  const { data: members = [], isLoading: membersLoading } = useQuery<WorkspaceMember[]>({
+  const { data: members = [], isLoading: membersLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
     enabled: !!selectedWorkspaceId && isOpen,
   });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import type { Workspace, WorkspaceMemberWithUser, WorkspaceWithStats } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -13,27 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Settings, Users, Trash2, UserMinus, UserPlus } from "lucide-react";
 
-interface WorkspaceMember {
-  id: string;
-  workspaceId: string;
-  userId: string;
-  role: string;
-  joinedAt: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-}
-
-interface Workspace {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-}
 
 export default function WorkspaceSettings() {
   const { selectedWorkspaceId } = useWorkspace();
@@ -43,7 +23,7 @@ export default function WorkspaceSettings() {
   const [newMemberEmail, setNewMemberEmail] = useState("");
 
   // Fetch workspace details
-  const { data: workspaces, isLoading: isWorkspaceLoading } = useQuery<Workspace[]>({
+  const { data: workspaces, isLoading: isWorkspaceLoading } = useQuery<WorkspaceWithStats[]>({
     queryKey: ["/api/workspaces"],
     enabled: !!selectedWorkspaceId,
   });
@@ -54,13 +34,13 @@ export default function WorkspaceSettings() {
       const workspace = workspaces.find(w => w.id === selectedWorkspaceId);
       if (workspace) {
         setWorkspaceName(workspace.name);
-        setWorkspaceDescription(workspace.description);
+        setWorkspaceDescription(workspace.description || "");
       }
     }
   }, [workspaces, selectedWorkspaceId]);
 
   // Fetch workspace members
-  const { data: members = [], isLoading: isMembersLoading } = useQuery<WorkspaceMember[]>({
+  const { data: members = [], isLoading: isMembersLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
     enabled: !!selectedWorkspaceId,
   });

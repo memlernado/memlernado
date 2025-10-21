@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { TaskWithRelations } from "@shared/schema";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,29 +14,11 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Clock, User, BookOpen, Calendar } from "lucide-react";
 
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  subject: string;
-  status: "todo" | "in_progress" | "done";
-  estimatedTime?: string;
-  timeSpent?: string;
-  progress?: number;
-  assignee?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  createdAt?: string;
-  updatedAt?: string;
-  completedAt?: string;
-}
 
 interface TaskDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  task: Task | null;
+  task: TaskWithRelations | null;
   workspaceId: string;
   sprintId: string;
 }
@@ -65,8 +48,8 @@ export default function TaskDetailsModal({
     if (task) {
       setFormData({
         title: task.title,
-        description: task.description,
-        subject: task.subject,
+        description: task.description || "",
+        subject: task.subject || "",
         estimatedTime: task.estimatedTime || "",
         assignedTo: task.assignee?.id || "",
         progress: task.progress || 0,
@@ -130,8 +113,8 @@ export default function TaskDetailsModal({
     if (task) {
       setFormData({
         title: task.title,
-        description: task.description,
-        subject: task.subject,
+        description: task.description || "",
+        subject: task.subject || "",
         estimatedTime: task.estimatedTime || "",
         assignedTo: task.assignee?.id || "",
         progress: task.progress || 0,
@@ -202,8 +185,8 @@ export default function TaskDetailsModal({
           <DialogTitle className="flex items-center justify-between">
             <span>Task Details</span>
             <div className="flex items-center space-x-2">
-              <Badge className={getSubjectColor(task.subject)}>
-                {task.subject}
+              <Badge className={getSubjectColor(task.subject || "")}>
+                {task.subject || "No Subject"}
               </Badge>
               <Badge className={getStatusColor(task.status)}>
                 {getStatusLabel(task.status)}

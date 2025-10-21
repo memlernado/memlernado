@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { WorkspaceMemberWithUser, Sprint } from "@shared/schema";
 import { Link, useLocation } from "wouter";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useAuth } from "@/hooks/use-auth";
@@ -15,27 +16,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface WorkspaceMember {
-  id: string;
-  workspaceId: string;
-  userId: string;
-  role: string;
-  joinedAt: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-}
-
-interface Sprint {
-  id: string;
-  name: string;
-  description: string;
-  isActive: boolean;
-}
 
 export default function Sidebar() {
   const [location] = useLocation();
@@ -165,7 +145,7 @@ export default function Sidebar() {
                   No learners in workspace
                 </div>
               ) : (
-                learners.map((learner) => (
+                learners.map((learner: any) => (
                   <div key={learner.id} className="flex items-center space-x-3">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className={`${learner.avatarColor} text-white`}>

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { DashboardData } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,32 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { CalendarDays, Clock, Target, TrendingUp, Calendar } from "lucide-react";
 
-interface DashboardData {
-  sprintStats: {
-    totalTasks: number;
-    completedTasks: number;
-    inProgressTasks: number;
-    todoTasks: number;
-    activeSprint: {
-      id: string;
-      name: string;
-      description: string;
-    } | null;
-  };
-  learners: Array<{
-    id: string;
-    name: string;
-    initials: string;
-    completionRate: number;
-    tasksCompleted: number;
-    totalTasks: number;
-    subjects: Record<string, {
-      completed: number;
-      total: number;
-      rate: number;
-    }>;
-  }>;
-}
 
 export default function Dashboard() {
   const { selectedWorkspaceId } = useWorkspace();

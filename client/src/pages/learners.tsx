@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { WorkspaceMemberWithUser } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,25 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, Plus, Mail } from "lucide-react";
 
-interface WorkspaceMember {
-  id: string;
-  workspaceId: string;
-  userId: string;
-  role: string;
-  joinedAt: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-  };
-}
 
 export default function Learners() {
   const { selectedWorkspaceId } = useWorkspace();
 
-  const { data: members = [], isLoading } = useQuery<WorkspaceMember[]>({
+  const { data: members = [], isLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
     enabled: !!selectedWorkspaceId,
   });
