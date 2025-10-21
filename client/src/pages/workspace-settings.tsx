@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useWorkspace } from "@/hooks/use-workspace";
-import { queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Settings, Users, Trash2, UserMinus } from "lucide-react";
+import { Settings, Users, Trash2, UserMinus, UserPlus } from "lucide-react";
 
 interface WorkspaceMember {
   id: string;
@@ -40,6 +40,7 @@ export default function WorkspaceSettings() {
   const { toast } = useToast();
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
+  const [newMemberEmail, setNewMemberEmail] = useState("");
 
   // Fetch workspace details
   const { data: workspaces, isLoading: isWorkspaceLoading } = useQuery<Workspace[]>({
@@ -101,6 +102,38 @@ export default function WorkspaceSettings() {
       name: workspaceName,
       description: workspaceDescription,
     });
+  };
+
+  // Add member mutation
+  const addMemberMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const response = await apiRequest("POST", `/api/workspaces/${selectedWorkspaceId}/members`, {
+        email,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces"] });
+      setNewMemberEmail("");
+      toast({
+        title: "Success",
+        description: "Student added to workspace successfully",
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error adding member:", error);
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAddMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMemberEmail.trim()) return;
+    addMemberMutation.mutate(newMemberEmail.trim());
   };
 
   if (isWorkspaceLoading) {
@@ -197,6 +230,36 @@ export default function WorkspaceSettings() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Add Member Form */}
+              <div className="mb-6 p-4 border rounded-lg bg-muted/30">
+                <h4 className="font-medium text-foreground mb-3 flex items-center space-x-2">
+                  <UserPlus className="h-4 w-4" />
+                  <span>Add Student by Email</span>
+                </h4>
+                <form onSubmit={handleAddMember} className="flex space-x-2">
+                  <div className="flex-1">
+                    <Input
+                      type="email"
+                      placeholder="Enter student's email address"
+                      value={newMemberEmail}
+                      onChange={(e) => setNewMemberEmail(e.target.value)}
+                      data-testid="input-member-email"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    disabled={addMemberMutation.isPending || !newMemberEmail.trim()}
+                    data-testid="button-add-member"
+                  >
+                    {addMemberMutation.isPending ? "Adding..." : "Add Student"}
+                  </Button>
+                </form>
+                <p className="text-xs text-muted-foreground mt-2">
+                  The student must already have an account in the system
+                </p>
+              </div>
+
+              {/* Members List */}
               {isMembersLoading ? (
                 <div className="space-y-3">
                   {[...Array(3)].map((_, i) => (
@@ -213,7 +276,7 @@ export default function WorkspaceSettings() {
                 <div className="text-center py-8">
                   <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-foreground mb-2">No members yet</h3>
-                  <p className="text-muted-foreground">Invite members to collaborate on this workspace</p>
+                  <p className="text-muted-foreground">Add students to collaborate on this workspace</p>
                 </div>
               ) : (
                 <div className="space-y-4">

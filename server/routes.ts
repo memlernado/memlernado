@@ -105,6 +105,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/workspaces/:id/members", async (req, res) => {
+    console.log("Adding workspace member:", req.body);
+    if (!req.isAuthenticated()) {
+      console.log("Unauthorized");
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can add members
+    if (req.user!.role !== 'facilitator') {
+      console.log("Not a facilitator");
+      return res.status(403).json({ message: "Only facilitators can add members" });
+    }
+
+    try {
+      console.log("Trying to add workspace member with email:", req.body.email);
+      const { email } = req.body;
+      
+      if (!email) {
+        console.log("Email is required");
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      // Find user by email
+      console.log("Finding user by email:", email);
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ message: "User not found with this email" });
+      }
+
+      // Check if user is already a member
+      console.log("Checking if user is already a member of the workspace");
+      const isAlreadyMember = await storage.isWorkspaceMember(req.params.id, user.id);
+      if (isAlreadyMember) {
+        console.log("User is already a member of the workspace");
+        return res.status(409).json({ message: "User is already a member of this workspace" });
+      }
+
+      // Add user as a learner to the workspace
+      const member = await storage.addWorkspaceMember({
+        workspaceId: req.params.id,
+        userId: user.id,
+        role: "learner",
+      });
+
+      
+      res.status(201).json(member);
+    } catch (error) {
+      console.error("Error adding workspace member:", error);
+      res.status(500).json({ message: "Failed to add workspace member" });
+    }
+  });
+
   // Sprint routes
   app.get("/api/workspaces/:workspaceId/sprints", async (req, res) => {
     if (!req.isAuthenticated()) {

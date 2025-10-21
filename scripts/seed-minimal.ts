@@ -50,6 +50,26 @@ async function seedMinimal() {
       role: 'learner',
     }).returning();
 
+    // Add additional test learners for testing the add member functionality
+    await db.insert(users).values([
+      {
+        username: 'alice',
+        password: await hashPassword('alice123'),
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        email: 'alice@example.com',
+        role: 'learner',
+      },
+      {
+        username: 'bob',
+        password: await hashPassword('bob123'),
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'bob@example.com',
+        role: 'learner',
+      },
+    ]);
+
     console.log('🏠 Creating workspace...');
     const workspace = await db.insert(workspaces).values({
       name: 'Test Workspace',
@@ -131,6 +151,9 @@ async function seedMinimal() {
     console.log('\n🔑 Login Credentials:');
     console.log('Facilitator: admin / admin123');
     console.log('Learner: student / student123');
+    console.log('Additional test learners:');
+    console.log('  - alice@example.com (alice / alice123)');
+    console.log('  - bob@example.com (bob / bob123)');
 
   } catch (error) {
     console.error('❌ Error seeding database:', error);

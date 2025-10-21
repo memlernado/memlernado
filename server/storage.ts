@@ -26,6 +26,7 @@ export interface IStorage {
   // User operations
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 
   // Workspace operations
@@ -35,6 +36,7 @@ export interface IStorage {
   updateWorkspace(id: string, updates: Partial<InsertWorkspace>): Promise<Workspace>;
   addWorkspaceMember(member: InsertWorkspaceMember): Promise<WorkspaceMember>;
   getWorkspaceMembers(workspaceId: string): Promise<(WorkspaceMember & { user: User })[]>;
+  isWorkspaceMember(workspaceId: string, userId: string): Promise<boolean>;
 
   // Sprint operations
   getSprint(id: string): Promise<Sprint | undefined>;
@@ -75,6 +77,11 @@ export class DatabaseStorage implements IStorage {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
     return user;
   }
 
@@ -128,6 +135,15 @@ export class DatabaseStorage implements IStorage {
       ...m.workspace_members,
       user: m.users,
     }));
+  }
+
+  async isWorkspaceMember(workspaceId: string, userId: string): Promise<boolean> {
+    const [member] = await db
+      .select()
+      .from(workspaceMembers)
+      .where(and(eq(workspaceMembers.workspaceId, workspaceId), eq(workspaceMembers.userId, userId)));
+    
+    return !!member;
   }
 
   // Sprint operations
