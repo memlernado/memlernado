@@ -211,6 +211,8 @@ export interface DashboardData {
       id: string;
       name: string;
       description: string;
+      startDate: Date;
+      endDate: Date;
     } | null;
   };
   learners: Array<{

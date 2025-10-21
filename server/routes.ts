@@ -454,6 +454,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: activeSprint.id,
             name: activeSprint.name,
             description: activeSprint.description,
+            startDate: activeSprint.startDate,
+            endDate: activeSprint.endDate,
           } : null,
         },
         learners: learnerProgress,
