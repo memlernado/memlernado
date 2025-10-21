@@ -45,6 +45,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Only facilitators can create workspaces
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can create workspaces" });
+    }
+
     try {
       const workspaceData = insertWorkspaceSchema.parse({
         ...req.body,
@@ -64,6 +69,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating workspace:", error);
       res.status(400).json({ message: "Failed to create workspace" });
+    }
+  });
+
+  app.patch("/api/workspaces/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can update workspaces
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can update workspaces" });
+    }
+
+    try {
+      const workspace = await storage.updateWorkspace(req.params.id, req.body);
+      res.json(workspace);
+    } catch (error) {
+      console.error("Error updating workspace:", error);
+      res.status(400).json({ message: "Failed to update workspace" });
     }
   });
 
@@ -115,6 +139,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Only facilitators can create sprints
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can create sprints" });
+    }
+
     try {
       const parsed = insertSprintSchema.parse({
         ...req.body,
@@ -139,6 +168,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch("/api/sprints/:id", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can update sprints
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can update sprints" });
     }
 
     try {
@@ -184,6 +218,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Only facilitators can create tasks
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can create tasks" });
+    }
+
     try {
       const taskData = insertTaskSchema.parse({
         ...req.body,
@@ -215,6 +254,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/tasks/:id", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can delete tasks
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can delete tasks" });
     }
 
     try {

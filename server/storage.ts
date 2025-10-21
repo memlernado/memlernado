@@ -32,6 +32,7 @@ export interface IStorage {
   getWorkspace(id: string): Promise<Workspace | undefined>;
   getUserWorkspaces(userId: string): Promise<Workspace[]>;
   createWorkspace(workspace: InsertWorkspace): Promise<Workspace>;
+  updateWorkspace(id: string, updates: Partial<InsertWorkspace>): Promise<Workspace>;
   addWorkspaceMember(member: InsertWorkspaceMember): Promise<WorkspaceMember>;
   getWorkspaceMembers(workspaceId: string): Promise<(WorkspaceMember & { user: User })[]>;
 
@@ -100,6 +101,14 @@ export class DatabaseStorage implements IStorage {
 
   async createWorkspace(insertWorkspace: InsertWorkspace): Promise<Workspace> {
     const [workspace] = await db.insert(workspaces).values(insertWorkspace).returning();
+    return workspace;
+  }
+
+  async updateWorkspace(id: string, updates: Partial<InsertWorkspace>): Promise<Workspace> {
+    const [workspace] = await db.update(workspaces)
+      .set(updates)
+      .where(eq(workspaces.id, id))
+      .returning();
     return workspace;
   }
 

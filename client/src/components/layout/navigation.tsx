@@ -73,15 +73,17 @@ export default function Navigation() {
                 ))}
               </SelectContent>
             </Select>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setShowCreateWorkspaceModal(true)}
-              data-testid="button-create-workspace-nav"
-              className="shrink-0"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
+            {user?.role === 'facilitator' && (
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowCreateWorkspaceModal(true)}
+                data-testid="button-create-workspace-nav"
+                className="shrink-0"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            )}
           </div>
 
           {/* User Profile */}
@@ -111,9 +113,11 @@ export default function Navigation() {
                 <DropdownMenuItem onClick={handleProfileSettings} data-testid="menu-profile">
                   Profile Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleWorkspaceSettings} data-testid="menu-workspace-settings">
-                  Workspace Settings
-                </DropdownMenuItem>
+                {user?.role === 'facilitator' && (
+                  <DropdownMenuItem onClick={handleWorkspaceSettings} data-testid="menu-workspace-settings">
+                    Workspace Settings
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
                   onClick={handleLogout}
@@ -129,10 +133,12 @@ export default function Navigation() {
         </div>
       </div>
       
-      <CreateWorkspaceModal 
-        isOpen={showCreateWorkspaceModal}
-        onClose={() => setShowCreateWorkspaceModal(false)}
-      />
+      {user?.role === 'facilitator' && (
+        <CreateWorkspaceModal 
+          isOpen={showCreateWorkspaceModal}
+          onClose={() => setShowCreateWorkspaceModal(false)}
+        />
+      )}
     </nav>
   );
 }

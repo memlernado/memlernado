@@ -59,12 +59,14 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex items-center space-x-3">
-            <Link href="/sprint-planning">
-              <Button data-testid="button-new-sprint">
-                <Plus className="h-4 w-4 mr-2" />
-                New Sprint
-              </Button>
-            </Link>
+            {user?.role === 'facilitator' && (
+              <Link href="/sprint-planning">
+                <Button data-testid="button-new-sprint">
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Sprint
+                </Button>
+              </Link>
+            )}
             <Link href="/sprint-board">
               <Button variant="outline" data-testid="button-view-board">
                 <BookOpen className="h-4 w-4 mr-2" />

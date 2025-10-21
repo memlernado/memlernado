@@ -21,9 +21,9 @@ function Router() {
       <ProtectedRoute path="/" component={HomePage} />
       <ProtectedRoute path="/sprint-board" component={SprintBoard} />
       <ProtectedRoute path="/dashboard" component={Dashboard} />
-      <ProtectedRoute path="/sprint-planning" component={SprintPlanning} />
-      <ProtectedRoute path="/learners" component={Learners} />
-      <ProtectedRoute path="/settings" component={WorkspaceSettings} />
+      <ProtectedRoute path="/sprint-planning" component={SprintPlanning} allowedRoles={["facilitator"]} />
+      <ProtectedRoute path="/learners" component={Learners} allowedRoles={["facilitator"]} />
+      <ProtectedRoute path="/settings" component={WorkspaceSettings} allowedRoles={["facilitator"]} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
