@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import type { WorkspaceMemberWithUser } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
@@ -11,6 +12,7 @@ import { Users, Plus, Mail } from "lucide-react";
 
 export default function Learners() {
   const { selectedWorkspaceId } = useWorkspace();
+  const [, setLocation] = useLocation();
 
   const { data: members = [], isLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
@@ -56,7 +58,10 @@ export default function Learners() {
               Manage workspace members and invite new learners
             </p>
           </div>
-          <Button data-testid="button-invite-learner">
+          <Button 
+            data-testid="button-invite-learner"
+            onClick={() => setLocation('/settings')}
+          >
             <Plus className="h-4 w-4 mr-2" />
             Invite Learner
           </Button>
@@ -110,7 +115,10 @@ export default function Learners() {
                 <p className="text-muted-foreground text-center mb-4">
                   Invite learners to start tracking their progress and assigning tasks
                 </p>
-                <Button data-testid="button-invite-first-learner">
+                <Button 
+                  data-testid="button-invite-first-learner"
+                  onClick={() => setLocation('/settings')}
+                >
                   <Mail className="h-4 w-4 mr-2" />
                   Invite Your First Learner
                 </Button>
@@ -139,7 +147,7 @@ export default function Learners() {
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Joined:</span>
                         <span className="text-foreground">
-                          {new Date(member.joinedAt).toLocaleDateString()}
+                          {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : 'Unknown'}
                         </span>
                       </div>
                       <div className="flex space-x-2 pt-2">
@@ -184,7 +192,7 @@ export default function Learners() {
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Joined:</span>
                       <span className="text-foreground">
-                        {new Date(member.joinedAt).toLocaleDateString()}
+                        {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : 'Unknown'}
                       </span>
                     </div>
                   </div>
