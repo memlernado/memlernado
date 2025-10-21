@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { Workspace } from "@shared/schema";
+import { useAuth } from "./use-auth";
 
 interface WorkspaceContextType {
   selectedWorkspaceId: string | null;
@@ -14,10 +15,19 @@ const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefin
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const { data: workspaces = [], isLoading } = useQuery<Workspace[]>({
     queryKey: ["/api/workspaces"],
+    enabled: !!user, // Only fetch workspaces when user is authenticated
   });
+
+  // Reset selected workspace when user logs out
+  useEffect(() => {
+    if (!user) {
+      setSelectedWorkspaceId(null);
+    }
+  }, [user]);
 
   // Auto-select first workspace when workspaces load
   useEffect(() => {
