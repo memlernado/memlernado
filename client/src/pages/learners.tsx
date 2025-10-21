@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import type { WorkspaceMemberWithUser } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
+import LearnerProgressModal from "@/components/modals/learner-progress-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +15,7 @@ import { Users, Plus, Mail } from "lucide-react";
 export default function Learners() {
   const { selectedWorkspaceId } = useWorkspace();
   const [, setLocation] = useLocation();
+  const [selectedLearner, setSelectedLearner] = useState<{id: string, name: string} | null>(null);
 
   const { data: members = [], isLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
@@ -151,11 +154,17 @@ export default function Learners() {
                         </span>
                       </div>
                       <div className="flex space-x-2 pt-2">
-                        <Button size="sm" variant="outline" className="flex-1" data-testid={`button-view-progress-${member.userId}`}>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="flex-1" 
+                          data-testid={`button-view-progress-${member.userId}`}
+                          onClick={() => setSelectedLearner({
+                            id: member.userId,
+                            name: `${member.user.firstName} ${member.user.lastName}`
+                          })}
+                        >
                           View Progress
-                        </Button>
-                        <Button size="sm" variant="ghost" data-testid={`button-manage-${member.userId}`}>
-                          Manage
                         </Button>
                       </div>
                     </div>
@@ -201,6 +210,16 @@ export default function Learners() {
             ))}
           </div>
         </div>
+
+        {/* Learner Progress Modal */}
+        {selectedLearner && (
+          <LearnerProgressModal
+            isOpen={!!selectedLearner}
+            onClose={() => setSelectedLearner(null)}
+            userId={selectedLearner.id}
+            userName={selectedLearner.name}
+          />
+        )}
       </div>
     </MainLayout>
   );
