@@ -20,7 +20,7 @@ interface TaskDetailsModalProps {
   onClose: () => void;
   task: TaskWithRelations | null;
   workspaceId: string;
-  sprintId: string;
+  sprintId: string | null;
 }
 
 export default function TaskDetailsModal({ 
@@ -76,7 +76,7 @@ export default function TaskDetailsModal({
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
+      sprintId && queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
       toast({
         title: "Task updated",
         description: "Task has been updated successfully.",

@@ -10,7 +10,7 @@ import ProgressModal from "@/components/modals/progress-modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, BarChart3, Calendar, PlusCircle } from "lucide-react";
+import { Plus, BarChart3, Calendar, PlusCircle, CheckCircle } from "lucide-react";
 
 
 function EmptySprintState() {
@@ -54,6 +54,7 @@ export default function SprintBoard() {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showProgressModal, setShowProgressModal] = useState(false);
   const { selectedWorkspaceId } = useWorkspace();
+  const [, setLocation] = useLocation();
 
   // Fetch active sprint for this workspace - only if workspace is selected
   const { data: activeSprint, isLoading: isSprintLoading } = useQuery<Sprint>({
@@ -88,6 +89,38 @@ export default function SprintBoard() {
             <p className="text-muted-foreground mt-1">Organize your learning tasks with SCRUM methodology</p>
           </div>
           <EmptySprintState />
+        </div>
+      </MainLayout>
+    );
+  }
+
+  // Check if sprint is completed (shouldn't happen but handle gracefully)
+  if (activeSprint.status === 'completed') {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div className="bg-card border-b border-border px-6 py-4 -mx-6">
+            <h1 className="text-2xl font-bold text-foreground">Sprint Board</h1>
+            <p className="text-muted-foreground mt-1">This sprint has been completed</p>
+          </div>
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Card className="w-full max-w-md">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <CardTitle>Sprint Completed</CardTitle>
+                <CardDescription>
+                  This sprint has been completed. Visit Sprint Planning to start a new sprint.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Button onClick={() => setLocation("/sprint-planning")}>
+                  Go to Sprint Planning
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </MainLayout>
     );

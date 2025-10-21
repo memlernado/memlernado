@@ -8,12 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { WorkspaceMemberWithUser } from "@shared/schema";
 
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   workspaceId: string;
-  sprintId: string;
+  sprintId: string | null;
 }
 
 export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: TaskModalProps) {
@@ -28,7 +29,7 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     assignedTo: "",
   });
 
-  const { data: workspaceMembers = [] } = useQuery({
+  const { data: workspaceMembers = [] } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", workspaceId, "members"],
     enabled: !!workspaceId, // Enable now that endpoint exists
   });
@@ -47,7 +48,7 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
+      sprintId && queryClient.invalidateQueries({ queryKey: ["/api/sprints", sprintId, "tasks"] });
       toast({
         title: "Task created",
         description: "New task has been created successfully.",

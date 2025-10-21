@@ -14,6 +14,7 @@ import Dashboard from "@/pages/dashboard";
 import SprintPlanning from "@/pages/sprint-planning";
 import Learners from "@/pages/learners";
 import WorkspaceSettings from "@/pages/workspace-settings";
+import Backlog from "./pages/backlog";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
       <ProtectedRoute path="/sprint-board" component={SprintBoard} />
       <ProtectedRoute path="/dashboard" component={Dashboard} />
       <ProtectedRoute path="/sprint-planning" component={SprintPlanning} allowedRoles={["facilitator"]} />
+      <ProtectedRoute path="/backlog" component={Backlog} allowedRoles={["facilitator"]} />
       <ProtectedRoute path="/learners" component={Learners} allowedRoles={["facilitator"]} />
       <ProtectedRoute path="/settings" component={WorkspaceSettings} allowedRoles={["facilitator"]} />
       <Route path="/auth" component={AuthPage} />

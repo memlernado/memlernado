@@ -12,7 +12,8 @@ import {
   BarChart3, 
   Calendar, 
   Users, 
-  Settings 
+  Settings,
+  Archive
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,17 +45,24 @@ export default function Sidebar() {
 
   const allNavigationItems = [
     {
-      name: "Sprint Board",
-      href: "/sprint-board",
-      icon: LayoutGrid,
-      current: location === "/sprint-board",
-      roles: ["facilitator", "learner"],
-    },
-    {
       name: "Dashboard", 
       href: "/dashboard",
       icon: BarChart3,
       current: location === "/dashboard",
+      roles: ["facilitator", "learner"],
+    },
+    {
+      name: "Backlog",
+      href: "/backlog",
+      icon: Archive,
+      current: location === "/backlog",
+      roles: ["facilitator"],
+    },
+    {
+      name: "Sprint Board",
+      href: "/sprint-board",
+      icon: LayoutGrid,
+      current: location === "/sprint-board",
       roles: ["facilitator", "learner"],
     },
     {

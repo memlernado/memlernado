@@ -23,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface KanbanBoardProps {
   workspaceId: string;
-  sprintId: string;
+  sprintId: string | null;
   tasks: TaskWithRelations[];
 }
 

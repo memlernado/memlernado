@@ -19,7 +19,7 @@ import {
   type SprintWithStats,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql, isNull, or } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 
@@ -48,11 +48,14 @@ export interface IStorage {
   getActiveSprint(workspaceId: string): Promise<Sprint | undefined>;
   createSprint(sprint: InsertSprint): Promise<Sprint>;
   updateSprint(id: string, updates: Partial<InsertSprint>): Promise<Sprint>;
+  startSprint(sprintId: string): Promise<Sprint>;
+  completeSprint(sprintId: string): Promise<Sprint>;
 
   // Task operations
   getTask(id: string): Promise<Task | undefined>;
   getSprintTasks(sprintId: string): Promise<TaskWithRelations[]>;
   getWorkspaceTasks(workspaceId: string): Promise<TaskWithRelations[]>;
+  getBacklogTasks(workspaceId: string): Promise<TaskWithRelations[]>;
   createTask(task: InsertTask): Promise<Task>;
   updateTask(id: string, updates: Partial<InsertTask>): Promise<Task>;
   deleteTask(id: string): Promise<void>;
@@ -165,8 +168,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getWorkspaceSprintsWithStats(workspaceId: string): Promise<SprintWithStats[]> {
-    // Get all sprints for the workspace
-    const workspaceSprints = await this.getWorkspaceSprints(workspaceId);
+    // Get all sprints for the workspace, ordered by status then date
+    const workspaceSprints = await db
+      .select()
+      .from(sprints)
+      .where(eq(sprints.workspaceId, workspaceId))
+      .orderBy(
+        // Order: active first, then draft, then completed
+        sql`CASE WHEN status = 'active' THEN 1 WHEN status = 'draft' THEN 2 ELSE 3 END`,
+        desc(sprints.createdAt)
+      );
     
     if (workspaceSprints.length === 0) {
       return [];
@@ -212,7 +223,7 @@ export class DatabaseStorage implements IStorage {
     const [sprint] = await db
       .select()
       .from(sprints)
-      .where(and(eq(sprints.workspaceId, workspaceId), eq(sprints.isActive, true)));
+      .where(and(eq(sprints.workspaceId, workspaceId), eq(sprints.status, 'active')));
     return sprint;
   }
 
@@ -238,6 +249,78 @@ export class DatabaseStorage implements IStorage {
       .where(eq(sprints.id, id))
       .returning();
     return sprint;
+  }
+
+  async startSprint(sprintId: string): Promise<Sprint> {
+    // First, get the sprint to check its workspace
+    const sprint = await this.getSprint(sprintId);
+    if (!sprint) {
+      throw new Error('Sprint not found');
+    }
+
+    // Check if there's already an active sprint in this workspace
+    const activeSprint = await this.getActiveSprint(sprint.workspaceId);
+    if (activeSprint) {
+      throw new Error('There is already an active sprint in this workspace');
+    }
+
+    // Update the sprint to active status
+    const [updatedSprint] = await db
+      .update(sprints)
+      .set({ 
+        status: 'active',
+        isActive: true // keep backwards compatibility
+      })
+      .where(eq(sprints.id, sprintId))
+      .returning();
+    
+    return updatedSprint;
+  }
+
+  async completeSprint(sprintId: string): Promise<Sprint> {
+    // Get the sprint
+    const sprint = await this.getSprint(sprintId);
+    if (!sprint) {
+      throw new Error('Sprint not found');
+    }
+
+    if (sprint.status !== 'active') {
+      throw new Error('Only active sprints can be completed');
+    }
+
+    // Get all incomplete tasks in this sprint
+    const incompleteTasks = await db
+      .select()
+      .from(tasks)
+      .where(and(eq(tasks.sprintId, sprintId), or(eq(tasks.status, 'todo'), eq(tasks.status, 'in_progress'))));
+
+    // Create copies of incomplete tasks in the backlog (sprintId = NULL)
+    for (const task of incompleteTasks) {
+      const backlogTask = {
+        ...task,
+        id: undefined, // let database generate new ID
+        sprintId: null,
+        status: 'todo' as const,
+        progress: 0,
+        completedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      
+      await db.insert(tasks).values(backlogTask);
+    }
+
+    // Update the sprint to completed status
+    const [updatedSprint] = await db
+      .update(sprints)
+      .set({ 
+        status: 'completed',
+        isActive: false // keep backwards compatibility
+      })
+      .where(eq(sprints.id, sprintId))
+      .returning();
+    
+    return updatedSprint;
   }
 
   // Task operations
@@ -266,6 +349,27 @@ export class DatabaseStorage implements IStorage {
 
   async getWorkspaceTasks(workspaceId: string): Promise<TaskWithRelations[]> {
     const taskList = await db.select().from(tasks).where(eq(tasks.workspaceId, workspaceId));
+    
+    const enrichedTasks = [];
+    for (const task of taskList) {
+      const creator = await this.getUser(task.createdBy);
+      const assignee = task.assignedTo ? await this.getUser(task.assignedTo) : undefined;
+      
+      enrichedTasks.push({
+        ...task,
+        creator: creator!,
+        assignee,
+      });
+    }
+    
+    return enrichedTasks;
+  }
+
+  async getBacklogTasks(workspaceId: string): Promise<TaskWithRelations[]> {
+    const taskList = await db
+      .select()
+      .from(tasks)
+      .where(and(eq(tasks.workspaceId, workspaceId), isNull(tasks.sprintId)));
     
     const enrichedTasks = [];
     for (const task of taskList) {

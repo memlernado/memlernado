@@ -42,7 +42,8 @@ export const sprints = pgTable("sprints", {
   workspaceId: varchar("workspace_id").notNull().references(() => workspaces.id),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
-  isActive: boolean("is_active").default(false),
+  status: text("status").notNull().default("draft"), // 'draft', 'active', 'completed'
+  isActive: boolean("is_active").default(false), // kept for backwards compatibility
   createdBy: varchar("created_by").notNull().references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
 });

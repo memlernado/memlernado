@@ -229,11 +229,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const sprint = await storage.updateSprint(req.params.id, req.body);
-      res.json(sprint);
+      // Check if sprint is completed - prevent editing completed sprints
+      const sprint = await storage.getSprint(req.params.id);
+      if (sprint && sprint.status === 'completed') {
+        return res.status(400).json({ message: "Cannot edit completed sprints" });
+      }
+
+      const updatedSprint = await storage.updateSprint(req.params.id, req.body);
+      res.json(updatedSprint);
     } catch (error) {
       console.error("Error updating sprint:", error);
       res.status(400).json({ message: "Failed to update sprint" });
+    }
+  });
+
+  app.post("/api/sprints/:id/start", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can start sprints
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can start sprints" });
+    }
+
+    try {
+      const sprint = await storage.startSprint(req.params.id);
+      res.json(sprint);
+    } catch (error) {
+      console.error("Error starting sprint:", error);
+      res.status(400).json({ message: error instanceof Error ? error.message : "Failed to start sprint" });
+    }
+  });
+
+  app.post("/api/sprints/:id/complete", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can complete sprints
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can complete sprints" });
+    }
+
+    try {
+      const sprint = await storage.completeSprint(req.params.id);
+      res.json(sprint);
+    } catch (error) {
+      console.error("Error completing sprint:", error);
+      res.status(400).json({ message: error instanceof Error ? error.message : "Failed to complete sprint" });
     }
   });
 
@@ -263,6 +307,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching workspace tasks:", error);
       res.status(500).json({ message: "Failed to fetch workspace tasks" });
+    }
+  });
+
+  app.get("/api/workspaces/:workspaceId/backlog", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const tasks = await storage.getBacklogTasks(req.params.workspaceId);
+      res.json(tasks);
+    } catch (error) {
+      console.error("Error fetching backlog tasks:", error);
+      res.status(500).json({ message: "Failed to fetch backlog tasks" });
     }
   });
 
