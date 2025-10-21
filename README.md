@@ -1,23 +1,30 @@
-# Docker Development Setup
+# Memlernado
 
-## Quick Start
+## Docker Quick Start
 
 1. **Start the development environment with seed data:**
    ```bash
-   npm run dev:docker
+   npm run docker:dev
    ```
+   ```bash
+   npm run docker:db:push
+   ```
+   ```bash
+   npm run docker:db:seed
+   ```
+
    This will:
    - Start Docker containers
    - Push database schema
-   - Seed with minimal test data
+   - Seed with test data
 
 2. **Access your application:**
    - **App**: http://localhost:5460
    - **Database**: localhost:5432 (postgres/postgres)
 
 3. **Login with test credentials:**
-   - **Facilitator**: admin / admin123
-   - **Learner**: student / student123
+   - **Facilitator**: sarah_johnson / password123
+   - **Learner**: emma_johnson / password123
 
 ## Available Commands
 
@@ -30,7 +37,6 @@
 - `npm run docker:db:studio` - Open Drizzle Studio
 - `npm run docker:db:seed` - Seed with full realistic data
 - `npm run docker:db:seed:minimal` - Seed with minimal test data
-- `npm run dev:docker` - Start everything with minimal seed data
 
 ## Environment Variables
 
