@@ -145,7 +145,11 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
                 <CardContent>
                   <div className="text-2xl font-bold text-foreground">{userStats.totalTasks}</div>
                   <p className="text-sm text-muted-foreground">
-                    {userStats.todoTasks} {t('common.status.todo')}, {userStats.inProgressTasks} {t('common.status.inProgress')}, {userStats.completedTasks} {t('common.status.done')}
+                    {t('common.phrases.taskStatusSummary', { 
+                      todo: userStats.todoTasks, 
+                      inProgress: userStats.inProgressTasks, 
+                      done: userStats.completedTasks 
+                    })}
                   </p>
                 </CardContent>
               </Card>
@@ -229,7 +233,7 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">{t('common.labels.completion')}:</span>
                             <span className="text-foreground font-medium">
-                              {stats.completed}/{stats.total} {t('common.labels.tasks')}
+                              {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
                             </span>
                           </div>
                         </div>

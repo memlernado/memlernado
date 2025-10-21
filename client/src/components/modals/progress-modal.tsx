@@ -154,7 +154,11 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{sprintStats.totalTasks}</div>
                 <p className="text-sm text-muted-foreground">
-                  {sprintStats.todoTasks} {t('common.status.todo')}, {sprintStats.inProgressTasks} {t('common.status.inProgress')}, {sprintStats.completedTasks} {t('common.status.done')}
+                  {t('common.phrases.taskStatusSummary', { 
+                    todo: sprintStats.todoTasks, 
+                    inProgress: sprintStats.inProgressTasks, 
+                    done: sprintStats.completedTasks 
+                  })}
                 </p>
               </CardContent>
             </Card>
@@ -223,7 +227,10 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                       <div className="text-right">
                         <div className="text-xl font-bold text-accent">{learner.completionRate}%</div>
                         <p className="text-sm text-muted-foreground">
-                          {learner.tasksCompleted}/{learner.totalTasks} {t('common.labels.tasks')} {t('common.status.done')}
+                          {t('common.phrases.taskCountWithDone', { 
+                            completed: learner.tasksCompleted, 
+                            total: learner.totalTasks
+                          })}
                         </p>
                       </div>
                     </div>
@@ -241,7 +248,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                           </div>
                           <p className="text-sm font-medium text-foreground">{subject}</p>
                           <p className="text-xs text-muted-foreground">
-                            {stats.completed}/{stats.total} {t('common.labels.tasks')}
+                            {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
                           </p>
                         </div>
                       ))}

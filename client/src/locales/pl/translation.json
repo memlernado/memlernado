@@ -35,6 +35,16 @@
       "tasks": "zadania",
       "noTasksAssigned": "Brak przypisanych zadań"
     },
+    "phrases": {
+      "taskStatusSummary": "{{todo}} Do zrobienia, {{inProgress}} W trakcie, {{done}} Gotowe",
+      "taskCountWithStatus": "{{completed}}/{{total}} zadań {{status}}",
+      "taskCountWithDone": "{{completed}}/{{total}} zadań ukończonych",
+      "taskCount": "{{count}} zadań",
+      "taskCountFraction": "{{fraction}} zadań",
+      "taskCountAssigned": "{{count}} zadań przypisanych",
+      "taskCountDone": "{{count}} zadań ukończonych",
+      "taskCountDoneFraction": "{{fraction}} zadań ukończonych"
+    },
     "status": {
       "active": "Aktywny",
       "inactive": "Nieaktywny",

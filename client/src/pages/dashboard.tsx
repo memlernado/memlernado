@@ -109,7 +109,11 @@ export default function Dashboard() {
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{sprintStats.totalTasks}</div>
               <p className="text-sm text-muted-foreground">
-                {sprintStats.todoTasks} {t('common.status.todo')}, {sprintStats.inProgressTasks} {t('common.status.inProgress')}, {sprintStats.completedTasks} {t('common.status.done')}
+                {t('common.phrases.taskStatusSummary', { 
+                  todo: sprintStats.todoTasks, 
+                  inProgress: sprintStats.inProgressTasks, 
+                  done: sprintStats.completedTasks 
+                })}
               </p>
             </CardContent>
           </Card>
@@ -164,14 +168,14 @@ export default function Dashboard() {
                       <div>
                         <CardTitle className="text-lg">{learner.name}</CardTitle>
                         <CardDescription>
-                          {learner.totalTasks > 0 ? `${learner.totalTasks} ${t('common.labels.tasks')} assigned` : t('common.labels.noTasksAssigned')}
+                          {learner.totalTasks > 0 ? t('common.phrases.taskCountAssigned', { count: learner.totalTasks }) : t('common.labels.noTasksAssigned')}
                         </CardDescription>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="text-2xl font-bold text-accent">{learner.completionRate}%</div>
                       <p className="text-sm text-muted-foreground">
-                        {learner.tasksCompleted}/{learner.totalTasks} {t('common.labels.tasks')} done
+                        {t('common.phrases.taskCountDoneFraction', { fraction: `${learner.tasksCompleted}/${learner.totalTasks}` })}
                       </p>
                     </div>
                   </div>
@@ -194,7 +198,7 @@ export default function Dashboard() {
                         </div>
                         <p className="text-sm font-medium text-foreground">{subject}</p>
                         <p className="text-xs text-muted-foreground">
-                          {stats.completed}/{stats.total} {t('common.labels.tasks')}
+                          {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
                         </p>
                       </div>
                     ))}
