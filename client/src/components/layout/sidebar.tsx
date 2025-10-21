@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type { WorkspaceMemberWithUser, Sprint } from "@shared/schema";
+import type { Sprint } from "@shared/schema";
 import { Link, useLocation } from "wouter";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { 
@@ -101,22 +100,11 @@ export default function Sidebar() {
           <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
             Current Sprint
           </label>
-          <Select value={activeSprint?.id || "no-sprint"} data-testid="select-active-sprint">
-            <SelectTrigger className="mt-2 w-full">
-              <SelectValue placeholder={activeSprint ? activeSprint.name : "No active sprint"} />
-            </SelectTrigger>
-            <SelectContent>
-              {activeSprint ? (
-                <SelectItem value={activeSprint.id}>
-                  {activeSprint.name}
-                </SelectItem>
+          {activeSprint ? (
+                <p className="text-sm text-foreground">{activeSprint.name}</p>
               ) : (
-                <SelectItem value="no-sprint">
-                  No active sprint
-                </SelectItem>
+                <p className="text-sm text-muted-foreground">No active sprint</p>
               )}
-            </SelectContent>
-          </Select>
         </div>
 
         {/* Navigation Menu */}

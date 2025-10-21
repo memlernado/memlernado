@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import type { Workspace, WorkspaceMemberWithUser, WorkspaceWithStats } from "@shared/schema";
+import type {  WorkspaceMemberWithUser, WorkspaceWithStats } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";

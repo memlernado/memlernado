@@ -5,9 +5,8 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import CreateWorkspaceModal from "@/components/modals/create-workspace-modal";
-import { GraduationCap, Bell, LogOut, Plus } from "lucide-react";
+import { GraduationCap, LogOut, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +17,7 @@ import {
 
 export default function Navigation() {
   const { user, logoutMutation } = useAuth();
-  const { selectedWorkspaceId, selectedWorkspace, workspaces, setSelectedWorkspaceId } = useWorkspace();
+  const { selectedWorkspaceId, workspaces, setSelectedWorkspaceId } = useWorkspace();
   const [, setLocation] = useLocation();
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   

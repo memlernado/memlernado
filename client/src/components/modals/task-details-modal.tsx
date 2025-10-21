@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Clock, User, BookOpen, Calendar } from "lucide-react";
+import { Clock, User, Calendar } from "lucide-react";
 
 
 interface TaskDetailsModalProps {

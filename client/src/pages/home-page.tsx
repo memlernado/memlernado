@@ -22,7 +22,7 @@ export default function HomePage() {
   });
 
   // Fetch global dashboard statistics
-  const { data: dashboardStats, isLoading: isStatsLoading } = useQuery<DashboardStats>({
+  const { data: dashboardStats } = useQuery<DashboardStats>({
     queryKey: ["/api/dashboard"],
   });
 

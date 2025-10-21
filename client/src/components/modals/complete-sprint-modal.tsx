@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useLocation } from "wouter";
 import type { Sprint, TaskWithRelations } from "@shared/schema";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle, AlertCircle, Clock, Users } from "lucide-react";
+import { CheckCircle, AlertCircle, Clock } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -18,7 +16,6 @@ interface CompleteSprintModalProps {
 }
 
 export default function CompleteSprintModal({ isOpen, onClose, sprint }: CompleteSprintModalProps) {
-  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { selectedWorkspaceId } = useWorkspace();

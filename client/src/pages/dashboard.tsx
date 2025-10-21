@@ -4,9 +4,8 @@ import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { CalendarDays, Clock, Target, TrendingUp, Calendar } from "lucide-react";
+import { Target, TrendingUp, Calendar } from "lucide-react";
 
 
 export default function Dashboard() {

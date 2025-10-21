@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { TaskWithRelations, Sprint } from "@shared/schema";
+import type { TaskWithRelations } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
 import KanbanBoard from "@/components/kanban-board";
@@ -8,7 +8,7 @@ import TaskModal from "@/components/modals/task-modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Archive, Users, Clock, ListPlus } from "lucide-react";
+import { Plus, Archive, Users, Clock } from "lucide-react";
 
 function EmptyBacklogState() {
   return (
@@ -36,8 +36,6 @@ function EmptyBacklogState() {
 
 export default function Backlog() {
   const [showTaskModal, setShowTaskModal] = useState(false);
-  const [showAssignModal, setShowAssignModal] = useState(false);
-  const [selectedSprint, setSelectedSprint] = useState<Sprint | null>(null);
   const { selectedWorkspaceId } = useWorkspace();
 
   // Fetch backlog tasks (tasks with sprintId = null)
@@ -45,14 +43,6 @@ export default function Backlog() {
     queryKey: ["/api/workspaces", selectedWorkspaceId, "backlog"],
     enabled: !!selectedWorkspaceId,
   });
-
-  // Fetch draft sprints for assignment
-  const { data: sprints = [] } = useQuery<Sprint[]>({
-    queryKey: ["/api/workspaces", selectedWorkspaceId, "sprints"],
-    enabled: !!selectedWorkspaceId,
-  });
-
-  const draftSprints = sprints.filter(sprint => sprint.status === 'draft');
 
   // If no workspace selected or loading, show loading state
   if (!selectedWorkspaceId || isLoading) {

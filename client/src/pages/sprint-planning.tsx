@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/use-auth";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { useLocation } from "wouter";
 import type { Sprint } from "@shared/schema";
@@ -19,7 +18,6 @@ import CompleteSprintModal from "@/components/modals/complete-sprint-modal";
 import AssignTasksModal from "@/components/modals/assign-tasks-modal";
 
 export default function SprintPlanning() {
-  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { selectedWorkspaceId, selectedWorkspace } = useWorkspace();
