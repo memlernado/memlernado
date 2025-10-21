@@ -219,39 +219,6 @@
     "joined": "Dołączył:",
     "viewProgress": "Zobacz Postęp"
   },
-  "modals": {
-    "task": {
-      "createTitle": "Utwórz Nowe Zadanie",
-      "createDescription": "Dodaj nowe zadanie edukacyjne do aktualnego sprintu",
-      "taskTitle": "Tytuł Zadania",
-      "taskTitlePlaceholder": "Wprowadź tytuł zadania...",
-      "taskDescription": "Opis",
-      "taskDescriptionPlaceholder": "Opisz, co uczeń musi zrobić...",
-      "subject": "Przedmiot",
-      "selectSubject": "Wybierz przedmiot",
-      "estimatedTime": "Szacowany Czas",
-      "estimatedTimePlaceholder": "np., 30min, 1h",
-      "assignToLearner": "Przypisz do Ucznia",
-      "selectLearner": "Wybierz ucznia",
-      "createTask": "Utwórz Zadanie",
-      "creating": "Tworzenie...",
-      "validation": {
-        "titleRequired": "Tytuł zadania jest wymagany.",
-        "subjectRequired": "Proszę wybrać przedmiot.",
-        "assigneeRequired": "Proszę przypisać zadanie do ucznia."
-      }
-    },
-    "workspace": {
-      "createTitle": "Utwórz Nową Przestrzeń Roboczą",
-      "createDescription": "Skonfiguruj nową przestrzeń roboczą dla swojej grupy edukacji domowej",
-      "workspaceName": "Nazwa Przestrzeni Roboczej",
-      "workspaceNamePlaceholder": "Wprowadź nazwę przestrzeni roboczej...",
-      "workspaceDescription": "Opis",
-      "workspaceDescriptionPlaceholder": "Opisz swoją przestrzeń roboczą...",
-      "createWorkspace": "Utwórz Przestrzeń Roboczą",
-      "creating": "Tworzenie..."
-    }
-  },
   "backlog": {
     "title": "Zaległości Produktu",
     "subtitle": "Organizuj i priorytetyzuj zadania dla przyszłych sprintów",
@@ -263,7 +230,7 @@
     "addTask": "Dodaj Zadanie",
     "stats": {
       "toDo": "Do zrobienia",
-      "inProgress": "W trakcie", 
+      "inProgress": "W trakcie",
       "done": "Gotowe",
       "totalTasks": "wszystkich zadań"
     },
@@ -302,8 +269,10 @@
       },
       "workspace": {
         "active": "Aktywna",
-        "learners": "{{count}} uczeń{{count, plural, one {} other {}}",
-        "sprints": "{{count}} aktywny sprint{{count, plural, one {} other {}}",
+        "learners": "{{count}} uczeń",
+        "learners_other": "{{count}} uczniowie",
+        "sprints": "{{count}} aktywny sprint",
+        "sprints_other": "{{count}} aktywne sprinty",
         "enterWorkspace": "Wejdź do Przestrzeni"
       }
     },
@@ -347,10 +316,9 @@
     "loading": "Ładowanie ustawień przestrzeni roboczej...",
     "workspaceDetails": {
       "title": "Szczegóły Przestrzeni Roboczej",
-      "description": "Zaktualizuj nazwę i opis swojej przestrzeni roboczej",
+      "description": "Opis",
       "name": "Nazwa Przestrzeni Roboczej",
       "namePlaceholder": "Wprowadź nazwę przestrzeni roboczej",
-      "description": "Opis",
       "descriptionPlaceholder": "Wprowadź opis przestrzeni roboczej",
       "saveChanges": "Zapisz Zmiany",
       "saving": "Zapisywanie..."
@@ -423,18 +391,18 @@
       "noSubject": "Brak Przedmiotu",
       "assignee": "Nieprzypisane",
       "progress": "Postęp",
-      "timeSpent": "Spędzony czas: {{time}}",
+      "timeSpent": "Czas spędzony: {{time}}",
       "close": "Zamknij",
       "editTask": "Edytuj Zadanie",
-      "cancel": "Anuluj",
-      "saveChanges": "Zapisz Zmiany",
-      "saving": "Zapisywanie...",
       "editTitle": "Tytuł Zadania",
       "editDescription": "Opis",
       "editSubject": "Przedmiot",
       "editEstimatedTime": "Szacowany Czas",
       "editAssignee": "Przypisz do Ucznia",
-      "editProgress": "Postęp: {{progress}}%"
+      "editProgress": "Postęp: {{progress}}%",
+      "cancel": "Anuluj",
+      "saving": "Zapisywanie...",
+      "saveChanges": "Zapisz Zmiany"
     },
     "workspace": {
       "createTitle": "Utwórz Nową Przestrzeń Roboczą",
@@ -448,13 +416,13 @@
       "cancel": "Anuluj"
     },
     "progress": {
-      "title": "Tablica Postępu Sprintu",
+      "title": "Panel Postępu Sprintu",
       "loading": "Ładowanie danych postępu...",
       "stats": {
-        "totalTasks": "Wszystkie Zadania",
+        "totalTasks": "Łączna Liczba Zadań",
         "completionRate": "Wskaźnik Ukończenia",
-        "timeSpent": "Spędzony Czas",
         "aboveTarget": "Powyżej celu (60%)",
+        "timeSpent": "Czas Spędzony",
         "target": "Cel: {{target}} w tym tygodniu"
       },
       "individualProgress": "Postęp Indywidualny",
@@ -468,22 +436,22 @@
     },
     "completeSprint": {
       "title": "Ukończ Sprint",
-      "description": "Czy jesteś gotowy ukończyć ten sprint? Nieukończone zadania zostaną automatycznie przeniesione do zaległości.",
+      "description": "Czy jesteś gotowy do ukończenia tego sprintu? Nieukończone zadania zostaną automatycznie przeniesione do zaległości.",
       "sprintSummary": "Podsumowanie Sprintu",
       "completed": "Ukończone",
       "incomplete": "Nieukończone",
+      "completionRate": "{{rate}}% Ukończone",
       "overallProgress": "Ogólny Postęp",
-      "incompleteWarning": {
-        "title": "Nieukończone Zadania",
-        "description": "{{count}} zadanie{{count, plural, one {} other {}}} zostanie skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\"."
-      },
+      "incompleteTasks": "Nieukończone Zadania",
+      "incompleteTasksDescription": "{{count}} zadanie zostanie skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\".",
+      "incompleteTasksDescription_other": "{{count}} zadania zostaną skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\".",
       "cancel": "Anuluj",
-      "complete": "Ukończ Sprint",
-      "completing": "Ukończanie..."
+      "completing": "Ukończanie...",
+      "completeSprint": "Ukończ Sprint"
     },
     "assignTasks": {
       "title": "Przypisz Zadania do Sprintu",
-      "description": "Wybierz zadania z zaległości, aby przypisać do tego sprintu.",
+      "description": "Wybierz zadania z zaległości, aby przypisać je do tego sprintu.",
       "draft": "Szkic",
       "noTasks": {
         "title": "Brak zadań w zaległościach",
@@ -491,10 +459,10 @@
       },
       "selectAll": "Wybierz Wszystkie ({{count}} zadań)",
       "selected": "{{count}} wybranych",
-      "tasksInSubject": "{{count}} zadanie{{count, plural, one {} other {}}}",
+      "taskCount": "{{count}} zadanie",
       "cancel": "Anuluj",
-      "assign": "Przypisz {{count}} Zadanie{{count, plural, one {} other {}}}",
-      "assigning": "Przypisywanie..."
+      "assigning": "Przypisywanie...",
+      "assignTasks": "Przypisz {{count}} Zadanie"
     },
     "learnerProgress": {
       "title": "Postęp {{name}}",
@@ -517,72 +485,6 @@
         "currentlyWorking": "Obecnie Pracuje Nad",
         "upcomingTasks": "Nadchodzące Zadania"
       }
-    },
-    "progress": {
-      "title": "Panel Postępu Sprintu",
-      "loading": "Ładowanie danych postępu...",
-      "stats": {
-        "totalTasks": "Łączna Liczba Zadań",
-        "completionRate": "Wskaźnik Ukończenia",
-        "aboveTarget": "Powyżej celu (60%)",
-        "timeSpent": "Czas Spędzony",
-        "target": "Cel: {{target}} w tym tygodniu"
-      },
-      "individualProgress": "Postęp Indywidualny",
-      "noLearners": "Nie znaleziono uczniów w tej przestrzeni roboczej.",
-      "sprintSummary": {
-        "title": "Podsumowanie Sprintu",
-        "tasksCompleted": "Zadania Ukończone",
-        "inProgress": "W Trakcie",
-        "remainingTasks": "Pozostałe Zadania"
-      }
-    },
-    "taskDetails": {
-      "title": "Szczegóły Zadania",
-      "noSubject": "Brak Przedmiotu",
-      "assignee": "Nieprzypisane",
-      "progress": "Postęp",
-      "timeSpent": "Czas spędzony: {{time}}",
-      "close": "Zamknij",
-      "editTask": "Edytuj Zadanie",
-      "editTitle": "Tytuł Zadania",
-      "editDescription": "Opis",
-      "editSubject": "Przedmiot",
-      "editEstimatedTime": "Szacowany Czas",
-      "editAssignee": "Przypisz do Ucznia",
-      "editProgress": "Postęp: {{progress}}%",
-      "cancel": "Anuluj",
-      "saving": "Zapisywanie...",
-      "saveChanges": "Zapisz Zmiany"
-    },
-    "assignTasks": {
-      "title": "Przypisz Zadania do Sprintu",
-      "description": "Wybierz zadania z zaległości, aby przypisać je do tego sprintu.",
-      "draft": "Szkic",
-      "noTasks": {
-        "title": "Brak zadań w zaległościach",
-        "description": "Najpierw utwórz zadania w zaległościach, a następnie przypisz je do sprintów."
-      },
-      "selectAll": "Wybierz Wszystkie ({{count}} zadań)",
-      "selected": "{{count}} wybranych",
-      "taskCount": "{{count}} zadanie",
-      "cancel": "Anuluj",
-      "assigning": "Przypisywanie...",
-      "assignTasks": "Przypisz {{count}} Zadanie"
-    },
-    "completeSprint": {
-      "title": "Ukończ Sprint",
-      "description": "Czy jesteś gotowy do ukończenia tego sprintu? Nieukończone zadania zostaną automatycznie przeniesione do zaległości.",
-      "sprintSummary": "Podsumowanie Sprintu",
-      "completed": "Ukończone",
-      "incomplete": "Nieukończone",
-      "completionRate": "{{rate}}% Ukończone",
-      "overallProgress": "Ogólny Postęp",
-      "incompleteTasks": "Nieukończone Zadania",
-      "incompleteTasksDescription": "{{count}} zadanie{{count, plural, one {} other {}}} zostanie skopiowane do zaległości i zresetowane do statusu \"Do zrobienia\".",
-      "cancel": "Anuluj",
-      "completing": "Ukończanie...",
-      "completeSprint": "Ukończ Sprint"
     }
   },
   "components": {
@@ -616,7 +518,8 @@
       "sprintStarted": "Sprint rozpoczęty",
       "sprintStartedDescription": "Sprint jest teraz aktywny i gotowy do użycia.",
       "workspaceCreated": "Przestrzeń robocza została pomyślnie utworzona!",
-      "tasksAssigned": "{{count}} zadanie{{count, plural, one {} other {}}} przypisane{{count, plural, one {} other {}}} do {{sprintName}}.",
+      "tasksAssigned": "{{count}} zadanie przypisane do {{sprintName}}.",
+      "tasksAssigned_other": "{{count}} zadania przypisane do {{sprintName}}.",
       "sprintCompleted": "Sprint ukończony",
       "sprintCompletedDescription": "Sprint został ukończony, a nieukończone zadania przeniesione do zaległości."
     },

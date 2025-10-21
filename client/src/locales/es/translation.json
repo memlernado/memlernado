@@ -1,639 +1,542 @@
 {
   "common": {
     "buttons": {
-      "save": "Guardar",
-      "cancel": "Cancelar",
-      "create": "Crear",
-      "edit": "Editar",
-      "delete": "Eliminar",
-      "close": "Cerrar",
-      "submit": "Enviar",
-      "loading": "Cargando...",
-      "signIn": "Iniciar sesión",
-      "signOut": "Cerrar sesión",
-      "signUp": "Registrarse",
-      "add": "Agregar",
-      "view": "Ver",
-      "start": "Iniciar",
-      "complete": "Completar",
-      "assign": "Asignar"
+      "save": "Save",
+      "cancel": "Cancel",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "close": "Close",
+      "submit": "Submit",
+      "loading": "Loading...",
+      "signIn": "Sign in",
+      "signOut": "Sign out",
+      "signUp": "Sign up",
+      "add": "Add",
+      "view": "View",
+      "start": "Start",
+      "complete": "Complete",
+      "assign": "Assign"
     },
     "labels": {
-      "name": "Nombre",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "username": "Nombre de usuario",
-      "firstName": "Nombre",
-      "lastName": "Apellido",
-      "role": "Rol",
-      "description": "Descripción",
-      "date": "Fecha",
-      "time": "Hora",
-      "status": "Estado",
-      "progress": "Progreso",
-      "completion": "Finalización",
-      "tasks": "tareas",
-      "noTasksAssigned": "Sin tareas asignadas"
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "username": "Username",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "role": "Role",
+      "description": "Description",
+      "date": "Date",
+      "time": "Time",
+      "status": "Status",
+      "progress": "Progress",
+      "completion": "Completion",
+      "tasks": "tasks",
+      "noTasksAssigned": "No tasks assigned"
     },
     "phrases": {
-      "taskStatusSummary": "{{todo}} Por hacer, {{inProgress}} En progreso, {{done}} Hechas",
-      "taskCountWithStatus": "{{completed}}/{{total}} tareas {{status}}",
-      "taskCountWithDone": "{{completed}}/{{total}} tareas hechas",
-      "taskCount": "{{count}} tareas",
-      "taskCountFraction": "{{fraction}} tareas",
-      "taskCountAssigned": "{{count}} tareas asignadas",
-      "taskCountDone": "{{count}} tareas hechas",
-      "taskCountDoneFraction": "{{fraction}} tareas hechas"
+      "taskStatusSummary": "{{todo}} To Do, {{inProgress}} In Progress, {{done}} Done",
+      "taskCountWithStatus": "{{completed}}/{{total}} tasks {{status}}",
+      "taskCountWithDone": "{{completed}}/{{total}} tasks done",
+      "taskCount": "{{count}} tasks",
+      "taskCountFraction": "{{fraction}} tasks",
+      "taskCountAssigned": "{{count}} tasks assigned",
+      "taskCountDone": "{{count}} tasks done",
+      "taskCountDoneFraction": "{{fraction}} tasks done"
     },
     "status": {
-      "active": "Activo",
-      "inactive": "Inactivo",
-      "completed": "Completado",
-      "draft": "Borrador",
-      "todo": "Por hacer",
-      "inProgress": "En progreso",
-      "done": "Hecho"
+      "active": "Active",
+      "inactive": "Inactive",
+      "completed": "Completed",
+      "draft": "Draft",
+      "todo": "To Do",
+      "inProgress": "In Progress",
+      "done": "Done"
     },
     "roles": {
-      "facilitator": "Facilitador/Padre",
-      "learner": "Estudiante/Aprendiz"
+      "facilitator": "Facilitator/Parent",
+      "learner": "Learner/Student"
     },
     "subjects": {
-      "math": "Matemáticas",
-      "science": "Ciencias",
-      "english": "Inglés",
-      "history": "Historia",
-      "spanish": "Español",
-      "art": "Arte",
-      "music": "Música",
-      "physicalEducation": "Educación Física"
+      "math": "Math",
+      "science": "Science",
+      "english": "English",
+      "history": "History",
+      "spanish": "Spanish",
+      "art": "Art",
+      "music": "Music",
+      "physicalEducation": "Physical Education"
     }
   },
   "auth": {
     "login": {
-      "title": "Bienvenido de nuevo",
-      "subtitle": "Inicia sesión en tu cuenta de Memlernado",
-      "username": "Nombre de usuario",
-      "password": "Contraseña",
-      "button": "Iniciar sesión",
-      "buttonLoading": "Iniciando sesión..."
+      "title": "Welcome back",
+      "subtitle": "Sign in to your Memlernado account",
+      "username": "Username",
+      "password": "Password",
+      "button": "Sign in",
+      "buttonLoading": "Signing in..."
     },
     "register": {
-      "title": "Crear cuenta",
-      "subtitle": "Únete a Memlernado para comenzar a organizar tu viaje de educación en casa",
-      "firstName": "Nombre",
-      "lastName": "Apellido",
-      "email": "Correo electrónico",
-      "username": "Nombre de usuario",
-      "password": "Contraseña",
-      "role": "Rol",
-      "button": "Crear cuenta",
-      "buttonLoading": "Creando cuenta..."
+      "title": "Create account",
+      "subtitle": "Join Memlernado to start organizing your homeschool journey",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "username": "Username",
+      "password": "Password",
+      "role": "Role",
+      "button": "Create account",
+      "buttonLoading": "Creating account..."
     },
     "hero": {
-      "title": "Organiza tu Viaje de Educación en Casa",
-      "subtitle": "Transforma tu experiencia de educación en casa con la metodología SCRUM. Crea sprints, rastrea el progreso y celebra logros juntos.",
+      "title": "Organize Your Homeschool Journey",
+      "subtitle": "Transform your homeschool experience with SCRUM methodology. Create sprints, track progress, and celebrate achievements together.",
       "features": {
         "workspaces": {
-          "title": "Espacios de Trabajo Familiares",
-          "description": "Colabora con múltiples familias"
+          "title": "Family Workspaces",
+          "description": "Collaborate with multiple families"
         },
         "sprints": {
-          "title": "Planificación de Sprints",
-          "description": "Organiza el aprendizaje en sprints enfocados"
+          "title": "Sprint Planning",
+          "description": "Organize learning in focused sprints"
         },
         "progress": {
-          "title": "Seguimiento de Progreso",
-          "description": "Tableros de progreso visuales"
+          "title": "Progress Tracking",
+          "description": "Visual progress dashboards"
         },
         "childFriendly": {
-          "title": "Apto para Niños",
-          "description": "Diseñado para jóvenes estudiantes"
+          "title": "Child-Friendly",
+          "description": "Designed for young learners"
         }
       }
     }
   },
   "navigation": {
     "brand": "Memlernado",
-    "tagline": "SCRUM Educativo",
-    "dashboard": "Tablero",
-    "backlog": "Pendientes",
-    "sprintBoard": "Tablero de Sprint",
-    "sprintPlanning": "Planificación de Sprint",
-    "learners": "Estudiantes",
-    "settings": "Configuración del Espacio",
-    "profileSettings": "Configuración del Perfil",
-    "workspaceSettings": "Configuración del Espacio",
-    "currentSprint": "Sprint Actual",
-    "noActiveSprint": "Sin sprint activo",
-    "activeLearners": "Estudiantes Activos",
-    "noLearners": "No hay estudiantes en el espacio"
+    "tagline": "Homeschool SCRUM",
+    "dashboard": "Dashboard",
+    "backlog": "Backlog",
+    "sprintBoard": "Sprint Board",
+    "sprintPlanning": "Sprint Planning",
+    "learners": "Learners",
+    "settings": "Workspace Settings",
+    "profileSettings": "Profile Settings",
+    "workspaceSettings": "Workspace Settings",
+    "currentSprint": "Current Sprint",
+    "noActiveSprint": "No active sprint",
+    "activeLearners": "Active Learners",
+    "noLearners": "No learners in workspace"
   },
   "dashboard": {
-    "title": "Tablero de Progreso",
-    "subtitle": "Rastrea el progreso de aprendizaje y el rendimiento del sprint",
-    "loading": "Cargando datos de progreso...",
+    "title": "Progress Dashboard",
+    "subtitle": "Track learning progress and sprint performance",
+    "loading": "Loading progress data...",
     "stats": {
-      "totalTasks": "Tareas Totales",
-      "completionRate": "Tasa de Finalización",
-      "sprintProgress": "Progreso del Sprint",
-      "aboveTarget": "Por encima del objetivo (60%)",
-      "onTrack": "En camino (40%+)",
-      "belowTarget": "Por debajo del objetivo (40%)"
+      "totalTasks": "Total Tasks",
+      "completionRate": "Completion Rate",
+      "sprintProgress": "Sprint Progress",
+      "aboveTarget": "Above target (60%)",
+      "onTrack": "On track (40%+)",
+      "belowTarget": "Below target (40%)"
     },
-    "individualProgress": "Progreso Individual",
-    "recentAchievements": "Logros Recientes",
-    "noAchievements": "Aún no hay logros",
-    "noAchievementsDescription": "Comienza completando tareas para ver logros e hitos aquí"
+    "individualProgress": "Individual Progress",
+    "recentAchievements": "Recent Achievements",
+    "noAchievements": "No achievements yet",
+    "noAchievementsDescription": "Start completing tasks to see achievements and milestones here"
   },
   "sprint": {
     "board": {
-      "title": "Tablero de Sprint",
-      "subtitle": "Organiza tus tareas de aprendizaje con metodología SCRUM",
-      "noActiveSprint": "Sin Sprint Activo",
-      "noActiveSprintDescription": "Este espacio de trabajo aún no tiene un sprint activo. Crea un sprint para comenzar a organizar tus tareas de aprendizaje.",
-      "createNewSprint": "Crear Nuevo Sprint",
-      "scrumDescription": "En la metodología SCRUM, todo el trabajo se organiza alrededor de sprints - períodos enfocados para completar objetivos de aprendizaje específicos.",
-      "sprintCompleted": "Sprint Completado",
-      "sprintCompletedDescription": "Este sprint ha sido completado. Visita la Planificación de Sprint para comenzar un nuevo sprint.",
-      "goToSprintPlanning": "Ir a Planificación de Sprint",
-      "addTask": "Agregar Tarea",
-      "viewProgress": "Ver Progreso",
+      "title": "Sprint Board",
+      "subtitle": "Organize your learning tasks with SCRUM methodology",
+      "noActiveSprint": "No Active Sprint",
+      "noActiveSprintDescription": "This workspace doesn't have an active sprint yet. Create a sprint to start organizing your learning tasks.",
+      "createNewSprint": "Create New Sprint",
+      "scrumDescription": "In SCRUM methodology, all work is organized around sprints - focused periods for completing specific learning goals.",
+      "sprintCompleted": "Sprint Completed",
+      "sprintCompletedDescription": "This sprint has been completed. Visit Sprint Planning to start a new sprint.",
+      "goToSprintPlanning": "Go to Sprint Planning",
+      "addTask": "Add Task",
+      "viewProgress": "View Progress",
       "columns": {
-        "todo": "Por hacer",
-        "inProgress": "En progreso",
-        "done": "Hecho"
+        "todo": "To Do",
+        "inProgress": "In Progress",
+        "done": "Done"
       },
       "progress": {
-        "sprintProgress": "Progreso del Sprint"
+        "sprintProgress": "Sprint Progress"
       }
     },
     "planning": {
-      "title": "Planificación de Sprint",
-      "subtitle": "Crea y gestiona sprints de aprendizaje para tu espacio de trabajo",
-      "createSprint": "Crear Nuevo Sprint",
-      "editSprint": "Editar Sprint",
-      "sprintName": "Nombre del Sprint",
-      "sprintNamePlaceholder": "ej., Semana 4: Historia y Geografía",
-      "workspace": "Espacio de Trabajo",
-      "sprintDescription": "Descripción",
-      "sprintDescriptionPlaceholder": "Describe el enfoque y objetivos para este sprint...",
-      "startDate": "Fecha de Inicio",
-      "endDate": "Fecha de Fin",
-      "activeSprint": "Sprint Activo",
-      "draftSprints": "Sprints Borrador",
-      "completedSprints": "Sprints Completados",
-      "noDraftSprints": "Sin sprints borrador",
-      "noDraftSprintsDescription": "Crea un nuevo sprint para planificar tu próximo ciclo de aprendizaje",
-      "createDraftSprint": "Crear Sprint Borrador",
-      "assignTasks": "Asignar Tareas",
-      "startSprint": "Iniciar Sprint",
-      "starting": "Iniciando...",
-      "viewBoard": "Ver Tablero",
-      "completeSprint": "Completar Sprint",
-      "edit": "Editar",
-      "cannotStartSprint": "No se puede iniciar sprint mientras otro sprint esté activo",
-      "plannedTasks": "tareas planificadas",
-      "finalCompletion": "finalización final",
-      "readOnly": "Solo lectura • Sprint completado"
+      "title": "Sprint Planning",
+      "subtitle": "Create and manage learning sprints for your workspace",
+      "createSprint": "Create New Sprint",
+      "editSprint": "Edit Sprint",
+      "sprintName": "Sprint Name",
+      "sprintNamePlaceholder": "e.g., Week 4: History & Geography",
+      "workspace": "Workspace",
+      "sprintDescription": "Description",
+      "sprintDescriptionPlaceholder": "Describe the focus and goals for this sprint...",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "activeSprint": "Active Sprint",
+      "draftSprints": "Draft Sprints",
+      "completedSprints": "Completed Sprints",
+      "noDraftSprints": "No draft sprints",
+      "noDraftSprintsDescription": "Create a new sprint to plan your next learning cycle",
+      "createDraftSprint": "Create Draft Sprint",
+      "assignTasks": "Assign Tasks",
+      "startSprint": "Start Sprint",
+      "starting": "Starting...",
+      "viewBoard": "View Board",
+      "completeSprint": "Complete Sprint",
+      "edit": "Edit",
+      "cannotStartSprint": "Cannot start sprint while another sprint is active",
+      "plannedTasks": "planned tasks",
+      "finalCompletion": "final completion",
+      "readOnly": "Read-only • Completed sprint"
     }
   },
   "learners": {
-    "title": "Estudiantes",
-    "subtitle": "Gestiona miembros del espacio de trabajo e invita nuevos estudiantes",
-    "loading": "Cargando miembros del espacio de trabajo...",
-    "inviteLearner": "Invitar Estudiante",
+    "title": "Learners",
+    "subtitle": "Manage workspace members and invite new learners",
+    "loading": "Loading workspace members...",
+    "inviteLearner": "Invite Learner",
     "stats": {
-      "totalLearners": "Total de Estudiantes",
-      "facilitators": "Facilitadores",
-      "totalMembers": "Total de Miembros",
-      "activeInWorkspace": "Activos en el espacio",
-      "managingWorkspace": "Gestionando el espacio",
-      "inWorkspace": "En el espacio"
+      "totalLearners": "Total Learners",
+      "facilitators": "Facilitators",
+      "totalMembers": "Total Members",
+      "activeInWorkspace": "Active in workspace",
+      "managingWorkspace": "Managing workspace",
+      "inWorkspace": "In workspace"
     },
     "noLearners": {
-      "title": "Aún no hay estudiantes",
-      "description": "Invita estudiantes para comenzar a rastrear su progreso y asignar tareas",
-      "inviteFirstLearner": "Invita tu Primer Estudiante"
+      "title": "No learners yet",
+      "description": "Invite learners to start tracking their progress and assigning tasks",
+      "inviteFirstLearner": "Invite Your First Learner"
     },
-    "joined": "Se unió:",
-    "viewProgress": "Ver Progreso"
-  },
-  "modals": {
-    "task": {
-      "createTitle": "Crear Nueva Tarea",
-      "createDescription": "Agregar una nueva tarea de aprendizaje al sprint actual",
-      "taskTitle": "Título de la Tarea",
-      "taskTitlePlaceholder": "Ingresa el título de la tarea...",
-      "taskDescription": "Descripción",
-      "taskDescriptionPlaceholder": "Describe lo que el estudiante necesita hacer...",
-      "subject": "Materia",
-      "selectSubject": "Seleccionar materia",
-      "estimatedTime": "Tiempo Estimado",
-      "estimatedTimePlaceholder": "ej., 30min, 1h",
-      "assignToLearner": "Asignar a Estudiante",
-      "selectLearner": "Seleccionar estudiante",
-      "createTask": "Crear Tarea",
-      "creating": "Creando...",
-      "validation": {
-        "titleRequired": "El título de la tarea es requerido.",
-        "subjectRequired": "Por favor selecciona una materia.",
-        "assigneeRequired": "Por favor asigna la tarea a un estudiante."
-      }
-    },
-    "workspace": {
-      "createTitle": "Crear Nuevo Espacio de Trabajo",
-      "createDescription": "Configura un nuevo espacio de trabajo para tu grupo de educación en casa",
-      "workspaceName": "Nombre del Espacio de Trabajo",
-      "workspaceNamePlaceholder": "Ingresa el nombre del espacio de trabajo...",
-      "workspaceDescription": "Descripción",
-      "workspaceDescriptionPlaceholder": "Describe tu espacio de trabajo...",
-      "createWorkspace": "Crear Espacio de Trabajo",
-      "creating": "Creando..."
-    }
+    "joined": "Joined:",
+    "viewProgress": "View Progress"
   },
   "backlog": {
-    "title": "Pendientes del Producto",
-    "subtitle": "Organiza y prioriza tareas para futuros sprints",
+    "title": "Product Backlog",
+    "subtitle": "Organize and prioritize tasks for future sprints",
     "emptyState": {
-      "title": "Pendientes Vacíos",
-      "description": "Aún no hay tareas en los pendientes. Crea tareas aquí para planificar trabajo futuro.",
-      "info": "Los pendientes son donde organizas tareas antes de asignarlas a sprints. Las tareas aquí pueden ser refinadas, priorizadas y movidas a sprints activos durante la planificación de sprint."
+      "title": "Empty Backlog",
+      "description": "No tasks in the backlog yet. Create tasks here to plan future work.",
+      "info": "The backlog is where you organize tasks before assigning them to sprints. Tasks here can be refined, prioritized, and moved to active sprints during sprint planning."
     },
-    "addTask": "Agregar Tarea",
+    "addTask": "Add Task",
     "stats": {
-      "toDo": "Por hacer",
-      "inProgress": "En progreso", 
-      "done": "Hecho",
-      "totalTasks": "tareas totales"
+      "toDo": "To Do",
+      "inProgress": "In Progress",
+      "done": "Done",
+      "totalTasks": "total tasks"
     },
     "infoCard": {
-      "title": "Tareas Pendientes",
-      "description": "Estas tareas aún no están asignadas a ningún sprint. Usa la página de Planificación de Sprint para mover tareas de los pendientes a sprints activos.",
+      "title": "Backlog Tasks",
+      "description": "These tasks are not yet assigned to any sprint. Use the Sprint Planning page to move tasks from the backlog to active sprints.",
       "features": {
-        "assignable": "Las tareas pueden ser asignadas a estudiantes",
-        "estimates": "Estima tiempo y establece prioridades",
-        "movable": "Mueve a sprints durante la planificación"
+        "assignable": "Tasks can be assigned to learners",
+        "estimates": "Estimate time and set priorities",
+        "movable": "Move to sprints during planning"
       }
     }
   },
   "home": {
-    "welcome": "¡Bienvenido de nuevo, {{name}}! 👋",
-    "subtitle": "Esto es lo que está pasando con tu viaje de educación en casa",
-    "newSprint": "Nuevo Sprint",
-    "viewBoard": "Ver Tablero",
+    "welcome": "Welcome back, {{name}}! 👋",
+    "subtitle": "Here's what's happening with your homeschool journey",
+    "newSprint": "New Sprint",
+    "viewBoard": "View Board",
     "stats": {
-      "taskCompletion": "Finalización de Tareas",
-      "activeSprints": "Sprints Activos",
-      "learners": "Estudiantes",
-      "thisWeek": "Esta Semana",
-      "tasksDone": "{{completed}} de {{total}} tareas hechas",
-      "totalSprints": "{{total}} sprints totales",
-      "activeInSprints": "Activos en sprints actuales",
-      "learningTime": "Tiempo de aprendizaje registrado"
+      "taskCompletion": "Task Completion",
+      "activeSprints": "Active Sprints",
+      "learners": "Learners",
+      "thisWeek": "This Week",
+      "tasksDone": "{{completed}} of {{total}} tasks done",
+      "totalSprints": "{{total}} total sprints",
+      "activeInSprints": "Active in current sprints",
+      "learningTime": "Learning time logged"
     },
     "workspaces": {
-      "title": "Tus Espacios de Trabajo",
-      "createWorkspace": "Crear Espacio de Trabajo",
+      "title": "Your Workspaces",
+      "createWorkspace": "Create Workspace",
       "noWorkspaces": {
-        "title": "Aún no hay espacios de trabajo",
-        "description": "Crea tu primer espacio de trabajo para comenzar a organizar tu viaje de educación en casa",
-        "button": "Crear tu Primer Espacio de Trabajo"
+        "title": "No workspaces yet",
+        "description": "Create your first workspace to start organizing your homeschool journey",
+        "button": "Create Your First Workspace"
       },
       "workspace": {
-        "active": "Activo",
-        "learners": "{{count}} estudiante{{count, plural, one {} other {s}}}",
-        "sprints": "{{count}} sprint activo{{count, plural, one {} other {s}}}",
-        "enterWorkspace": "Entrar al Espacio"
+        "active": "Active",
+        "learners": "{{count}} learner",
+        "learners_other": "{{count}} learners",
+        "sprints": "{{count}} active sprint",
+        "sprints_other": "{{count}} active sprints",
+        "enterWorkspace": "Enter Workspace"
       }
     },
     "recentActivity": {
-      "title": "Actividad Reciente",
+      "title": "Recent Activity",
       "noActivity": {
-        "title": "Aún no hay actividad",
-        "description": "Comienza trabajando en tareas para ver actividad reciente aquí"
+        "title": "No activity yet",
+        "description": "Start working on tasks to see recent activity here"
       }
     }
   },
   "sprintBoard": {
-    "title": "Tablero de Sprint",
-    "subtitle": "Organiza tus tareas de aprendizaje con metodología SCRUM",
-    "loading": "Cargando...",
+    "title": "Sprint Board",
+    "subtitle": "Organize your learning tasks with SCRUM methodology",
+    "loading": "Loading...",
     "emptyState": {
-      "title": "Sin Sprint Activo",
-      "description": "Este espacio de trabajo aún no tiene un sprint activo. Crea un sprint para comenzar a organizar tus tareas de aprendizaje.",
-      "createButton": "Crear Nuevo Sprint",
-      "scrumInfo": "En la metodología SCRUM, todo el trabajo se organiza alrededor de sprints - períodos enfocados para completar objetivos de aprendizaje específicos."
+      "title": "No Active Sprint",
+      "description": "This workspace doesn't have an active sprint yet. Create a sprint to start organizing your learning tasks.",
+      "createButton": "Create New Sprint",
+      "scrumInfo": "In SCRUM methodology, all work is organized around sprints - focused periods for completing specific learning goals."
     },
     "completedState": {
-      "title": "Sprint Completado",
-      "description": "Este sprint ha sido completado. Visita la Planificación de Sprint para comenzar un nuevo sprint.",
-      "goToPlanning": "Ir a Planificación de Sprint"
+      "title": "Sprint Completed",
+      "description": "This sprint has been completed. Visit Sprint Planning to start a new sprint.",
+      "goToPlanning": "Go to Sprint Planning"
     },
-    "addTask": "Agregar Tarea",
-    "viewProgress": "Ver Progreso",
+    "addTask": "Add Task",
+    "viewProgress": "View Progress",
     "progress": {
-      "sprintProgress": "Progreso del Sprint: {{rate}}%"
+      "sprintProgress": "Sprint Progress: {{rate}}%"
     },
     "columns": {
-      "todo": "Por hacer",
-      "inProgress": "En progreso",
-      "done": "Hecho"
+      "todo": "To Do",
+      "inProgress": "In Progress",
+      "done": "Done"
     }
   },
   "settings": {
-    "title": "Configuración del Espacio de Trabajo",
-    "subtitle": "Gestiona la configuración de tu espacio de trabajo y miembros",
-    "loading": "Cargando configuración del espacio de trabajo...",
+    "title": "Workspace Settings",
+    "subtitle": "Manage your workspace configuration and members",
+    "loading": "Loading workspace settings...",
     "workspaceDetails": {
-      "title": "Detalles del Espacio de Trabajo",
-      "description": "Actualiza el nombre y descripción de tu espacio de trabajo",
-      "name": "Nombre del Espacio de Trabajo",
-      "namePlaceholder": "Ingresa el nombre del espacio de trabajo",
-      "description": "Descripción",
-      "descriptionPlaceholder": "Ingresa la descripción del espacio de trabajo",
-      "saveChanges": "Guardar Cambios",
-      "saving": "Guardando..."
+      "title": "Workspace Details",
+      "description": "Description",
+      "name": "Workspace Name",
+      "namePlaceholder": "Enter workspace name",
+      "descriptionPlaceholder": "Enter workspace description",
+      "saveChanges": "Save Changes",
+      "saving": "Saving..."
     },
     "members": {
-      "title": "Miembros del Espacio de Trabajo",
-      "description": "Gestiona quién tiene acceso a este espacio de trabajo",
+      "title": "Workspace Members",
+      "description": "Manage who has access to this workspace",
       "addMember": {
-        "title": "Agregar Estudiante por Correo",
-        "placeholder": "Ingresa la dirección de correo del estudiante",
-        "button": "Agregar Estudiante",
-        "adding": "Agregando...",
-        "note": "El estudiante ya debe tener una cuenta en el sistema"
+        "title": "Add Student by Email",
+        "placeholder": "Enter student's email address",
+        "button": "Add Student",
+        "adding": "Adding...",
+        "note": "The student must already have an account in the system"
       },
       "noMembers": {
-        "title": "Aún no hay miembros",
-        "description": "Agrega estudiantes para colaborar en este espacio de trabajo"
+        "title": "No members yet",
+        "description": "Add students to collaborate on this workspace"
       },
-      "joined": "Se unió:",
-      "unknown": "Desconocido"
+      "joined": "Joined:",
+      "unknown": "Unknown"
     },
     "dangerZone": {
-      "title": "Zona de Peligro",
-      "description": "Acciones irreversibles y destructivas",
+      "title": "Danger Zone",
+      "description": "Irreversible and destructive actions",
       "deleteWorkspace": {
-        "title": "Eliminar Espacio de Trabajo",
-        "description": "Una vez que elimines un espacio de trabajo, no hay vuelta atrás. Esto eliminará permanentemente el espacio de trabajo y todos sus datos incluyendo tareas, sprints y asociaciones de miembros.",
-        "button": "Eliminar Espacio de Trabajo (Próximamente)"
+        "title": "Delete Workspace",
+        "description": "Once you delete a workspace, there is no going back. This will permanently delete the workspace and all its data including tasks, sprints, and member associations.",
+        "button": "Delete Workspace (Coming Soon)"
       }
     },
     "success": {
-      "workspaceUpdated": "Espacio de trabajo actualizado exitosamente",
-      "memberAdded": "Estudiante agregado al espacio de trabajo exitosamente"
+      "workspaceUpdated": "Workspace updated successfully",
+      "memberAdded": "Student added to workspace successfully"
     },
     "errors": {
-      "workspaceUpdateFailed": "Error al actualizar espacio de trabajo",
-      "memberAddFailed": "Error al agregar miembro"
+      "workspaceUpdateFailed": "Failed to update workspace",
+      "memberAddFailed": "Failed to add member"
     }
   },
   "errors": {
     "notFound": {
-      "title": "404 Página No Encontrada",
-      "description": "¿Olvidaste agregar la página al enrutador?"
+      "title": "404 Page Not Found",
+      "description": "Did you forget to add the page to the router?"
     }
   },
   "modals": {
     "task": {
-      "createTitle": "Crear Nueva Tarea",
-      "createDescription": "Agregar una nueva tarea de aprendizaje al sprint actual",
-      "taskTitle": "Título de la Tarea",
-      "taskTitlePlaceholder": "Ingresa el título de la tarea...",
-      "taskDescription": "Descripción",
-      "taskDescriptionPlaceholder": "Describe lo que el estudiante necesita hacer...",
-      "subject": "Materia",
-      "selectSubject": "Seleccionar materia",
-      "estimatedTime": "Tiempo Estimado",
-      "estimatedTimePlaceholder": "ej., 30min, 1h",
-      "assignToLearner": "Asignar a Estudiante",
-      "selectLearner": "Seleccionar estudiante",
-      "createTask": "Crear Tarea",
-      "creating": "Creando...",
+      "createTitle": "Create New Task",
+      "createDescription": "Add a new learning task to the current sprint",
+      "taskTitle": "Task Title",
+      "taskTitlePlaceholder": "Enter task title...",
+      "taskDescription": "Description",
+      "taskDescriptionPlaceholder": "Describe what the learner needs to do...",
+      "subject": "Subject",
+      "selectSubject": "Select subject",
+      "estimatedTime": "Estimated Time",
+      "estimatedTimePlaceholder": "e.g., 30min, 1h",
+      "assignToLearner": "Assign to Learner",
+      "selectLearner": "Select learner",
+      "createTask": "Create Task",
+      "creating": "Creating...",
       "validation": {
-        "titleRequired": "El título de la tarea es requerido.",
-        "subjectRequired": "Por favor selecciona una materia.",
-        "assigneeRequired": "Por favor asigna la tarea a un estudiante."
+        "titleRequired": "Task title is required.",
+        "subjectRequired": "Please select a subject.",
+        "assigneeRequired": "Please assign the task to a learner."
       }
     },
     "taskDetails": {
-      "title": "Detalles de la Tarea",
-      "noSubject": "Sin Materia",
-      "assignee": "Sin asignar",
-      "progress": "Progreso",
-      "timeSpent": "Tiempo gastado: {{time}}",
-      "close": "Cerrar",
-      "editTask": "Editar Tarea",
-      "cancel": "Cancelar",
-      "saveChanges": "Guardar Cambios",
-      "saving": "Guardando...",
-      "editTitle": "Título de la Tarea",
-      "editDescription": "Descripción",
-      "editSubject": "Materia",
-      "editEstimatedTime": "Tiempo Estimado",
-      "editAssignee": "Asignar a Estudiante",
-      "editProgress": "Progreso: {{progress}}%"
+      "title": "Task Details",
+      "noSubject": "No Subject",
+      "assignee": "Unassigned",
+      "progress": "Progress",
+      "timeSpent": "Time spent: {{time}}",
+      "close": "Close",
+      "editTask": "Edit Task",
+      "editTitle": "Task Title",
+      "editDescription": "Description",
+      "editSubject": "Subject",
+      "editEstimatedTime": "Estimated Time",
+      "editAssignee": "Assign to Learner",
+      "editProgress": "Progress: {{progress}}%",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes"
     },
     "workspace": {
-      "createTitle": "Crear Nuevo Espacio de Trabajo",
-      "createDescription": "Crea un nuevo espacio de trabajo para tu familia de educación en casa o cooperativa. Este será tu espacio dedicado para organizar actividades de aprendizaje y rastrear progreso.",
-      "workspaceName": "Nombre del Espacio de Trabajo",
-      "workspaceNamePlaceholder": "ej., Espacio de Trabajo Familia Johnson",
-      "workspaceDescription": "Descripción (Opcional)",
-      "workspaceDescriptionPlaceholder": "Breve descripción de tu espacio de trabajo...",
-      "createWorkspace": "Crear Espacio de Trabajo",
-      "creating": "Creando...",
-      "cancel": "Cancelar"
+      "createTitle": "Create New Workspace",
+      "createDescription": "Create a new workspace for your homeschool family or co-op. This will be your dedicated space for organizing learning activities and tracking progress.",
+      "workspaceName": "Workspace Name",
+      "workspaceNamePlaceholder": "e.g., Johnson Family Workspace",
+      "workspaceDescription": "Description (Optional)",
+      "workspaceDescriptionPlaceholder": "Brief description of your workspace...",
+      "createWorkspace": "Create Workspace",
+      "creating": "Creating...",
+      "cancel": "Cancel"
     },
     "progress": {
-      "title": "Tablero de Progreso del Sprint",
-      "loading": "Cargando datos de progreso...",
+      "title": "Sprint Progress Dashboard",
+      "loading": "Loading progress data...",
       "stats": {
-        "totalTasks": "Tareas Totales",
-        "completionRate": "Tasa de Finalización",
-        "timeSpent": "Tiempo Gastado",
-        "aboveTarget": "Por encima del objetivo (60%)",
-        "target": "Objetivo: {{target}} esta semana"
+        "totalTasks": "Total Tasks",
+        "completionRate": "Completion Rate",
+        "aboveTarget": "Above target (60%)",
+        "timeSpent": "Time Spent",
+        "target": "Target: {{target}} this week"
       },
-      "individualProgress": "Progreso Individual",
-      "noLearners": "No se encontraron estudiantes en este espacio de trabajo.",
+      "individualProgress": "Individual Progress",
+      "noLearners": "No learners found in this workspace.",
       "sprintSummary": {
-        "title": "Resumen del Sprint",
-        "tasksCompleted": "Tareas Completadas",
-        "inProgress": "En Progreso",
-        "remainingTasks": "Tareas Restantes"
+        "title": "Sprint Summary",
+        "tasksCompleted": "Tasks Completed",
+        "inProgress": "In Progress",
+        "remainingTasks": "Remaining Tasks"
       }
     },
     "completeSprint": {
-      "title": "Completar Sprint",
-      "description": "¿Estás listo para completar este sprint? Las tareas incompletas serán movidas automáticamente a los pendientes.",
-      "sprintSummary": "Resumen del Sprint",
-      "completed": "Completado",
-      "incomplete": "Incompleto",
-      "overallProgress": "Progreso General",
-      "incompleteWarning": {
-        "title": "Tareas Incompletas",
-        "description": "{{count}} tarea{{count, plural, one {} other {s}}} será copiada a los pendientes y reiniciada al estado \"Por hacer\"."
-      },
-      "cancel": "Cancelar",
-      "complete": "Completar Sprint",
-      "completing": "Completando..."
+      "title": "Complete Sprint",
+      "description": "Are you ready to complete this sprint? Incomplete tasks will be automatically moved to the backlog.",
+      "sprintSummary": "Sprint Summary",
+      "completed": "Completed",
+      "incomplete": "Incomplete",
+      "completionRate": "{{rate}}% Complete",
+      "overallProgress": "Overall Progress",
+      "incompleteTasks": "Incomplete Tasks",
+      "incompleteTasksDescription": "{{count}} task will be copied to the backlog and reset to \"To Do\" status.",
+      "incompleteTasksDescription_other": "{{count}} tasks will be copied to the backlog and reset to \"To Do\" status.",
+      "cancel": "Cancel",
+      "completing": "Completing...",
+      "completeSprint": "Complete Sprint"
     },
     "assignTasks": {
-      "title": "Asignar Tareas al Sprint",
-      "description": "Selecciona tareas de los pendientes para asignar a este sprint.",
-      "draft": "Borrador",
+      "title": "Assign Tasks to Sprint",
+      "description": "Select tasks from the backlog to assign to this sprint.",
+      "draft": "Draft",
       "noTasks": {
-        "title": "No hay tareas en los pendientes",
-        "description": "Crea tareas en los pendientes primero, luego asígnalas a sprints."
+        "title": "No tasks in backlog",
+        "description": "Create tasks in the backlog first, then assign them to sprints."
       },
-      "selectAll": "Seleccionar Todo ({{count}} tareas)",
-      "selected": "{{count}} seleccionadas",
-      "tasksInSubject": "{{count}} tarea{{count, plural, one {} other {s}}}",
-      "cancel": "Cancelar",
-      "assign": "Asignar {{count}} Tarea{{count, plural, one {} other {s}}}",
-      "assigning": "Asignando..."
+      "selectAll": "Select All ({{count}} tasks)",
+      "selected": "{{count}} selected",
+      "taskCount": "{{count}} task",
+      "cancel": "Cancel",
+      "assigning": "Assigning...",
+      "assignTasks": "Assign {{count}} Task"
     },
     "learnerProgress": {
-      "title": "Progreso de {{name}}",
-      "subtitle": "Progreso de aprendizaje individual",
-      "loading": "Cargando datos de progreso...",
+      "title": "{{name}}'s Progress",
+      "subtitle": "Individual learning progress",
+      "loading": "Loading progress data...",
       "stats": {
-        "totalTasks": "Tareas Totales",
-        "completionRate": "Tasa de Finalización",
-        "timeSpent": "Tiempo Gastado",
+        "totalTasks": "Total Tasks",
+        "completionRate": "Completion Rate",
+        "timeSpent": "Time Spent",
         "sprints": "Sprints",
-        "overallProgress": "Progreso general",
-        "totalLearningTime": "Tiempo total de aprendizaje",
-        "participatedIn": "Participó en"
+        "overallProgress": "Overall progress",
+        "totalLearningTime": "Total learning time",
+        "participatedIn": "Participated in"
       },
-      "subjectProgress": "Progreso por Materia",
-      "noTasks": "Aún no hay tareas asignadas.",
+      "subjectProgress": "Subject Progress",
+      "noTasks": "No tasks assigned yet.",
       "learningSummary": {
-        "title": "Resumen de Aprendizaje",
-        "tasksCompleted": "Tareas Completadas",
-        "currentlyWorking": "Trabajando Actualmente En",
-        "upcomingTasks": "Tareas Próximas"
+        "title": "Learning Summary",
+        "tasksCompleted": "Tasks Completed",
+        "currentlyWorking": "Currently Working On",
+        "upcomingTasks": "Upcoming Tasks"
       }
-    },
-    "progress": {
-      "title": "Panel de Progreso del Sprint",
-      "loading": "Cargando datos de progreso...",
-      "stats": {
-        "totalTasks": "Total de Tareas",
-        "completionRate": "Tasa de Finalización",
-        "aboveTarget": "Por encima del objetivo (60%)",
-        "timeSpent": "Tiempo Invertido",
-        "target": "Objetivo: {{target}} esta semana"
-      },
-      "individualProgress": "Progreso Individual",
-      "noLearners": "No se encontraron estudiantes en este espacio de trabajo.",
-      "sprintSummary": {
-        "title": "Resumen del Sprint",
-        "tasksCompleted": "Tareas Completadas",
-        "inProgress": "En Progreso",
-        "remainingTasks": "Tareas Restantes"
-      }
-    },
-    "taskDetails": {
-      "title": "Detalles de la Tarea",
-      "noSubject": "Sin Materia",
-      "assignee": "Sin asignar",
-      "progress": "Progreso",
-      "timeSpent": "Tiempo invertido: {{time}}",
-      "close": "Cerrar",
-      "editTask": "Editar Tarea",
-      "editTitle": "Título de la Tarea",
-      "editDescription": "Descripción",
-      "editSubject": "Materia",
-      "editEstimatedTime": "Tiempo Estimado",
-      "editAssignee": "Asignar a Estudiante",
-      "editProgress": "Progreso: {{progress}}%",
-      "cancel": "Cancelar",
-      "saving": "Guardando...",
-      "saveChanges": "Guardar Cambios"
-    },
-    "assignTasks": {
-      "title": "Asignar Tareas al Sprint",
-      "description": "Selecciona tareas del backlog para asignar a este sprint.",
-      "draft": "Borrador",
-      "noTasks": {
-        "title": "No hay tareas en el backlog",
-        "description": "Crea tareas en el backlog primero, luego asígnalas a los sprints."
-      },
-      "selectAll": "Seleccionar Todo ({{count}} tareas)",
-      "selected": "{{count}} seleccionadas",
-      "taskCount": "{{count}} tarea",
-      "cancel": "Cancelar",
-      "assigning": "Asignando...",
-      "assignTasks": "Asignar {{count}} Tarea"
-    },
-    "completeSprint": {
-      "title": "Completar Sprint",
-      "description": "¿Estás listo para completar este sprint? Las tareas incompletas se moverán automáticamente al backlog.",
-      "sprintSummary": "Resumen del Sprint",
-      "completed": "Completadas",
-      "incomplete": "Incompletas",
-      "completionRate": "{{rate}}% Completado",
-      "overallProgress": "Progreso General",
-      "incompleteTasks": "Tareas Incompletas",
-      "incompleteTasksDescription": "{{count}} tarea{{count, plural, one {} other {s}}} será{{count, plural, one {} other {n}}} copiada{{count, plural, one {} other {s}}} al backlog y reiniciada{{count, plural, one {} other {s}}} al estado \"Por hacer\".",
-      "cancel": "Cancelar",
-      "completing": "Completando...",
-      "completeSprint": "Completar Sprint"
     }
   },
   "components": {
     "taskCard": {
-      "noDescription": "Sin descripción",
-      "progress": "Progreso",
-      "completedIn": "Completado en {{time}}",
+      "noDescription": "No description",
+      "progress": "Progress",
+      "completedIn": "Completed in {{time}}",
       "timeSpent": "{{spent}}/{{estimated}}",
-      "noEstimate": "Sin estimación",
+      "noEstimate": "No estimate",
       "timeEstimate": "{{time}}"
     },
     "kanban": {
-      "loading": "Cargando...",
+      "loading": "Loading...",
       "columns": {
-        "todo": "Por hacer",
-        "inProgress": "En progreso",
-        "done": "Hecho"
+        "todo": "To Do",
+        "inProgress": "In Progress",
+        "done": "Done"
       }
     }
   },
   "messages": {
     "success": {
-      "taskCreated": "Tarea creada",
-      "taskCreatedDescription": "Nueva tarea ha sido creada exitosamente.",
-      "taskUpdated": "Tarea actualizada",
-      "taskUpdatedDescription": "El estado de la tarea ha sido actualizado exitosamente.",
-      "sprintCreated": "Sprint creado",
-      "sprintCreatedDescription": "Tu nuevo sprint ha sido creado exitosamente.",
-      "sprintUpdated": "Sprint actualizado",
-      "sprintUpdatedDescription": "El sprint ha sido actualizado exitosamente.",
-      "sprintStarted": "Sprint iniciado",
-      "sprintStartedDescription": "El sprint ahora está activo y listo para usar.",
-      "workspaceCreated": "¡Espacio de trabajo creado exitosamente!",
-      "tasksAssigned": "{{count}} tarea{{count, plural, one {} other {s}}} asignada{{count, plural, one {} other {s}}} a {{sprintName}}.",
-      "sprintCompleted": "Sprint completado",
-      "sprintCompletedDescription": "El sprint ha sido completado y las tareas incompletas movidas a los pendientes."
+      "taskCreated": "Task created",
+      "taskCreatedDescription": "New task has been created successfully.",
+      "taskUpdated": "Task updated",
+      "taskUpdatedDescription": "Task status has been updated successfully.",
+      "sprintCreated": "Sprint created",
+      "sprintCreatedDescription": "Your new sprint has been created successfully.",
+      "sprintUpdated": "Sprint updated",
+      "sprintUpdatedDescription": "Sprint has been updated successfully.",
+      "sprintStarted": "Sprint started",
+      "sprintStartedDescription": "Sprint is now active and ready for use.",
+      "workspaceCreated": "Workspace created successfully!",
+      "tasksAssigned": "{{count}} task assigned to {{sprintName}}.",
+      "tasksAssigned_other": "{{count}} tasks assigned to {{sprintName}}.",
+      "sprintCompleted": "Sprint completed",
+      "sprintCompletedDescription": "Sprint has been completed and incomplete tasks moved to backlog."
     },
     "error": {
-      "taskCreateFailed": "Error al crear tarea",
-      "taskUpdateFailed": "Error al actualizar tarea",
-      "sprintCreateFailed": "Error al crear sprint",
-      "sprintUpdateFailed": "Error al actualizar sprint",
-      "sprintStartFailed": "Error al iniciar sprint",
-      "validationError": "Error de Validación",
-      "noWorkspaceSelected": "Ningún espacio seleccionado",
-      "noWorkspaceSelectedDescription": "Por favor selecciona un espacio de trabajo para crear un sprint.",
-      "workspaceCreateFailed": "Error al crear espacio de trabajo",
-      "taskAssignFailed": "Error al asignar tareas",
-      "noTasksSelected": "Ninguna tarea seleccionada",
-      "noTasksSelectedDescription": "Por favor selecciona al menos una tarea para asignar.",
-      "sprintCompleteFailed": "Error al completar sprint"
+      "taskCreateFailed": "Failed to create task",
+      "taskUpdateFailed": "Failed to update task",
+      "sprintCreateFailed": "Failed to create sprint",
+      "sprintUpdateFailed": "Failed to update sprint",
+      "sprintStartFailed": "Failed to start sprint",
+      "validationError": "Validation Error",
+      "noWorkspaceSelected": "No workspace selected",
+      "noWorkspaceSelectedDescription": "Please select a workspace to create a sprint.",
+      "workspaceCreateFailed": "Failed to create workspace",
+      "taskAssignFailed": "Failed to assign tasks",
+      "noTasksSelected": "No tasks selected",
+      "noTasksSelectedDescription": "Please select at least one task to assign.",
+      "sprintCompleteFailed": "Failed to complete sprint"
     }
   }
 }

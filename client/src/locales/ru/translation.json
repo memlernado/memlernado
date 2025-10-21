@@ -219,39 +219,6 @@
     "joined": "Присоединился:",
     "viewProgress": "Просмотр прогресса"
   },
-  "modals": {
-    "task": {
-      "createTitle": "Создать новую задачу",
-      "createDescription": "Добавить новую учебную задачу в текущий спринт",
-      "taskTitle": "Название задачи",
-      "taskTitlePlaceholder": "Введите название задачи...",
-      "taskDescription": "Описание",
-      "taskDescriptionPlaceholder": "Опишите, что нужно сделать учащемуся...",
-      "subject": "Предмет",
-      "selectSubject": "Выберите предмет",
-      "estimatedTime": "Предполагаемое время",
-      "estimatedTimePlaceholder": "например, 30мин, 1ч",
-      "assignToLearner": "Назначить учащемуся",
-      "selectLearner": "Выберите учащегося",
-      "createTask": "Создать задачу",
-      "creating": "Создание...",
-      "validation": {
-        "titleRequired": "Название задачи обязательно.",
-        "subjectRequired": "Пожалуйста, выберите предмет.",
-        "assigneeRequired": "Пожалуйста, назначьте задачу учащемуся."
-      }
-    },
-    "workspace": {
-      "createTitle": "Создать новое рабочее пространство",
-      "createDescription": "Настройте новое рабочее пространство для вашей группы домашнего обучения",
-      "workspaceName": "Название рабочего пространства",
-      "workspaceNamePlaceholder": "Введите название рабочего пространства...",
-      "workspaceDescription": "Описание",
-      "workspaceDescriptionPlaceholder": "Опишите ваше рабочее пространство...",
-      "createWorkspace": "Создать рабочее пространство",
-      "creating": "Создание..."
-    }
-  },
   "backlog": {
     "title": "Бэклог продукта",
     "subtitle": "Организуйте и расставьте приоритеты задач для будущих спринтов",
@@ -302,8 +269,10 @@
       },
       "workspace": {
         "active": "Активно",
-        "learners": "{{count}} учащийся{{count, plural, one {} other {}}",
-        "sprints": "{{count}} активный спринт{{count, plural, one {} other {}}",
+        "learners": "{{count}} учащийся",
+        "learners_other": "{{count}} учащиеся",
+        "sprints": "{{count}} активный спринт",
+        "sprints_other": "{{count}} активные спринты",
         "enterWorkspace": "Войти в рабочее пространство"
       }
     },
@@ -347,10 +316,9 @@
     "loading": "Загрузка настроек рабочего пространства...",
     "workspaceDetails": {
       "title": "Детали рабочего пространства",
-      "description": "Обновите название и описание вашего рабочего пространства",
+      "description": "Описание",
       "name": "Название рабочего пространства",
       "namePlaceholder": "Введите название рабочего пространства",
-      "description": "Описание",
       "descriptionPlaceholder": "Введите описание рабочего пространства",
       "saveChanges": "Сохранить изменения",
       "saving": "Сохранение..."
@@ -426,15 +394,15 @@
       "timeSpent": "Потрачено времени: {{time}}",
       "close": "Закрыть",
       "editTask": "Редактировать задачу",
-      "cancel": "Отмена",
-      "saveChanges": "Сохранить изменения",
-      "saving": "Сохранение...",
       "editTitle": "Название задачи",
       "editDescription": "Описание",
       "editSubject": "Предмет",
       "editEstimatedTime": "Предполагаемое время",
       "editAssignee": "Назначить учащемуся",
-      "editProgress": "Прогресс: {{progress}}%"
+      "editProgress": "Прогресс: {{progress}}%",
+      "cancel": "Отмена",
+      "saving": "Сохранение...",
+      "saveChanges": "Сохранить изменения"
     },
     "workspace": {
       "createTitle": "Создать новое рабочее пространство",
@@ -453,8 +421,8 @@
       "stats": {
         "totalTasks": "Всего задач",
         "completionRate": "Процент выполнения",
-        "timeSpent": "Потрачено времени",
         "aboveTarget": "Выше цели (60%)",
+        "timeSpent": "Потрачено времени",
         "target": "Цель: {{target}} на этой неделе"
       },
       "individualProgress": "Индивидуальный прогресс",
@@ -472,14 +440,14 @@
       "sprintSummary": "Сводка спринта",
       "completed": "Завершено",
       "incomplete": "Незавершено",
+      "completionRate": "{{rate}}% Завершено",
       "overallProgress": "Общий прогресс",
-      "incompleteWarning": {
-        "title": "Незавершенные задачи",
-        "description": "{{count}} задача{{count, plural, one {} other {}}} будет скопирована в бэклог и сброшена в статус \"К выполнению\"."
-      },
+      "incompleteTasks": "Незавершенные задачи",
+      "incompleteTasksDescription": "{{count}} задача будет скопирована в бэклог и сброшена в статус \"К выполнению\".",
+      "incompleteTasksDescription_other": "{{count}} задачи будут скопированы в бэклог и сброшены в статус \"К выполнению\".",
       "cancel": "Отмена",
-      "complete": "Завершить спринт",
-      "completing": "Завершение..."
+      "completing": "Завершение...",
+      "completeSprint": "Завершить спринт"
     },
     "assignTasks": {
       "title": "Назначить задачи в спринт",
@@ -491,10 +459,10 @@
       },
       "selectAll": "Выбрать все ({{count}} задач)",
       "selected": "{{count}} выбрано",
-      "tasksInSubject": "{{count}} задача{{count, plural, one {} other {}}}",
+      "taskCount": "{{count}} задача",
       "cancel": "Отмена",
-      "assign": "Назначить {{count}} задач{{count, plural, one {} other {}}}",
-      "assigning": "Назначение..."
+      "assigning": "Назначение...",
+      "assignTasks": "Назначить {{count}} задач"
     },
     "learnerProgress": {
       "title": "Прогресс {{name}}",
@@ -517,72 +485,6 @@
         "currentlyWorking": "Сейчас работает над",
         "upcomingTasks": "Предстоящие задачи"
       }
-    },
-    "progress": {
-      "title": "Панель прогресса спринта",
-      "loading": "Загрузка данных прогресса...",
-      "stats": {
-        "totalTasks": "Всего задач",
-        "completionRate": "Процент выполнения",
-        "aboveTarget": "Выше цели (60%)",
-        "timeSpent": "Потрачено времени",
-        "target": "Цель: {{target}} на этой неделе"
-      },
-      "individualProgress": "Индивидуальный прогресс",
-      "noLearners": "В этом рабочем пространстве не найдено учащихся.",
-      "sprintSummary": {
-        "title": "Сводка спринта",
-        "tasksCompleted": "Задачи выполнены",
-        "inProgress": "В процессе",
-        "remainingTasks": "Оставшиеся задачи"
-      }
-    },
-    "taskDetails": {
-      "title": "Детали задачи",
-      "noSubject": "Нет предмета",
-      "assignee": "Не назначено",
-      "progress": "Прогресс",
-      "timeSpent": "Потрачено времени: {{time}}",
-      "close": "Закрыть",
-      "editTask": "Редактировать задачу",
-      "editTitle": "Название задачи",
-      "editDescription": "Описание",
-      "editSubject": "Предмет",
-      "editEstimatedTime": "Предполагаемое время",
-      "editAssignee": "Назначить учащемуся",
-      "editProgress": "Прогресс: {{progress}}%",
-      "cancel": "Отмена",
-      "saving": "Сохранение...",
-      "saveChanges": "Сохранить изменения"
-    },
-    "assignTasks": {
-      "title": "Назначить задачи в спринт",
-      "description": "Выберите задачи из бэклога для назначения в этот спринт.",
-      "draft": "Черновик",
-      "noTasks": {
-        "title": "Нет задач в бэклоге",
-        "description": "Сначала создайте задачи в бэклоге, затем назначьте их в спринты."
-      },
-      "selectAll": "Выбрать все ({{count}} задач)",
-      "selected": "{{count}} выбрано",
-      "taskCount": "{{count}} задача",
-      "cancel": "Отмена",
-      "assigning": "Назначение...",
-      "assignTasks": "Назначить {{count}} задач"
-    },
-    "completeSprint": {
-      "title": "Завершить спринт",
-      "description": "Готовы завершить этот спринт? Незавершенные задачи будут автоматически перемещены в бэклог.",
-      "sprintSummary": "Сводка спринта",
-      "completed": "Завершено",
-      "incomplete": "Незавершено",
-      "completionRate": "{{rate}}% Завершено",
-      "overallProgress": "Общий прогресс",
-      "incompleteTasks": "Незавершенные задачи",
-      "incompleteTasksDescription": "{{count}} задача{{count, plural, one {} other {}}} будет скопирована в бэклог и сброшена в статус \"К выполнению\".",
-      "cancel": "Отмена",
-      "completing": "Завершение...",
-      "completeSprint": "Завершить спринт"
     }
   },
   "components": {
@@ -616,7 +518,8 @@
       "sprintStarted": "Спринт запущен",
       "sprintStartedDescription": "Спринт теперь активен и готов к использованию.",
       "workspaceCreated": "Рабочее пространство успешно создано!",
-      "tasksAssigned": "{{count}} задач{{count, plural, one {} other {}}} назначено в {{sprintName}}.",
+      "tasksAssigned": "{{count}} задача назначена в {{sprintName}}.",
+      "tasksAssigned_other": "{{count}} задачи назначены в {{sprintName}}.",
       "sprintCompleted": "Спринт завершен",
       "sprintCompletedDescription": "Спринт был завершен, а незавершенные задачи перемещены в бэклог."
     },

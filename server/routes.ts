@@ -396,7 +396,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { language, timezone } = req.body;
       
       // Validate language if provided
-      if (language && !['en', 'es', 'pl'].includes(language)) {
+      if (language && !['en', 'es', 'pl', 'he', 'ru'].includes(language)) {
         return res.status(400).json({ message: "Invalid language. Must be 'en', 'es', or 'pl'" });
       }
 

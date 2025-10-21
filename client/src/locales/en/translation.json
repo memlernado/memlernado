@@ -219,39 +219,6 @@
     "joined": "Joined:",
     "viewProgress": "View Progress"
   },
-  "modals": {
-    "task": {
-      "createTitle": "Create New Task",
-      "createDescription": "Add a new learning task to the current sprint",
-      "taskTitle": "Task Title",
-      "taskTitlePlaceholder": "Enter task title...",
-      "taskDescription": "Description",
-      "taskDescriptionPlaceholder": "Describe what the learner needs to do...",
-      "subject": "Subject",
-      "selectSubject": "Select subject",
-      "estimatedTime": "Estimated Time",
-      "estimatedTimePlaceholder": "e.g., 30min, 1h",
-      "assignToLearner": "Assign to Learner",
-      "selectLearner": "Select learner",
-      "createTask": "Create Task",
-      "creating": "Creating...",
-      "validation": {
-        "titleRequired": "Task title is required.",
-        "subjectRequired": "Please select a subject.",
-        "assigneeRequired": "Please assign the task to a learner."
-      }
-    },
-    "workspace": {
-      "createTitle": "Create New Workspace",
-      "createDescription": "Set up a new workspace for your homeschool group",
-      "workspaceName": "Workspace Name",
-      "workspaceNamePlaceholder": "Enter workspace name...",
-      "workspaceDescription": "Description",
-      "workspaceDescriptionPlaceholder": "Describe your workspace...",
-      "createWorkspace": "Create Workspace",
-      "creating": "Creating..."
-    }
-  },
   "backlog": {
     "title": "Product Backlog",
     "subtitle": "Organize and prioritize tasks for future sprints",
@@ -263,7 +230,7 @@
     "addTask": "Add Task",
     "stats": {
       "toDo": "To Do",
-      "inProgress": "In Progress", 
+      "inProgress": "In Progress",
       "done": "Done",
       "totalTasks": "total tasks"
     },
@@ -302,8 +269,10 @@
       },
       "workspace": {
         "active": "Active",
-        "learners": "{{count}} learner{{count, plural, one {} other {s}}}",
-        "sprints": "{{count}} active sprint{{count, plural, one {} other {s}}}",
+        "learners": "{{count}} learner",
+        "learners_other": "{{count}} learners",
+        "sprints": "{{count}} active sprint",
+        "sprints_other": "{{count}} active sprints",
         "enterWorkspace": "Enter Workspace"
       }
     },
@@ -347,10 +316,9 @@
     "loading": "Loading workspace settings...",
     "workspaceDetails": {
       "title": "Workspace Details",
-      "description": "Update your workspace name and description",
+      "description": "Description",
       "name": "Workspace Name",
       "namePlaceholder": "Enter workspace name",
-      "description": "Description",
       "descriptionPlaceholder": "Enter workspace description",
       "saveChanges": "Save Changes",
       "saving": "Saving..."
@@ -426,15 +394,15 @@
       "timeSpent": "Time spent: {{time}}",
       "close": "Close",
       "editTask": "Edit Task",
-      "cancel": "Cancel",
-      "saveChanges": "Save Changes",
-      "saving": "Saving...",
       "editTitle": "Task Title",
       "editDescription": "Description",
       "editSubject": "Subject",
       "editEstimatedTime": "Estimated Time",
       "editAssignee": "Assign to Learner",
-      "editProgress": "Progress: {{progress}}%"
+      "editProgress": "Progress: {{progress}}%",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes"
     },
     "workspace": {
       "createTitle": "Create New Workspace",
@@ -453,8 +421,8 @@
       "stats": {
         "totalTasks": "Total Tasks",
         "completionRate": "Completion Rate",
-        "timeSpent": "Time Spent",
         "aboveTarget": "Above target (60%)",
+        "timeSpent": "Time Spent",
         "target": "Target: {{target}} this week"
       },
       "individualProgress": "Individual Progress",
@@ -472,14 +440,14 @@
       "sprintSummary": "Sprint Summary",
       "completed": "Completed",
       "incomplete": "Incomplete",
+      "completionRate": "{{rate}}% Complete",
       "overallProgress": "Overall Progress",
-      "incompleteWarning": {
-        "title": "Incomplete Tasks",
-        "description": "{{count}} task{{count, plural, one {} other {s}}} will be copied to the backlog and reset to \"To Do\" status."
-      },
+      "incompleteTasks": "Incomplete Tasks",
+      "incompleteTasksDescription": "{{count}} task will be copied to the backlog and reset to \"To Do\" status.",
+      "incompleteTasksDescription_other": "{{count}} tasks will be copied to the backlog and reset to \"To Do\" status.",
       "cancel": "Cancel",
-      "complete": "Complete Sprint",
-      "completing": "Completing..."
+      "completing": "Completing...",
+      "completeSprint": "Complete Sprint"
     },
     "assignTasks": {
       "title": "Assign Tasks to Sprint",
@@ -491,10 +459,10 @@
       },
       "selectAll": "Select All ({{count}} tasks)",
       "selected": "{{count}} selected",
-      "tasksInSubject": "{{count}} task{{count, plural, one {} other {s}}}",
+      "taskCount": "{{count}} task",
       "cancel": "Cancel",
-      "assign": "Assign {{count}} Task{{count, plural, one {} other {s}}}",
-      "assigning": "Assigning..."
+      "assigning": "Assigning...",
+      "assignTasks": "Assign {{count}} Task"
     },
     "learnerProgress": {
       "title": "{{name}}'s Progress",
@@ -517,72 +485,6 @@
         "currentlyWorking": "Currently Working On",
         "upcomingTasks": "Upcoming Tasks"
       }
-    },
-    "progress": {
-      "title": "Sprint Progress Dashboard",
-      "loading": "Loading progress data...",
-      "stats": {
-        "totalTasks": "Total Tasks",
-        "completionRate": "Completion Rate",
-        "aboveTarget": "Above target (60%)",
-        "timeSpent": "Time Spent",
-        "target": "Target: {{target}} this week"
-      },
-      "individualProgress": "Individual Progress",
-      "noLearners": "No learners found in this workspace.",
-      "sprintSummary": {
-        "title": "Sprint Summary",
-        "tasksCompleted": "Tasks Completed",
-        "inProgress": "In Progress",
-        "remainingTasks": "Remaining Tasks"
-      }
-    },
-    "taskDetails": {
-      "title": "Task Details",
-      "noSubject": "No Subject",
-      "assignee": "Unassigned",
-      "progress": "Progress",
-      "timeSpent": "Time spent: {{time}}",
-      "close": "Close",
-      "editTask": "Edit Task",
-      "editTitle": "Task Title",
-      "editDescription": "Description",
-      "editSubject": "Subject",
-      "editEstimatedTime": "Estimated Time",
-      "editAssignee": "Assign to Learner",
-      "editProgress": "Progress: {{progress}}%",
-      "cancel": "Cancel",
-      "saving": "Saving...",
-      "saveChanges": "Save Changes"
-    },
-    "assignTasks": {
-      "title": "Assign Tasks to Sprint",
-      "description": "Select tasks from the backlog to assign to this sprint.",
-      "draft": "Draft",
-      "noTasks": {
-        "title": "No tasks in backlog",
-        "description": "Create tasks in the backlog first, then assign them to sprints."
-      },
-      "selectAll": "Select All ({{count}} tasks)",
-      "selected": "{{count}} selected",
-      "taskCount": "{{count}} task",
-      "cancel": "Cancel",
-      "assigning": "Assigning...",
-      "assignTasks": "Assign {{count}} Task"
-    },
-    "completeSprint": {
-      "title": "Complete Sprint",
-      "description": "Are you ready to complete this sprint? Incomplete tasks will be automatically moved to the backlog.",
-      "sprintSummary": "Sprint Summary",
-      "completed": "Completed",
-      "incomplete": "Incomplete",
-      "completionRate": "{{rate}}% Complete",
-      "overallProgress": "Overall Progress",
-      "incompleteTasks": "Incomplete Tasks",
-      "incompleteTasksDescription": "{{count}} task{{count, plural, one {} other {s}}} will be copied to the backlog and reset to \"To Do\" status.",
-      "cancel": "Cancel",
-      "completing": "Completing...",
-      "completeSprint": "Complete Sprint"
     }
   },
   "components": {
@@ -616,7 +518,8 @@
       "sprintStarted": "Sprint started",
       "sprintStartedDescription": "Sprint is now active and ready for use.",
       "workspaceCreated": "Workspace created successfully!",
-      "tasksAssigned": "{{count}} task{{count, plural, one {} other {s}}} assigned to {{sprintName}}.",
+      "tasksAssigned": "{{count}} task assigned to {{sprintName}}.",
+      "tasksAssigned_other": "{{count}} tasks assigned to {{sprintName}}.",
       "sprintCompleted": "Sprint completed",
       "sprintCompletedDescription": "Sprint has been completed and incomplete tasks moved to backlog."
     },

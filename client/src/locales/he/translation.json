@@ -1,0 +1,546 @@
+{
+  "common": {
+    "buttons": {
+      "save": "שמור",
+      "cancel": "בטל",
+      "create": "צור",
+      "edit": "ערוך",
+      "delete": "מחק",
+      "close": "סגור",
+      "submit": "שלח",
+      "loading": "טוען...",
+      "signIn": "התחבר",
+      "signOut": "התנתק",
+      "signUp": "הירשם",
+      "add": "הוסף",
+      "view": "צפה",
+      "start": "התחל",
+      "complete": "השלם",
+      "assign": "הקצה"
+    },
+    "labels": {
+      "name": "שם",
+      "email": "אימייל",
+      "password": "סיסמה",
+      "username": "שם משתמש",
+      "firstName": "שם פרטי",
+      "lastName": "שם משפחה",
+      "role": "תפקיד",
+      "description": "תיאור",
+      "date": "תאריך",
+      "time": "זמן",
+      "status": "סטטוס",
+      "progress": "התקדמות",
+      "completion": "השלמה",
+      "tasks": "משימות",
+      "noTasksAssigned": "לא הוקצו משימות"
+    },
+    "phrases": {
+      "taskStatusSummary": "{{todo}} לביצוע, {{inProgress}} בתהליך, {{done}} הושלמו",
+      "taskCountWithStatus": "{{completed}}/{{total}} משימות {{status}}",
+      "taskCountWithDone": "{{completed}}/{{total}} משימות הושלמו",
+      "taskCount": "{{count}} משימות",
+      "taskCountFraction": "{{fraction}} משימות",
+      "taskCountAssigned": "{{count}} משימות הוקצו",
+      "taskCountDone": "{{count}} משימות הושלמו",
+      "taskCountDoneFraction": "{{fraction}} משימות הושלמו"
+    },
+    "status": {
+      "active": "פעיל",
+      "inactive": "לא פעיל",
+      "completed": "הושלם",
+      "draft": "טיוטה",
+      "todo": "לביצוע",
+      "inProgress": "בתהליך",
+      "done": "הושלם"
+    },
+    "roles": {
+      "facilitator": "מנחה/הורה",
+      "learner": "לומד/תלמיד"
+    },
+    "subjects": {
+      "math": "מתמטיקה",
+      "science": "מדעים",
+      "english": "אנגלית",
+      "history": "היסטוריה",
+      "spanish": "ספרדית",
+      "art": "אמנות",
+      "music": "מוזיקה",
+      "physicalEducation": "חינוך גופני"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ברוכים הבאים",
+      "subtitle": "התחברו לחשבון Memlernado שלכם",
+      "username": "שם משתמש",
+      "password": "סיסמה",
+      "button": "התחבר",
+      "buttonLoading": "מתחבר..."
+    },
+    "register": {
+      "title": "צור חשבון",
+      "subtitle": "הצטרפו ל-Memlernado כדי להתחיל לארגן את מסע החינוך הביתי שלכם",
+      "firstName": "שם פרטי",
+      "lastName": "שם משפחה",
+      "email": "אימייל",
+      "username": "שם משתמש",
+      "password": "סיסמה",
+      "role": "תפקיד",
+      "button": "צור חשבון",
+      "buttonLoading": "יוצר חשבון..."
+    },
+    "hero": {
+      "title": "ארגנו את מסע החינוך הביתי שלכם",
+      "subtitle": "שנו את חוויית החינוך הביתי שלכם עם מתודולוגיית SCRUM. צרו ספרנטים, עקבו אחר התקדמות וחגגו הישגים יחד.",
+      "features": {
+        "workspaces": {
+          "title": "מרחבי עבודה משפחתיים",
+          "description": "שתפו פעולה עם מספר משפחות"
+        },
+        "sprints": {
+          "title": "תכנון ספרנטים",
+          "description": "ארגנו למידה בספרנטים ממוקדים"
+        },
+        "progress": {
+          "title": "מעקב התקדמות",
+          "description": "לוחות בקרה ויזואליים"
+        },
+        "childFriendly": {
+          "title": "ידידותי לילדים",
+          "description": "עוצב עבור לומדים צעירים"
+        }
+      }
+    }
+  },
+  "navigation": {
+    "brand": "Memlernado",
+    "tagline": "חינוך ביתי SCRUM",
+    "dashboard": "לוח בקרה",
+    "backlog": "רשימת משימות",
+    "sprintBoard": "לוח ספרנט",
+    "sprintPlanning": "תכנון ספרנט",
+    "learners": "לומדים",
+    "settings": "הגדרות מרחב עבודה",
+    "profileSettings": "הגדרות פרופיל",
+    "workspaceSettings": "הגדרות מרחב עבודה",
+    "currentSprint": "ספרנט נוכחי",
+    "noActiveSprint": "אין ספרנט פעיל",
+    "activeLearners": "לומדים פעילים",
+    "noLearners": "אין לומדים במרחב העבודה"
+  },
+  "dashboard": {
+    "title": "לוח בקרת התקדמות",
+    "subtitle": "עקבו אחר התקדמות הלמידה וביצועי הספרנטים",
+    "loading": "טוען נתוני התקדמות...",
+    "stats": {
+      "totalTasks": "סך הכל משימות",
+      "completionRate": "אחוז השלמה",
+      "sprintProgress": "התקדמות ספרנט",
+      "aboveTarget": "מעל המטרה (60%)",
+      "onTrack": "בדרך הנכונה (40%+)",
+      "belowTarget": "מתחת למטרה (40%)"
+    },
+    "individualProgress": "התקדמות אישית",
+    "recentAchievements": "הישגים אחרונים",
+    "noAchievements": "עדיין אין הישגים",
+    "noAchievementsDescription": "התחילו להשלים משימות כדי לראות הישגים ואבני דרך כאן"
+  },
+  "sprint": {
+    "board": {
+      "title": "לוח ספרנט",
+      "subtitle": "ארגנו את משימות הלמידה שלכם עם מתודולוגיית SCRUM",
+      "noActiveSprint": "אין ספרנט פעיל",
+      "noActiveSprintDescription": "למרחב העבודה הזה עדיין אין ספרנט פעיל. צרו ספרנט כדי להתחיל לארגן את משימות הלמידה שלכם.",
+      "createNewSprint": "צור ספרנט חדש",
+      "scrumDescription": "במתודולוגיית SCRUM, כל העבודה מאורגנת סביב ספרנטים - תקופות ממוקדות להשלמת יעדי למידה ספציפיים.",
+      "sprintCompleted": "ספרנט הושלם",
+      "sprintCompletedDescription": "הספרנט הזה הושלם. בקרו בעמוד תכנון הספרנט כדי להתחיל ספרנט חדש.",
+      "goToSprintPlanning": "עבור לתכנון ספרנט",
+      "addTask": "הוסף משימה",
+      "viewProgress": "צפה בהתקדמות",
+      "columns": {
+        "todo": "לביצוע",
+        "inProgress": "בתהליך",
+        "done": "הושלם"
+      },
+      "progress": {
+        "sprintProgress": "התקדמות ספרנט"
+      }
+    },
+    "planning": {
+      "title": "תכנון ספרנט",
+      "subtitle": "צרו ונהלו ספרנטי למידה עבור מרחב העבודה שלכם",
+      "createSprint": "צור ספרנט חדש",
+      "editSprint": "ערוך ספרנט",
+      "sprintName": "שם הספרנט",
+      "sprintNamePlaceholder": "למשל, שבוע 4: היסטוריה וגיאוגרפיה",
+      "workspace": "מרחב עבודה",
+      "sprintDescription": "תיאור",
+      "sprintDescriptionPlaceholder": "תארו את המיקוד והיעדים של הספרנט הזה...",
+      "startDate": "תאריך התחלה",
+      "endDate": "תאריך סיום",
+      "activeSprint": "ספרנט פעיל",
+      "draftSprints": "טיוטות ספרנטים",
+      "completedSprints": "ספרנטים שהושלמו",
+      "noDraftSprints": "אין טיוטות ספרנטים",
+      "noDraftSprintsDescription": "צרו ספרנט חדש כדי לתכנן את מחזור הלמידה הבא שלכם",
+      "createDraftSprint": "צור טיוטת ספרנט",
+      "assignTasks": "הקצה משימות",
+      "startSprint": "התחל ספרנט",
+      "starting": "מתחיל...",
+      "viewBoard": "צפה בלוח",
+      "completeSprint": "השלם ספרנט",
+      "edit": "ערוך",
+      "cannotStartSprint": "לא ניתן להתחיל ספרנט בזמן שספרנט אחר פעיל",
+      "plannedTasks": "משימות מתוכננות",
+      "finalCompletion": "השלמה סופית",
+      "readOnly": "קריאה בלבד • ספרנט שהושלם"
+    }
+  },
+  "learners": {
+    "title": "לומדים",
+    "subtitle": "נהלו חברי מרחב העבודה והזמינו לומדים חדשים",
+    "loading": "טוען חברי מרחב עבודה...",
+    "inviteLearner": "הזמן לומד",
+    "stats": {
+      "totalLearners": "סך הכל לומדים",
+      "facilitators": "מנחים",
+      "totalMembers": "סך הכל חברים",
+      "activeInWorkspace": "פעילים במרחב העבודה",
+      "managingWorkspace": "מנהלים את מרחב העבודה",
+      "inWorkspace": "במרחב העבודה"
+    },
+    "noLearners": {
+      "title": "עדיין אין לומדים",
+      "description": "הזמינו לומדים כדי להתחיל לעקוב אחר ההתקדמות שלהם ולהקצות משימות",
+      "inviteFirstLearner": "הזמן את הלומד הראשון שלך"
+    },
+    "joined": "הצטרף:",
+    "viewProgress": "צפה בהתקדמות"
+  },
+  "backlog": {
+    "title": "רשימת משימות מוצר",
+    "subtitle": "ארגנו וקבעו עדיפויות למשימות עבור ספרנטים עתידיים",
+    "emptyState": {
+      "title": "רשימת משימות ריקה",
+      "description": "עדיין אין משימות ברשימה. צרו משימות כאן כדי לתכנן עבודה עתידית.",
+      "info": "רשימת המשימות היא המקום שבו אתם מארגנים משימות לפני הקצאתן לספרנטים. משימות כאן יכולות להיות מעודכנות, מוערכות לפי עדיפות ומועברות לספרנטים פעילים במהלך תכנון הספרנט."
+    },
+    "addTask": "הוסף משימה",
+    "stats": {
+      "toDo": "לביצוע",
+      "inProgress": "בתהליך",
+      "done": "הושלם",
+      "totalTasks": "סך הכל משימות"
+    },
+    "infoCard": {
+      "title": "משימות רשימת המשימות",
+      "description": "המשימות האלה עדיין לא הוקצו לאף ספרנט. השתמשו בעמוד תכנון הספרנט כדי להעביר משימות מרשימת המשימות לספרנטים פעילים.",
+      "features": {
+        "assignable": "משימות יכולות להיות מוקצות ללומדים",
+        "estimates": "העריכו זמן וקבעו עדיפויות",
+        "movable": "העבירו לספרנטים במהלך התכנון"
+      }
+    }
+  },
+  "home": {
+    "welcome": "ברוכים הבאים, {{name}}! 👋",
+    "subtitle": "הנה מה שקורה עם מסע החינוך הביתי שלכם",
+    "newSprint": "ספרנט חדש",
+    "viewBoard": "צפה בלוח",
+    "stats": {
+      "taskCompletion": "השלמת משימות",
+      "activeSprints": "ספרנטים פעילים",
+      "learners": "לומדים",
+      "thisWeek": "השבוע",
+      "tasksDone": "{{completed}} מתוך {{total}} משימות הושלמו",
+      "totalSprints": "{{total}} סך הכל ספרנטים",
+      "activeInSprints": "פעילים בספרנטים נוכחיים",
+      "learningTime": "זמן למידה נרשם"
+    },
+    "workspaces": {
+      "title": "מרחבי העבודה שלכם",
+      "createWorkspace": "צור מרחב עבודה",
+      "noWorkspaces": {
+        "title": "עדיין אין מרחבי עבודה",
+        "description": "צרו את מרחב העבודה הראשון שלכם כדי להתחיל לארגן את מסע החינוך הביתי שלכם",
+        "button": "צרו את מרחב העבודה הראשון שלכם"
+      },
+      "workspace": {
+        "active": "פעיל",
+        "learners": "{{count}} לומד",
+        "learners_other": "{{count}} לומדים",
+        "sprints": "{{count}} ספרנט פעיל",
+        "sprints_other": "{{count}} ספרנטים פעילים",
+        "enterWorkspace": "היכנס למרחב העבודה"
+      }
+    },
+    "recentActivity": {
+      "title": "פעילות אחרונה",
+      "noActivity": {
+        "title": "עדיין אין פעילות",
+        "description": "התחילו לעבוד על משימות כדי לראות פעילות אחרונה כאן"
+      }
+    }
+  },
+  "sprintBoard": {
+    "title": "לוח ספרנט",
+    "subtitle": "ארגנו את משימות הלמידה שלכם עם מתודולוגיית SCRUM",
+    "loading": "טוען...",
+    "emptyState": {
+      "title": "אין ספרנט פעיל",
+      "description": "למרחב העבודה הזה עדיין אין ספרנט פעיל. צרו ספרנט כדי להתחיל לארגן את משימות הלמידה שלכם.",
+      "createButton": "צור ספרנט חדש",
+      "scrumInfo": "במתודולוגיית SCRUM, כל העבודה מאורגנת סביב ספרנטים - תקופות ממוקדות להשלמת יעדי למידה ספציפיים."
+    },
+    "completedState": {
+      "title": "ספרנט הושלם",
+      "description": "הספרנט הזה הושלם. בקרו בתכנון הספרנט כדי להתחיל ספרנט חדש.",
+      "goToPlanning": "עבור לתכנון ספרנט"
+    },
+    "addTask": "הוסף משימה",
+    "viewProgress": "צפה בהתקדמות",
+    "progress": {
+      "sprintProgress": "התקדמות ספרנט: {{rate}}%"
+    },
+    "columns": {
+      "todo": "לביצוע",
+      "inProgress": "בתהליך",
+      "done": "הושלם"
+    }
+  },
+  "settings": {
+    "title": "הגדרות מרחב עבודה",
+    "subtitle": "נהלו את הגדרות מרחב העבודה והחברים שלכם",
+    "loading": "טוען הגדרות מרחב עבודה...",
+    "workspaceDetails": {
+      "title": "פרטי מרחב העבודה",
+      "description": "עדכנו את שם ותיאור מרחב העבודה שלכם",
+      "name": "שם מרחב העבודה",
+      "namePlaceholder": "הזן שם מרחב עבודה",
+      "descriptionLabel": "תיאור",
+      "descriptionPlaceholder": "הזן תיאור מרחב עבודה",
+      "saveChanges": "שמור שינויים",
+      "saving": "שומר..."
+    },
+    "members": {
+      "title": "חברי מרחב העבודה",
+      "description": "נהלו מי יש לו גישה למרחב העבודה הזה",
+      "addMember": {
+        "title": "הוסף תלמיד באימייל",
+        "placeholder": "הזן כתובת אימייל של התלמיד",
+        "button": "הוסף תלמיד",
+        "adding": "מוסיף...",
+        "note": "התלמיד חייב כבר להיות בעל חשבון במערכת"
+      },
+      "noMembers": {
+        "title": "עדיין אין חברים",
+        "description": "הוסיפו תלמידים לשיתוף פעולה במרחב העבודה הזה"
+      },
+      "joined": "הצטרף:",
+      "unknown": "לא ידוע"
+    },
+    "dangerZone": {
+      "title": "אזור סכנה",
+      "description": "פעולות בלתי הפיכות והרסניות",
+      "deleteWorkspace": {
+        "title": "מחק מרחב עבודה",
+        "description": "לאחר מחיקת מרחב עבודה, אין דרך חזרה. זה ימחק לצמיתות את מרחב העבודה וכל הנתונים שלו כולל משימות, ספרנטים וקשרי חברים.",
+        "button": "מחק מרחב עבודה (בקרוב)"
+      }
+    },
+    "success": {
+      "workspaceUpdated": "מרחב העבודה עודכן בהצלחה",
+      "memberAdded": "תלמיד נוסף למרחב העבודה בהצלחה"
+    },
+    "errors": {
+      "workspaceUpdateFailed": "נכשל בעדכון מרחב העבודה",
+      "memberAddFailed": "נכשל בהוספת חבר"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "404 עמוד לא נמצא",
+      "description": "שכחתם להוסיף את העמוד לנתב?"
+    }
+  },
+  "modals": {
+    "task": {
+      "createTitle": "צור משימה חדשה",
+      "createDescription": "הוסף משימת למידה חדשה לספרנט הנוכחי",
+      "taskTitle": "כותרת המשימה",
+      "taskTitlePlaceholder": "הזן כותרת משימה...",
+      "taskDescription": "תיאור",
+      "taskDescriptionPlaceholder": "תארו מה הלומד צריך לעשות...",
+      "subject": "מקצוע",
+      "selectSubject": "בחר מקצוע",
+      "estimatedTime": "זמן משוער",
+      "estimatedTimePlaceholder": "למשל, 30דק, 1ש",
+      "assignToLearner": "הקצה ללומד",
+      "selectLearner": "בחר לומד",
+      "createTask": "צור משימה",
+      "creating": "יוצר...",
+      "validation": {
+        "titleRequired": "כותרת המשימה נדרשת.",
+        "subjectRequired": "אנא בחר מקצוע.",
+        "assigneeRequired": "אנא הקצה את המשימה ללומד."
+      }
+    },
+    "taskDetails": {
+      "title": "פרטי משימה",
+      "noSubject": "אין מקצוע",
+      "assignee": "לא הוקצה",
+      "progress": "התקדמות",
+      "timeSpent": "זמן שהושקע: {{time}}",
+      "close": "סגור",
+      "editTask": "ערוך משימה",
+      "cancel": "בטל",
+      "saveChanges": "שמור שינויים",
+      "saving": "שומר...",
+      "editTitle": "כותרת המשימה",
+      "editDescription": "תיאור",
+      "editSubject": "מקצוע",
+      "editEstimatedTime": "זמן משוער",
+      "editAssignee": "הקצה ללומד",
+      "editProgress": "התקדמות: {{progress}}%"
+    },
+    "workspace": {
+      "createTitle": "צור מרחב עבודה חדש",
+      "createDescription": "צרו מרחב עבודה חדש למשפחת החינוך הביתי או הקואופרטיב שלכם. זה יהיה המרחב המיוחד שלכם לארגון פעילויות למידה ומעקב התקדמות.",
+      "workspaceName": "שם מרחב העבודה",
+      "workspaceNamePlaceholder": "למשל, מרחב עבודה משפחת ג'ונסון",
+      "workspaceDescription": "תיאור (אופציונלי)",
+      "workspaceDescriptionPlaceholder": "תיאור קצר של מרחב העבודה שלכם...",
+      "createWorkspace": "צור מרחב עבודה",
+      "creating": "יוצר...",
+      "cancel": "בטל"
+    },
+    "progress": {
+      "title": "לוח בקרת התקדמות ספרנט",
+      "loading": "טוען נתוני התקדמות...",
+      "stats": {
+        "totalTasks": "סך הכל משימות",
+        "completionRate": "אחוז השלמה",
+        "timeSpent": "זמן שהושקע",
+        "aboveTarget": "מעל המטרה (60%)",
+        "target": "מטרה: {{target}} השבוע"
+      },
+      "individualProgress": "התקדמות אישית",
+      "noLearners": "לא נמצאו לומדים במרחב העבודה הזה.",
+      "sprintSummary": {
+        "title": "סיכום ספרנט",
+        "tasksCompleted": "משימות שהושלמו",
+        "inProgress": "בתהליך",
+        "remainingTasks": "משימות נותרות"
+      }
+    },
+    "completeSprint": {
+      "title": "השלם ספרנט",
+      "description": "אתם מוכנים להשלים את הספרנט הזה? משימות לא הושלמו יועברו אוטומטית לרשימת המשימות.",
+      "sprintSummary": "סיכום ספרנט",
+      "completed": "הושלם",
+      "incomplete": "לא הושלם",
+      "overallProgress": "התקדמות כללית",
+      "incompleteWarning": {
+        "title": "משימות לא הושלמו",
+        "description": "{{count}} משימה תועתק לרשימת המשימות ותאופס לסטטוס \"לביצוע\".",
+        "description_other": "{{count}} משימות תועתקנה לרשימת המשימות ותאופסנה לסטטוס \"לביצוע\"."
+      },
+      "cancel": "בטל",
+      "complete": "השלם ספרנט",
+      "completing": "משלים..."
+    },
+    "assignTasks": {
+      "title": "הקצה משימות לספרנט",
+      "description": "בחרו משימות מרשימת המשימות להקצאה לספרנט הזה.",
+      "draft": "טיוטה",
+      "noTasks": {
+        "title": "אין משימות ברשימת המשימות",
+        "description": "צרו תחילה משימות ברשימת המשימות, ואז הקצו אותן לספרנטים."
+      },
+      "selectAll": "בחר הכל ({{count}} משימות)",
+      "selected": "{{count}} נבחרו",
+      "tasksInSubject": "{{count}} משימה",
+      "tasksInSubject_other": "{{count}} משימות",
+      "cancel": "בטל",
+      "assign": "הקצה {{count}} משימה",
+      "assign_other": "הקצה {{count}} משימות",
+      "assigning": "מקצה..."
+    },
+    "learnerProgress": {
+      "title": "התקדמות {{name}}",
+      "subtitle": "התקדמות למידה אישית",
+      "loading": "טוען נתוני התקדמות...",
+      "stats": {
+        "totalTasks": "סך הכל משימות",
+        "completionRate": "אחוז השלמה",
+        "timeSpent": "זמן שהושקע",
+        "sprints": "ספרנטים",
+        "overallProgress": "התקדמות כללית",
+        "totalLearningTime": "סך זמן למידה",
+        "participatedIn": "השתתף ב"
+      },
+      "subjectProgress": "התקדמות במקצועות",
+      "noTasks": "עדיין לא הוקצו משימות.",
+      "learningSummary": {
+        "title": "סיכום למידה",
+        "tasksCompleted": "משימות שהושלמו",
+        "currentlyWorking": "כרגע עובד על",
+        "upcomingTasks": "משימות קרובות"
+      }
+    }
+  },
+  "components": {
+    "taskCard": {
+      "noDescription": "אין תיאור",
+      "progress": "התקדמות",
+      "completedIn": "הושלם ב-{{time}}",
+      "timeSpent": "{{spent}}/{{estimated}}",
+      "noEstimate": "אין הערכה",
+      "timeEstimate": "{{time}}"
+    },
+    "kanban": {
+      "loading": "טוען...",
+      "columns": {
+        "todo": "לביצוע",
+        "inProgress": "בתהליך",
+        "done": "הושלם"
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "taskCreated": "משימה נוצרה",
+      "taskCreatedDescription": "משימה חדשה נוצרה בהצלחה.",
+      "taskUpdated": "משימה עודכנה",
+      "taskUpdatedDescription": "סטטוס המשימה עודכן בהצלחה.",
+      "sprintCreated": "ספרנט נוצר",
+      "sprintCreatedDescription": "הספרנט החדש שלכם נוצר בהצלחה.",
+      "sprintUpdated": "ספרנט עודכן",
+      "sprintUpdatedDescription": "הספרנט עודכן בהצלחה.",
+      "sprintStarted": "ספרנט התחיל",
+      "sprintStartedDescription": "הספרנט כעת פעיל ומוכן לשימוש.",
+      "workspaceCreated": "מרחב עבודה נוצר בהצלחה!",
+      "tasksAssigned": "{{count}} משימה הוקצתה ל-{{sprintName}}.",
+      "tasksAssigned_other": "{{count}} משימות הוקצו ל-{{sprintName}}.",
+      "sprintCompleted": "ספרנט הושלם",
+      "sprintCompletedDescription": "הספרנט הושלם ומשימות לא הושלמו הועברו לרשימת המשימות."
+    },
+    "error": {
+      "taskCreateFailed": "נכשל ביצירת משימה",
+      "taskUpdateFailed": "נכשל בעדכון משימה",
+      "sprintCreateFailed": "נכשל ביצירת ספרנט",
+      "sprintUpdateFailed": "נכשל בעדכון ספרנט",
+      "sprintStartFailed": "נכשל בהתחלת ספרנט",
+      "validationError": "שגיאת אימות",
+      "noWorkspaceSelected": "לא נבחר מרחב עבודה",
+      "noWorkspaceSelectedDescription": "אנא בחרו מרחב עבודה ליצירת ספרנט.",
+      "workspaceCreateFailed": "נכשל ביצירת מרחב עבודה",
+      "taskAssignFailed": "נכשל בהקצאת משימות",
+      "noTasksSelected": "לא נבחרו משימות",
+      "noTasksSelectedDescription": "אנא בחרו לפחות משימה אחת להקצאה.",
+      "sprintCompleteFailed": "נכשל בהשלמת ספרנט"
+    }
+  }
+}
