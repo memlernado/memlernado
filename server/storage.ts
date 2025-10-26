@@ -117,7 +117,11 @@ export class DatabaseStorage implements IStorage {
       createTableIfMissing: true,
       pruneSessionInterval: 60, // Prune expired sessions every 60 seconds
       errorLog: console.error,
-      conObject: { ssl: true },
+      conObject: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     });
   }
 
