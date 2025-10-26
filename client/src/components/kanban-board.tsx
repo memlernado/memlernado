@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import type { TaskWithRelations } from "@shared/schema";
+import type { TaskWithRelations, Subject } from "@shared/schema";
 import {
   DndContext,
   DragEndEvent,
@@ -72,6 +72,12 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
   const { data: sprintTasks = [], isLoading: tasksLoading } = useQuery<TaskWithRelations[]>({
     queryKey: ['/api/sprints', sprintId, 'tasks'],
     enabled: !!sprintId,
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", workspaceId, "subjects"],
+    enabled: !!workspaceId,
   });
 
   // Use prop tasks if provided, otherwise use fetched sprint tasks
@@ -234,6 +240,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
                   <TaskCard
                     key={task.id}
                     task={task}
+                    subjects={subjects}
                     onMove={handleTaskMove}
                     isLoading={updateTaskMutation.isPending}
                     isDragging={activeId === task.id}
@@ -250,6 +257,7 @@ export default function KanbanBoard({ workspaceId, sprintId, tasks: propTasks }:
         {activeTask && (
           <TaskCard
             task={activeTask}
+            subjects={subjects}
             onMove={() => {}} // No-op for overlay
             isLoading={false}
             isDragging={true}

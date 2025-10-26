@@ -22,6 +22,20 @@
       "when": 1761074680298,
       "tag": "0002_light_moira_mactaggert",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1761397179142,
+      "tag": "0003_lucky_korath",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1761478702674,
+      "tag": "0004_steady_zaran",
+      "breakpoints": true
     }
   ]
 }

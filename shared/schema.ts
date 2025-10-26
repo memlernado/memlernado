@@ -55,7 +55,7 @@ export const tasks = pgTable("tasks", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
   description: text("description"),
-  subject: text("subject"), // Math, Science, English, etc.
+  subject: varchar("subject").references(() => subjects.id, { onDelete: "restrict" }), // References subjects table
   status: text("status").notNull().default("todo"), // 'todo', 'in_progress', 'done'
   estimatedTime: text("estimated_time"), // e.g., "30min", "1h"
   timeSpent: text("time_spent"), // e.g., "25min"
@@ -67,6 +67,15 @@ export const tasks = pgTable("tasks", {
   completedAt: timestamp("completed_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Subjects table
+export const subjects = pgTable("subjects", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workspaceId: varchar("workspace_id").notNull().references(() => workspaces.id),
+  name: text("name").notNull(),
+  color: text("color").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Password reset tokens table
@@ -97,6 +106,7 @@ export const workspacesRelations = relations(workspaces, ({ one, many }) => ({
   members: many(workspaceMembers),
   sprints: many(sprints),
   tasks: many(tasks),
+  subjects: many(subjects),
 }));
 
 export const workspaceMembersRelations = relations(workspaceMembers, ({ one }) => ({
@@ -143,6 +153,13 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   }),
 }));
 
+export const subjectsRelations = relations(subjects, ({ one }) => ({
+  workspace: one(workspaces, {
+    fields: [subjects.workspaceId],
+    references: [workspaces.id],
+  }),
+}));
+
 export const passwordResetTokensRelations = relations(passwordResetTokens, ({ one }) => ({
   user: one(users, {
     fields: [passwordResetTokens.userId],
@@ -181,6 +198,11 @@ export const insertTaskSchema = createInsertSchema(tasks).omit({
   completedAt: true,
 });
 
+export const insertSubjectSchema = createInsertSchema(subjects).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertPasswordResetTokenSchema = createInsertSchema(passwordResetTokens).omit({
   id: true,
   createdAt: true,
@@ -211,6 +233,9 @@ export type SprintWithStats = Sprint & {
 
 export type Task = typeof tasks.$inferSelect;
 export type InsertTask = z.infer<typeof insertTaskSchema>;
+
+export type Subject = typeof subjects.$inferSelect;
+export type InsertSubject = z.infer<typeof insertSubjectSchema>;
 
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
 export type InsertPasswordResetToken = z.infer<typeof insertPasswordResetTokenSchema>;

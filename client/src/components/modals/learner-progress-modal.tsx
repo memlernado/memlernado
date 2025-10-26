@@ -7,7 +7,7 @@ import { Target, TrendingUp, Clock, Loader2, Calendar, BookOpen, User } from "lu
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
-import type { TaskWithRelations } from "@shared/schema";
+import type { TaskWithRelations, Subject } from "@shared/schema";
 
 interface LearnerProgressModalProps {
   isOpen: boolean;
@@ -25,6 +25,12 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
     queryKey: ["/api/workspaces", selectedWorkspaceId, "tasks"],
     enabled: !!selectedWorkspaceId && isOpen,
     select: (data) => data.filter(task => task.assignedTo === userId),
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"],
+    enabled: !!selectedWorkspaceId && isOpen,
   });
 
   const isLoading = tasksLoading;
@@ -59,32 +65,31 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
   const uniqueSprints = new Set(userTasks.map(task => task.sprintId)).size;
 
   // Group tasks by subject
-  const subjects: Record<string, { completed: number; total: number; rate: number; color: string }> = {};
-  const subjectColors = {
-    Math: "bg-chart-2",
-    Science: "bg-accent",
-    English: "bg-destructive",
-    Spanish: "bg-chart-1",
-    History: "bg-chart-5",
-    Art: "bg-chart-3",
-    Music: "bg-chart-4",
-    "Computer Science": "bg-chart-6",
-    Geography: "bg-chart-7",
-  };
+  const subjectStats: Record<string, { completed: number; total: number; rate: number; color: string; name: string }> = {};
 
   userTasks.forEach(task => {
-    const subject = task.subject || 'Other';
-    if (!subjects[subject]) {
-      subjects[subject] = { completed: 0, total: 0, rate: 0, color: subjectColors[subject as keyof typeof subjectColors] || "bg-muted" };
-    }
-    subjects[subject].total++;
-    if (task.status === 'done') {
-      subjects[subject].completed++;
+    if (task.subject) {
+      const subject = subjects.find(s => s.id === task.subject);
+      if (subject) {
+        if (!subjectStats[subject.id]) {
+          subjectStats[subject.id] = { 
+            completed: 0, 
+            total: 0, 
+            rate: 0, 
+            color: subject.color,
+            name: subject.name
+          };
+        }
+        subjectStats[subject.id].total++;
+        if (task.status === 'done') {
+          subjectStats[subject.id].completed++;
+        }
+      }
     }
   });
 
   // Calculate rates for each subject
-  Object.values(subjects).forEach(subject => {
+  Object.values(subjectStats).forEach(subject => {
     subject.rate = subject.total > 0 ? Math.round((subject.completed / subject.total) * 100) : 0;
   });
 
@@ -212,12 +217,12 @@ export default function LearnerProgressModal({ isOpen, onClose, userId, userName
                 </Card>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {Object.entries(subjects).map(([subject, stats]) => (
-                    <Card key={subject} className="border border-border">
+                  {Object.entries(subjectStats).map(([subjectId, stats]) => (
+                    <Card key={subjectId} className="border border-border">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-lg font-medium text-foreground">
-                            {subject}
+                            {stats.name}
                           </CardTitle>
                           <Badge variant="secondary">{stats.rate}%</Badge>
                         </div>

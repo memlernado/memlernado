@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import type { TaskWithRelations } from "@shared/schema";
+import type { TaskWithRelations, Subject } from "@shared/schema";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +61,12 @@ export default function TaskDetailsModal({
 
   const { data: workspaceMembers = [] } = useQuery<any[]>({
     queryKey: ["/api/workspaces", workspaceId, "members"],
+    enabled: !!workspaceId && isOpen,
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", workspaceId, "subjects"],
     enabled: !!workspaceId && isOpen,
   });
 
@@ -125,16 +131,14 @@ export default function TaskDetailsModal({
     onClose();
   };
 
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      Math: "bg-chart-2 text-white",
-      Science: "bg-accent text-accent-foreground",
-      English: "bg-destructive text-destructive-foreground",
-      Spanish: "bg-chart-1 text-white",
-      History: "bg-chart-5 text-white",
-      Art: "bg-secondary text-secondary-foreground",
-    };
-    return colors[subject] || "bg-muted text-muted-foreground";
+  const getSubjectColor = (subjectId: string) => {
+    const subject = subjects.find(s => s.id === subjectId);
+    return subject?.color || "bg-muted text-muted-foreground";
+  };
+
+  const getSubjectName = (subjectId: string) => {
+    const subject = subjects.find(s => s.id === subjectId);
+    return subject?.name || "Unknown";
   };
 
   const getStatusColor = (status: string) => {
@@ -163,16 +167,6 @@ export default function TaskDetailsModal({
     }
   };
 
-  const subjects = [
-    "Math",
-    "Science", 
-    "English",
-    "History",
-    "Spanish",
-    "Art",
-    "Music",
-    "Physical Education",
-  ];
 
   if (!task) return null;
 
@@ -188,7 +182,7 @@ export default function TaskDetailsModal({
             <span>{t('modals.taskDetails.title')}</span>
             <div className="flex items-center space-x-2">
               <Badge className={getSubjectColor(task.subject || "")}>
-                {task.subject || t('modals.taskDetails.noSubject')}
+                {task.subject ? getSubjectName(task.subject) : t('modals.taskDetails.noSubject')}
               </Badge>
               <Badge className={getStatusColor(task.status)}>
                 {getStatusLabel(task.status)}
@@ -292,21 +286,32 @@ export default function TaskDetailsModal({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="task-subject">{t('modals.taskDetails.editSubject')}</Label>
-                <Select 
-                  value={formData.subject} 
-                  onValueChange={(value) => setFormData({ ...formData, subject: value })}
-                >
-                  <SelectTrigger data-testid="select-edit-task-subject">
-                    <SelectValue placeholder={t('modals.task.selectSubject')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {subjects.map((subject) => (
-                      <SelectItem key={subject} value={subject}>
-                        {subject}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {subjects.length === 0 ? (
+                  <div className="p-4 border rounded-lg bg-muted/30 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {t('modals.task.noSubjects.title')}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t('modals.task.noSubjects.description')}
+                    </p>
+                  </div>
+                ) : (
+                  <Select 
+                    value={formData.subject} 
+                    onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                  >
+                    <SelectTrigger data-testid="select-edit-task-subject">
+                      <SelectValue placeholder={t('modals.task.selectSubject')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {subjects.map((subject) => (
+                        <SelectItem key={subject.id} value={subject.id}>
+                          {subject.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
 
               <div>

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { WorkspaceMemberWithUser } from "@shared/schema";
+import { WorkspaceMemberWithUser, Subject } from "@shared/schema";
 
 interface TaskModalProps {
   isOpen: boolean;
@@ -34,6 +34,12 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
   const { data: workspaceMembers = [] } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", workspaceId, "members"],
     enabled: !!workspaceId, // Enable now that endpoint exists
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", workspaceId, "subjects"],
+    enabled: !!workspaceId,
   });
 
   // Extract learners from workspace members (filter out facilitators)
@@ -116,16 +122,6 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
     onClose();
   };
 
-  const subjects = [
-    "Math",
-    "Science", 
-    "English",
-    "History",
-    "Spanish",
-    "Art",
-    "Music",
-    "Physical Education",
-  ];
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -165,21 +161,32 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="task-subject">{t('modals.task.subject')}</Label>
-              <Select 
-                value={formData.subject} 
-                onValueChange={(value) => setFormData({ ...formData, subject: value })}
-              >
-                <SelectTrigger data-testid="select-task-subject">
-                  <SelectValue placeholder={t('modals.task.selectSubject')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {subjects.map((subject) => (
-                    <SelectItem key={subject} value={subject}>
-                      {subject}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {subjects.length === 0 ? (
+                <div className="p-4 border rounded-lg bg-muted/30 text-center">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {t('modals.task.noSubjects.title')}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('modals.task.noSubjects.description')}
+                  </p>
+                </div>
+              ) : (
+                <Select 
+                  value={formData.subject} 
+                  onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                >
+                  <SelectTrigger data-testid="select-task-subject">
+                    <SelectValue placeholder={t('modals.task.selectSubject')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subjects.map((subject) => (
+                      <SelectItem key={subject.id} value={subject.id}>
+                        {subject.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             <div>

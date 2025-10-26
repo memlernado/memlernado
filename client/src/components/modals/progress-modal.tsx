@@ -6,7 +6,7 @@ import { Target, TrendingUp, Clock, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useWorkspace } from "@/hooks/use-workspace";
-import type { TaskWithRelations, WorkspaceMemberWithUser } from "@shared/schema";
+import type { TaskWithRelations, WorkspaceMemberWithUser, Subject } from "@shared/schema";
 
 interface ProgressModalProps {
   isOpen: boolean;
@@ -29,6 +29,12 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
   // Fetch workspace members (learners)
   const { data: members = [], isLoading: membersLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
+    enabled: !!selectedWorkspaceId && isOpen,
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"],
     enabled: !!selectedWorkspaceId && isOpen,
   });
 
@@ -79,30 +85,31 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
       const userCompletionRate = userTasks.length > 0 ? Math.round((completedUserTasks.length / userTasks.length) * 100) : 0;
 
       // Group tasks by subject
-      const subjects: Record<string, { completed: number; total: number; rate: number; color: string }> = {};
-      const subjectColors = {
-        Math: "bg-chart-2",
-        Science: "bg-accent", 
-        English: "bg-destructive",
-        Spanish: "bg-chart-1",
-        History: "bg-chart-5",
-        Art: "bg-chart-3",
-        Music: "bg-chart-4",
-      };
+      const subjectStats: Record<string, { completed: number; total: number; rate: number; color: string; name: string }> = {};
 
       userTasks.forEach(task => {
-        const subject = task.subject || 'Other';
-        if (!subjects[subject]) {
-          subjects[subject] = { completed: 0, total: 0, rate: 0, color: subjectColors[subject as keyof typeof subjectColors] || "bg-muted" };
-        }
-        subjects[subject].total++;
-        if (task.status === 'done') {
-          subjects[subject].completed++;
+        if (task.subject) {
+          const subject = subjects.find(s => s.id === task.subject);
+          if (subject) {
+            if (!subjectStats[subject.id]) {
+              subjectStats[subject.id] = { 
+                completed: 0, 
+                total: 0, 
+                rate: 0, 
+                color: subject.color,
+                name: subject.name
+              };
+            }
+            subjectStats[subject.id].total++;
+            if (task.status === 'done') {
+              subjectStats[subject.id].completed++;
+            }
+          }
         }
       });
 
       // Calculate rates for each subject
-      Object.values(subjects).forEach(subject => {
+      Object.values(subjectStats).forEach(subject => {
         subject.rate = subject.total > 0 ? Math.round((subject.completed / subject.total) * 100) : 0;
       });
 
@@ -119,7 +126,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
         tasksCompleted: completedUserTasks.length,
         totalTasks: userTasks.length,
         avatarColor,
-        subjects,
+        subjects: subjectStats,
       };
     });
 
@@ -238,15 +245,15 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                   
                   <CardContent className="pt-0">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {Object.entries(learner.subjects).map(([subject, stats]) => (
-                        <div key={subject} className="text-center">
+                      {Object.entries(learner.subjects).map(([subjectId, stats]) => (
+                        <div key={subjectId} className="text-center">
                           <div className="w-full bg-muted rounded-full h-2 mb-2">
                             <div 
                               className={`${stats.color} h-2 rounded-full transition-all duration-300`}
                               style={{ width: `${stats.rate}%` }}
                             />
                           </div>
-                          <p className="text-sm font-medium text-foreground">{subject}</p>
+                          <p className="text-sm font-medium text-foreground">{stats.name}</p>
                           <p className="text-xs text-muted-foreground">
                             {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
                           </p>

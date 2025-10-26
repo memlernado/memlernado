@@ -7,18 +7,19 @@ import { Clock, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { TaskWithRelations } from "@shared/schema";
+import type { TaskWithRelations, Subject } from "@shared/schema";
 // Updated to use TaskWithRelations type
 
 interface TaskCardProps {
   task: TaskWithRelations;
+  subjects: Subject[];
   onMove: (taskId: string, newStatus: TaskWithRelations["status"]) => void;
   isLoading?: boolean;
   isDragging?: boolean;
   onClick?: () => void;
 }
 
-export default function TaskCard({ task, onMove, isLoading, isDragging = false, onClick }: TaskCardProps) {
+export default function TaskCard({ task, subjects, onMove, isLoading, isDragging = false, onClick }: TaskCardProps) {
   const { t } = useTranslation();
   const {
     attributes,
@@ -33,16 +34,14 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      Math: "bg-chart-2 text-white",
-      Science: "bg-accent text-accent-foreground",
-      English: "bg-destructive text-destructive-foreground",
-      Spanish: "bg-chart-1 text-white",
-      History: "bg-chart-5 text-white",
-      Art: "bg-secondary text-secondary-foreground",
-    };
-    return colors[subject] || "bg-muted text-muted-foreground";
+  const getSubjectColor = (subjectId: string) => {
+    const subject = subjects.find(s => s.id === subjectId);
+    return subject?.color || "bg-muted text-muted-foreground";
+  };
+
+  const getSubjectName = (subjectId: string) => {
+    const subject = subjects.find(s => s.id === subjectId);
+    return subject?.name || "Unknown";
   };
 
   const getAvatarColor = (assigneeId: string) => {
@@ -98,7 +97,7 @@ export default function TaskCard({ task, onMove, isLoading, isDragging = false, 
         <div className="flex items-center space-x-1 flex-shrink-0">
           {task.subject && (
             <Badge className={cn("text-xs", getSubjectColor(task.subject))}>
-              {task.subject}
+              {getSubjectName(task.subject)}
             </Badge>
           )}
           {task.status === "done" && (

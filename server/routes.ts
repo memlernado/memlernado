@@ -557,6 +557,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Subject routes
+  app.get("/api/workspaces/:workspaceId/subjects", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      const subjects = await storage.getWorkspaceSubjects(req.params.workspaceId);
+      res.json(subjects);
+    } catch (error) {
+      console.error("Error fetching workspace subjects:", error);
+      res.status(500).json({ message: "Failed to fetch subjects" });
+    }
+  });
+
+  app.post("/api/workspaces/:workspaceId/subjects", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can create subjects
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can create subjects" });
+    }
+
+    try {
+      const { name, color } = req.body;
+      
+      if (!name || !color) {
+        return res.status(400).json({ message: "Name and color are required" });
+      }
+
+      const subject = await storage.createSubject({
+        workspaceId: req.params.workspaceId,
+        name,
+        color,
+      });
+      
+      res.status(201).json(subject);
+    } catch (error) {
+      console.error("Error creating subject:", error);
+      res.status(400).json({ message: "Failed to create subject" });
+    }
+  });
+
+  app.patch("/api/subjects/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can update subjects
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can update subjects" });
+    }
+
+    try {
+      const { name, color } = req.body;
+      const updates: any = {};
+      
+      if (name !== undefined) updates.name = name;
+      if (color !== undefined) updates.color = color;
+
+      const subject = await storage.updateSubject(req.params.id, updates);
+      res.json(subject);
+    } catch (error) {
+      console.error("Error updating subject:", error);
+      res.status(400).json({ message: "Failed to update subject" });
+    }
+  });
+
+  app.delete("/api/subjects/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can delete subjects
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can delete subjects" });
+    }
+
+    try {
+      // Check if subject is used by any tasks
+      const isUsed = await storage.isSubjectUsedByTasks(req.params.id);
+      if (isUsed) {
+        return res.status(400).json({ 
+          message: "Cannot delete subject that is being used by tasks" 
+        });
+      }
+
+      await storage.deleteSubject(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting subject:", error);
+      res.status(400).json({ message: "Failed to delete subject" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

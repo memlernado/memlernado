@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import type { DashboardData } from "@shared/schema";
+import type { DashboardData, Subject } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,12 @@ export default function Dashboard() {
   
   const { data: dashboardData, isLoading } = useQuery<DashboardData>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "dashboard"],
+    enabled: !!selectedWorkspaceId,
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"],
     enabled: !!selectedWorkspaceId,
   });
   
@@ -182,26 +188,25 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {Object.entries(learner.subjects).map(([subject, stats]) => (
-                      <div key={subject} className="text-center">
-                        <div className="w-full bg-muted rounded-full h-2 mb-2">
-                          <div 
-                            className={`h-2 rounded-full ${
-                              subject === "Math" ? "bg-chart-2" :
-                              subject === "Science" ? "bg-accent" :
-                              subject === "English" ? "bg-destructive" :
-                              subject === "Spanish" ? "bg-chart-1" :
-                              "bg-chart-5"
-                            }`}
-                            style={{ width: `${stats.rate}%` }}
-                          />
+                    {Object.entries(learner.subjects).map(([subjectId, stats]) => {
+                      const subject = subjects.find(s => s.id === subjectId);
+                      if (!subject) return null;
+                      
+                      return (
+                        <div key={subjectId} className="text-center">
+                          <div className="w-full bg-muted rounded-full h-2 mb-2">
+                            <div 
+                              className={`h-2 rounded-full ${subject.color}`}
+                              style={{ width: `${stats.rate}%` }}
+                            />
+                          </div>
+                          <p className="text-sm font-medium text-foreground">{subject.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
+                          </p>
                         </div>
-                        <p className="text-sm font-medium text-foreground">{subject}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {t('common.phrases.taskCountFraction', { fraction: `${stats.completed}/${stats.total}` })}
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>

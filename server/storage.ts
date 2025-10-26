@@ -4,6 +4,7 @@ import {
   workspaceMembers,
   sprints,
   tasks,
+  subjects,
   passwordResetTokens,
   type User,
   type InsertUser,
@@ -18,6 +19,8 @@ import {
   type TaskWithRelations,
   type WorkspaceMemberWithUser,
   type SprintWithStats,
+  type Subject,
+  type InsertSubject,
   type PasswordResetToken,
   type InsertPasswordResetToken,
 } from "@shared/schema";
@@ -65,6 +68,13 @@ export interface IStorage {
   createTask(task: InsertTask): Promise<Task>;
   updateTask(id: string, updates: Partial<InsertTask>): Promise<Task>;
   deleteTask(id: string): Promise<void>;
+
+  // Subject operations
+  getWorkspaceSubjects(workspaceId: string): Promise<Subject[]>;
+  createSubject(subject: InsertSubject): Promise<Subject>;
+  updateSubject(id: string, updates: Partial<InsertSubject>): Promise<Subject>;
+  deleteSubject(id: string): Promise<void>;
+  isSubjectUsedByTasks(subjectId: string): Promise<boolean>;
 
   // Password reset token operations
   createPasswordResetToken(userId: string): Promise<{ token: string; tokenRecord: PasswordResetToken }>;
@@ -428,6 +438,59 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTask(id: string): Promise<void> {
     await db.delete(tasks).where(eq(tasks.id, id));
+  }
+
+  // Subject operations
+  async getWorkspaceSubjects(workspaceId: string): Promise<Subject[]> {
+    return await db
+      .select()
+      .from(subjects)
+      .where(eq(subjects.workspaceId, workspaceId))
+      .orderBy(subjects.name);
+  }
+
+  async createSubject(insertSubject: InsertSubject): Promise<Subject> {
+    // Check for duplicate name in workspace
+    const existing = await db
+      .select()
+      .from(subjects)
+      .where(and(
+        eq(subjects.workspaceId, insertSubject.workspaceId),
+        eq(subjects.name, insertSubject.name)
+      ))
+      .limit(1);
+      
+    if (existing.length > 0) {
+      throw new Error("Subject name already exists in this workspace");
+    }
+    
+    const [subject] = await db.insert(subjects).values(insertSubject).returning();
+    return subject;
+  }
+
+  async updateSubject(id: string, updates: Partial<InsertSubject>): Promise<Subject> {
+    const [subject] = await db
+      .update(subjects)
+      .set(updates)
+      .where(eq(subjects.id, id))
+      .returning();
+    if (!subject) {
+      throw new Error("Subject not found");
+    }
+    return subject;
+  }
+
+  async deleteSubject(id: string): Promise<void> {
+    await db.delete(subjects).where(eq(subjects.id, id));
+  }
+
+  async isSubjectUsedByTasks(subjectId: string): Promise<boolean> {
+    const [task] = await db
+      .select()
+      .from(tasks)
+      .where(eq(tasks.subject, subjectId))
+      .limit(1);
+    return !!task;
   }
 
   // Password reset token operations

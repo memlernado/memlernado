@@ -1,0 +1,2 @@
+ALTER TABLE "tasks" ALTER COLUMN "subject" SET DATA TYPE varchar;--> statement-breakpoint
+ALTER TABLE "tasks" ADD CONSTRAINT "tasks_subject_subjects_id_fk" FOREIGN KEY ("subject") REFERENCES "public"."subjects"("id") ON DELETE restrict ON UPDATE no action;

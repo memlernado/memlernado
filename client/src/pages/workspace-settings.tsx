@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import type {  WorkspaceMemberWithUser, WorkspaceWithStats } from "@shared/schema";
+import type {  WorkspaceMemberWithUser, WorkspaceWithStats, Subject } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { getNextAvailableColor, SUBJECT_COLORS } from "@shared/colors";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Settings, Users, Trash2, UserMinus, UserPlus } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Settings, Users, Trash2, UserMinus, UserPlus, Plus, Edit2, Check, X } from "lucide-react";
 
 
 export default function WorkspaceSettings() {
@@ -23,6 +25,10 @@ export default function WorkspaceSettings() {
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
   const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [newSubjectName, setNewSubjectName] = useState("");
+  const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
+  const [editingSubjectName, setEditingSubjectName] = useState("");
+  const [editingSubjectColor, setEditingSubjectColor] = useState("");
 
   // Fetch workspace details
   const { data: workspaces, isLoading: isWorkspaceLoading } = useQuery<WorkspaceWithStats[]>({
@@ -44,6 +50,12 @@ export default function WorkspaceSettings() {
   // Fetch workspace members
   const { data: members = [], isLoading: isMembersLoading } = useQuery<WorkspaceMemberWithUser[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "members"],
+    enabled: !!selectedWorkspaceId,
+  });
+
+  // Fetch workspace subjects
+  const { data: subjects = [], isLoading: isSubjectsLoading } = useQuery<Subject[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"],
     enabled: !!selectedWorkspaceId,
   });
 
@@ -112,10 +124,123 @@ export default function WorkspaceSettings() {
     },
   });
 
+  // Add subject mutation
+  const addSubjectMutation = useMutation({
+    mutationFn: async (name: string) => {
+      const usedColors = subjects.map(s => s.color);
+      const color = getNextAvailableColor(usedColors);
+      
+      const response = await apiRequest("POST", `/api/workspaces/${selectedWorkspaceId}/subjects`, {
+        name,
+        color,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"] });
+      setNewSubjectName("");
+      toast({
+        title: t('common.buttons.save'),
+        description: t('settings.success.subjectAdded'),
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error adding subject:", error);
+      toast({
+        title: t('common.buttons.error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete subject mutation
+  const deleteSubjectMutation = useMutation({
+    mutationFn: async (subjectId: string) => {
+      const response = await apiRequest("DELETE", `/api/subjects/${subjectId}`);
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"] });
+      toast({
+        title: t('common.buttons.save'),
+        description: t('settings.success.subjectDeleted'),
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error deleting subject:", error);
+      toast({
+        title: t('common.buttons.error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Update subject mutation
+  const updateSubjectMutation = useMutation({
+    mutationFn: async ({ subjectId, name, color }: { subjectId: string; name: string; color: string }) => {
+      const response = await apiRequest("PATCH", `/api/subjects/${subjectId}`, {
+        name,
+        color,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"] });
+      setEditingSubjectId(null);
+      setEditingSubjectName("");
+      setEditingSubjectColor("");
+      toast({
+        title: t('common.buttons.save'),
+        description: t('settings.success.subjectUpdated'),
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error updating subject:", error);
+      toast({
+        title: t('common.buttons.error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMemberEmail.trim()) return;
     addMemberMutation.mutate(newMemberEmail.trim());
+  };
+
+  const handleAddSubject = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSubjectName.trim()) return;
+    addSubjectMutation.mutate(newSubjectName.trim());
+  };
+
+  const handleDeleteSubject = (subjectId: string) => {
+    deleteSubjectMutation.mutate(subjectId);
+  };
+
+  const handleStartEditSubject = (subject: Subject) => {
+    setEditingSubjectId(subject.id);
+    setEditingSubjectName(subject.name);
+    setEditingSubjectColor(subject.color);
+  };
+
+  const handleCancelEditSubject = () => {
+    setEditingSubjectId(null);
+    setEditingSubjectName("");
+    setEditingSubjectColor("");
+  };
+
+  const handleSaveEditSubject = () => {
+    if (!editingSubjectName.trim()) return;
+    updateSubjectMutation.mutate({
+      subjectId: editingSubjectId!,
+      name: editingSubjectName.trim(),
+      color: editingSubjectColor,
+    });
   };
 
   if (isWorkspaceLoading) {
@@ -289,6 +414,158 @@ export default function WorkspaceSettings() {
                         >
                           <UserMinus className="h-4 w-4" />
                         </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Subjects Management */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Settings className="h-5 w-5" />
+                <span>{t('settings.subjects.title')}</span>
+              </CardTitle>
+              <CardDescription>
+                {t('settings.subjects.description')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* Add Subject Form */}
+              <div className="mb-6 p-4 border rounded-lg bg-muted/30">
+                <h4 className="font-medium text-foreground mb-3 flex items-center space-x-2">
+                  <Plus className="h-4 w-4" />
+                  <span>{t('settings.subjects.addSubject.title')}</span>
+                </h4>
+                <form onSubmit={handleAddSubject} className="flex space-x-2">
+                  <div className="flex-1">
+                    <Input
+                      placeholder={t('settings.subjects.addSubject.placeholder')}
+                      value={newSubjectName}
+                      onChange={(e) => setNewSubjectName(e.target.value)}
+                      data-testid="input-subject-name"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    disabled={addSubjectMutation.isPending || !newSubjectName.trim()}
+                    data-testid="button-add-subject"
+                  >
+                    {addSubjectMutation.isPending ? t('settings.subjects.addSubject.adding') : t('settings.subjects.addSubject.button')}
+                  </Button>
+                </form>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {t('settings.subjects.addSubject.note')}
+                </p>
+              </div>
+
+              {/* Subjects List */}
+              {isSubjectsLoading ? (
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center space-x-3 animate-pulse">
+                      <div className="w-8 h-8 bg-muted rounded" />
+                      <div className="flex-1 space-y-1">
+                        <div className="h-4 bg-muted rounded w-1/3" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : subjects.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">{t('settings.subjects.noSubjects.title')}</h3>
+                  <p className="text-muted-foreground">{t('settings.subjects.noSubjects.description')}</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {subjects.map((subject) => (
+                    <div key={subject.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      {editingSubjectId === subject.id ? (
+                        // Edit mode
+                        <div className="flex items-center space-x-3 flex-1">
+                          <Input
+                            value={editingSubjectName}
+                            onChange={(e) => setEditingSubjectName(e.target.value)}
+                            className="flex-1"
+                            placeholder={t('settings.subjects.editName.placeholder')}
+                            data-testid={`input-edit-subject-name-${subject.id}`}
+                          />
+                          <Select
+                            value={editingSubjectColor}
+                            onValueChange={setEditingSubjectColor}
+                          >
+                            <SelectTrigger className="w-min">
+                              <SelectValue placeholder={t('settings.subjects.editColor.placeholder')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {SUBJECT_COLORS.map((color) => (
+                                <SelectItem key={color} value={color}>
+                                  <div className="flex items-center">
+                                    <div className={`w-4 h-4 rounded ${color.split(' ')[0]}`} />
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      ) : (
+                        // View mode
+                        <div className="flex items-center space-x-3">
+                          <Badge className={subject.color}>
+                            {subject.name}
+                          </Badge>
+                        </div>
+                      )}
+                      <div className="flex items-center space-x-2">
+                        {editingSubjectId === subject.id ? (
+                          // Edit buttons
+                          <>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={handleSaveEditSubject}
+                              disabled={updateSubjectMutation.isPending || !editingSubjectName.trim()}
+                              data-testid={`button-save-subject-${subject.id}`}
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={handleCancelEditSubject}
+                              disabled={updateSubjectMutation.isPending}
+                              data-testid={`button-cancel-subject-${subject.id}`}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </>
+                        ) : (
+                          // View buttons
+                          <>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleStartEditSubject(subject)}
+                              data-testid={`button-edit-subject-${subject.id}`}
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="text-destructive hover:text-destructive"
+                              onClick={() => handleDeleteSubject(subject.id)}
+                              disabled={deleteSubjectMutation.isPending}
+                              data-testid={`button-delete-subject-${subject.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
                       </div>
                     </div>
                   ))}
