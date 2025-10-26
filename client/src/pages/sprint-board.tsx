@@ -10,9 +10,20 @@ import TaskModal from "@/components/modals/task-modal";
 import ProgressModal from "@/components/modals/progress-modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, BarChart3, Calendar, PlusCircle, CheckCircle } from "lucide-react";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Plus,
+  BarChart3,
+  Calendar,
+  PlusCircle,
+  CheckCircle,
+} from "lucide-react";
 
 function EmptySprintState() {
   const { t } = useTranslation();
@@ -29,22 +40,22 @@ function EmptySprintState() {
           <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
             <Calendar className="h-8 w-8 text-muted-foreground" />
           </div>
-          <CardTitle>{t('sprintBoard.emptyState.title')}</CardTitle>
+          <CardTitle>{t("sprintBoard.emptyState.title")}</CardTitle>
           <CardDescription>
-            {t('sprintBoard.emptyState.description')}
+            {t("sprintBoard.emptyState.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="text-center space-y-4">
-          <Button 
+          <Button
             className="w-full"
             onClick={handleCreateSprint}
             data-testid="button-create-sprint"
           >
             <PlusCircle className="h-4 w-4 mr-2" />
-            {t('sprintBoard.emptyState.createButton')}
+            {t("sprintBoard.emptyState.createButton")}
           </Button>
           <p className="text-xs text-muted-foreground">
-            {t('sprintBoard.emptyState.scrumInfo')}
+            {t("sprintBoard.emptyState.scrumInfo")}
           </p>
         </CardContent>
       </Card>
@@ -76,7 +87,7 @@ export default function SprintBoard() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <p className="text-muted-foreground">{t('sprintBoard.loading')}</p>
+          <p className="text-muted-foreground">{t("sprintBoard.loading")}</p>
         </div>
       </MainLayout>
     );
@@ -88,8 +99,12 @@ export default function SprintBoard() {
       <MainLayout>
         <div className="space-y-6">
           <div className="bg-card border-b border-border px-6 py-4 -mx-6">
-            <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
-            <p className="text-muted-foreground mt-1">{t('sprintBoard.subtitle')}</p>
+            <h1 className="text-2xl font-bold text-foreground">
+              {t("sprintBoard.title")}
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              {t("sprintBoard.subtitle")}
+            </p>
           </div>
           <EmptySprintState />
         </div>
@@ -98,13 +113,17 @@ export default function SprintBoard() {
   }
 
   // Check if sprint is completed (shouldn't happen but handle gracefully)
-  if (activeSprint.status === 'completed') {
+  if (activeSprint.status === "completed") {
     return (
       <MainLayout>
         <div className="space-y-6">
           <div className="bg-card border-b border-border px-6 py-4 -mx-6">
-            <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
-            <p className="text-muted-foreground mt-1">{t('sprintBoard.completedState.description')}</p>
+            <h1 className="text-2xl font-bold text-foreground">
+              {t("sprintBoard.title")}
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              {t("sprintBoard.completedState.description")}
+            </p>
           </div>
           <div className="flex items-center justify-center min-h-[400px]">
             <Card className="w-full max-w-md">
@@ -112,14 +131,14 @@ export default function SprintBoard() {
                 <div className="mx-auto w-16 h-16 mb-4 bg-muted rounded-full flex items-center justify-center">
                   <CheckCircle className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <CardTitle>{t('sprintBoard.completedState.title')}</CardTitle>
+                <CardTitle>{t("sprintBoard.completedState.title")}</CardTitle>
                 <CardDescription>
-                  {t('sprintBoard.completedState.description')}
+                  {t("sprintBoard.completedState.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <Button onClick={() => setLocation("/sprint-planning")}>
-                  {t('sprintBoard.completedState.goToPlanning')}
+                  {t("sprintBoard.completedState.goToPlanning")}
                 </Button>
               </CardContent>
             </Card>
@@ -130,69 +149,103 @@ export default function SprintBoard() {
   }
 
   // Calculate real counts from task data
-  const todoCount = tasks.filter(task => task.status === 'todo').length;
-  const inProgressCount = tasks.filter(task => task.status === 'in_progress').length;
-  const doneCount = tasks.filter(task => task.status === 'done').length;
+  const todoCount = tasks.filter((task) => task.status === "todo").length;
+  const inProgressCount = tasks.filter(
+    (task) => task.status === "in_progress"
+  ).length;
+  const doneCount = tasks.filter((task) => task.status === "done").length;
   const totalTasks = tasks.length;
-  const completionRate = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
+  const completionRate =
+    totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
 
-  const startDate = activeSprint.startDate && new Date(activeSprint.startDate).toISOString().split('T')[0] || 'Start Date';
-  const endDate = activeSprint.endDate && new Date(activeSprint.endDate).toISOString().split('T')[0] || 'End Date';
+  const startDate =
+    (activeSprint.startDate &&
+      new Date(activeSprint.startDate).toISOString().split("T")[0]) ||
+    "Start Date";
+  const endDate =
+    (activeSprint.endDate &&
+      new Date(activeSprint.endDate).toISOString().split("T")[0]) ||
+    "End Date";
 
   return (
     <MainLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="bg-card border-b border-border px-6 py-4 -mx-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{t('sprintBoard.title')}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+                {t("sprintBoard.title")}
+              </h1>
               <p className="text-muted-foreground mt-1">
                 {activeSprint.name} • {startDate} - {endDate}
               </p>
             </div>
-            <div className="flex items-center space-x-3">
-              <Button 
-                variant="secondary" 
+            <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-2 sm:gap-3">
+              <Button
+                variant="secondary"
+                size="default"
+                className="h-11 sm:h-10"
                 onClick={() => setShowTaskModal(true)}
                 data-testid="button-add-task"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                {t('sprintBoard.addTask')}
+                {t("sprintBoard.addTask")}
               </Button>
-              <Button 
+              <Button
+                size="default"
+                className="h-11 sm:h-10"
                 onClick={() => setShowProgressModal(true)}
                 data-testid="button-view-progress"
               >
                 <BarChart3 className="h-4 w-4 mr-2" />
-                {t('sprintBoard.viewProgress')}
+                {t("sprintBoard.viewProgress")}
               </Button>
             </div>
           </div>
 
           {/* Progress Overview */}
-          <div className="mt-4 flex items-center space-x-6">
+          <div className="mt-4 hidden sm:flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-muted rounded-full"></div>
-              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.todo')}: {todoCount}</span>
+              <span className="text-sm text-muted-foreground">
+                {t("sprintBoard.columns.todo")}: {todoCount}
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-chart-4 rounded-full"></div>
-              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.inProgress')}: {inProgressCount}</span>
+              <span className="text-sm text-muted-foreground">
+                {t("sprintBoard.columns.inProgress")}: {inProgressCount}
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-accent rounded-full"></div>
-              <span className="text-sm text-muted-foreground">{t('sprintBoard.columns.done')}: {doneCount}</span>
+              <span className="text-sm text-muted-foreground">
+                {t("sprintBoard.columns.done")}: {doneCount}
+              </span>
             </div>
             <div className="ml-auto">
-              <Badge variant="secondary">{t('sprintBoard.progress.sprintProgress', { rate: completionRate })}</Badge>
+              <Badge variant="secondary">
+                {t("sprintBoard.progress.sprintProgress", {
+                  rate: completionRate,
+                })}
+              </Badge>
             </div>
+          </div>
+
+          {/* Mobile Progress Summary */}
+          <div className="mt-4 sm:hidden">
+            <Badge variant="secondary" className="text-sm">
+              {t("sprintBoard.progress.sprintProgress", {
+                rate: completionRate,
+              })}
+            </Badge>
           </div>
         </div>
 
         {/* Kanban Board */}
         <div className="flex-1 overflow-x-auto">
-          <KanbanBoard 
+          <KanbanBoard
             workspaceId={selectedWorkspaceId}
             sprintId={activeSprint.id}
             tasks={tasks}
@@ -200,14 +253,14 @@ export default function SprintBoard() {
         </div>
 
         {/* Modals */}
-        <TaskModal 
+        <TaskModal
           isOpen={showTaskModal}
           onClose={() => setShowTaskModal(false)}
           workspaceId={selectedWorkspaceId}
           sprintId={activeSprint.id}
         />
 
-        <ProgressModal 
+        <ProgressModal
           isOpen={showProgressModal}
           onClose={() => setShowProgressModal(false)}
           sprintId={activeSprint.id}

@@ -132,7 +132,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl sm:max-w-[95vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xl font-bold text-foreground">
               {t('modals.progress.title')}
@@ -150,7 +150,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
         
         <div className="space-y-6 pt-6">
           {/* Overall Sprint Progress */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <Card className="bg-muted/30">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
                   </CardHeader>
                   
                   <CardContent className="pt-0">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       {Object.entries(learner.subjects).map(([subjectId, stats]) => (
                         <div key={subjectId} className="text-center">
                           <div className="w-full bg-muted rounded-full h-2 mb-2">
@@ -273,7 +273,7 @@ export default function ProgressModal({ isOpen, onClose, sprintId }: ProgressMod
               <CardTitle className="text-lg text-foreground">{t('modals.progress.sprintSummary.title')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-xl font-bold text-primary">{sprintStats.completedTasks}</div>
                   <p className="text-sm text-muted-foreground">{t('modals.progress.sprintSummary.tasksCompleted')}</p>

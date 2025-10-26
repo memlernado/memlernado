@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import CreateWorkspaceModal from "@/components/modals/create-workspace-modal";
 import LanguageSelector from "@/components/language-selector";
-import { GraduationCap, LogOut, Plus } from "lucide-react";
+import { GraduationCap, LogOut, Plus, Menu, BarChart3, LayoutGrid, Calendar, Users, Settings, Archive } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function Navigation() {
   const { t } = useTranslation();
@@ -30,6 +37,51 @@ export default function Navigation() {
   ];
   
   const displayWorkspaceId = selectedWorkspaceId || "no-workspace";
+
+  // Navigation items for mobile menu
+  const allNavigationItems = [
+    {
+      name: t('navigation.dashboard'), 
+      href: "/dashboard",
+      icon: BarChart3,
+      roles: ["facilitator", "learner"],
+    },
+    {
+      name: t('navigation.backlog'),
+      href: "/backlog",
+      icon: Archive,
+      roles: ["facilitator"],
+    },
+    {
+      name: t('navigation.sprintBoard'),
+      href: "/sprint-board",
+      icon: LayoutGrid,
+      roles: ["facilitator", "learner"],
+    },
+    {
+      name: t('navigation.sprintPlanning'),
+      href: "/sprint-planning", 
+      icon: Calendar,
+      roles: ["facilitator"],
+    },
+    {
+      name: t('navigation.learners'),
+      href: "/learners",
+      icon: Users,
+      roles: ["facilitator"],
+    },
+    {
+      name: t('navigation.settings'),
+      href: "/settings",
+      icon: Settings,
+      roles: ["facilitator"],
+    },
+  ];
+
+  // Filter navigation items based on user role
+  const navigation = allNavigationItems.filter(item => 
+    item.roles.includes(user?.role || '')
+  );
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -48,21 +100,97 @@ export default function Navigation() {
 
   return (
     <nav className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="mx-auto px-2 sm:px-4 lg:px-8">
+        <div className="flex items-center justify-between h-16 flex-wrap sm:flex-nowrap">
+          {/* Mobile Menu Button */}
+          <div className="flex items-center space-x-2 lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-2" data-testid="button-mobile-menu">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center space-x-2">
+                    <div className="bg-primary text-primary-foreground p-2 rounded-lg">
+                      <GraduationCap className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold text-primary">{t('navigation.brand')}</h1>
+                      <p className="text-xs text-muted-foreground">{t('navigation.tagline')}</p>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+                
+                <div className="mt-6 space-y-4">
+                  {/* Workspace Selector for Mobile */}
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                      {t('navigation.currentWorkspace')}
+                    </label>
+                    <Select value={displayWorkspaceId} onValueChange={setSelectedWorkspaceId} className="mt-2">
+                      <SelectTrigger data-testid="select-workspace-mobile">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currentWorkspaces.map((workspace) => (
+                          <SelectItem key={workspace.id} value={workspace.id}>
+                            {workspace.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {user?.role === 'facilitator' && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setShowCreateWorkspaceModal(true)}
+                        data-testid="button-create-workspace-mobile"
+                        className="w-full mt-2"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        {t('navigation.createWorkspace')}
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Navigation Menu */}
+                  <nav className="space-y-2">
+                    {navigation.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Button
+                          key={item.name}
+                          variant="ghost"
+                          className="w-full justify-start"
+                          onClick={() => setLocation(item.href)}
+                          data-testid={`mobile-nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          <Icon className="h-4 w-4 mr-3" />
+                          {item.name}
+                        </Button>
+                      );
+                    })}
+                  </nav>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
           {/* Logo and Brand */}
-          <div className="flex items-center space-x-4">
-            <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-              <GraduationCap className="h-5 w-5" />
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="bg-primary text-primary-foreground p-1 sm:p-2 rounded-lg">
+              <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-primary">{t('navigation.brand')}</h1>
-              <p className="text-xs text-muted-foreground">{t('navigation.tagline')}</p>
+              <h1 className="text-lg sm:text-xl font-bold text-primary">{t('navigation.brand')}</h1>
+              <p className="text-xs text-muted-foreground hidden sm:block">{t('navigation.tagline')}</p>
             </div>
           </div>
 
-          {/* Workspace Selector */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* Workspace Selector - Desktop Only */}
+          <div className="hidden lg:flex items-center space-x-3">
             <Select value={displayWorkspaceId} onValueChange={setSelectedWorkspaceId}>
               <SelectTrigger className="w-[250px]" data-testid="select-workspace">
                 <SelectValue />
@@ -89,22 +217,14 @@ export default function Navigation() {
           </div>
 
           {/* User Profile */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Language Selector */}
             <LanguageSelector />
-            
-            {/* Notifications feature - commented out until implemented */}
-            {/* <Button variant="ghost" size="sm" className="relative" data-testid="button-notifications">
-              <Bell className="h-4 w-4" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center">
-                3
-              </Badge>
-            </Button> */}
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2" data-testid="button-user-menu">
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-8 w-8 sm:h-8 sm:w-8">
                     <AvatarFallback className="bg-secondary text-secondary-foreground">
                       {userInitials}
                     </AvatarFallback>

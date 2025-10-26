@@ -125,7 +125,7 @@ export default function TaskModal({ isOpen, onClose, workspaceId, sprintId }: Ta
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl sm:max-w-[95vw]">
         <DialogHeader>
           <DialogTitle>{t('modals.task.createTitle')}</DialogTitle>
           <DialogDescription>

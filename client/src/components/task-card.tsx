@@ -91,7 +91,7 @@ export default function TaskCard({ task, subjects, onMove, isLoading, isDragging
       data-testid={`task-card-${task.id}`}
     >
       <div className="flex items-start justify-between mb-3">
-        <h4 className="font-medium text-foreground pr-2 leading-tight">
+        <h4 className="font-medium text-foreground pr-2 leading-tight text-base sm:text-sm">
           {task.title}
         </h4>
         <div className="flex items-center space-x-1 flex-shrink-0">
@@ -155,7 +155,7 @@ export default function TaskCard({ task, subjects, onMove, isLoading, isDragging
             <Button
               size="sm"
               variant="ghost"
-              className="h-6 w-6 p-0"
+              className="h-9 w-9 sm:h-6 sm:w-6 p-0"
               onClick={() => onMove(task.id, nextStatus)}
               disabled={isLoading}
               data-testid={`button-move-task-${task.id}`}

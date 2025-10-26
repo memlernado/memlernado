@@ -98,7 +98,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{t('dashboard.title')}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">{t('dashboard.title')}</h1>
             <p className="text-muted-foreground mt-1">
               {t('dashboard.subtitle')}
             </p>
@@ -106,7 +106,7 @@ export default function Dashboard() {
         </div>
 
         {/* Overall Sprint Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{t('dashboard.stats.totalTasks')}</CardTitle>
@@ -187,7 +187,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {Object.entries(learner.subjects).map(([subjectId, stats]) => {
                       const subject = subjects.find(s => s.id === subjectId);
                       if (!subject) return null;

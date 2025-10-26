@@ -313,12 +313,12 @@ export default function WorkspaceSettings() {
     return (
       <MainLayout>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">{t('settings.title')}</h1>
-              <p className="text-muted-foreground mt-1">{t('settings.loading')}</p>
-            </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">{t('settings.title')}</h1>
+            <p className="text-muted-foreground mt-1">{t('settings.loading')}</p>
           </div>
+        </div>
           <div className="grid gap-6">
             {[...Array(3)].map((_, i) => (
               <Card key={i} className="animate-pulse">
@@ -335,9 +335,9 @@ export default function WorkspaceSettings() {
     <MainLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{t('settings.title')}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">{t('settings.title')}</h1>
             <p className="text-muted-foreground mt-1">
               {t('settings.subtitle')}
             </p>
@@ -409,7 +409,7 @@ export default function WorkspaceSettings() {
                   <UserPlus className="h-4 w-4" />
                   <span>{t('settings.members.addMember.title')}</span>
                 </h4>
-                <form onSubmit={handleAddMember} className="flex space-x-2">
+                <form onSubmit={handleAddMember} className="flex flex-col sm:flex-row gap-2">
                   <div className="flex-1">
                     <Input
                       type="email"
@@ -423,6 +423,7 @@ export default function WorkspaceSettings() {
                     type="submit" 
                     disabled={addMemberMutation.isPending || !newMemberEmail.trim()}
                     data-testid="button-add-member"
+                    className="w-full sm:w-auto"
                   >
                     {addMemberMutation.isPending ? t('settings.members.addMember.adding') : t('settings.members.addMember.button')}
                   </Button>
@@ -438,7 +439,7 @@ export default function WorkspaceSettings() {
                   <UserPlus className="h-4 w-4" />
                   <span>Invite Learner</span>
                 </h4>
-                <form onSubmit={handleSendInvitation} className="flex space-x-2">
+                <form onSubmit={handleSendInvitation} className="flex flex-col sm:flex-row gap-2">
                   <div className="flex-1">
                     <Input
                       type="email"
@@ -452,6 +453,7 @@ export default function WorkspaceSettings() {
                     type="submit" 
                     disabled={sendInvitationMutation.isPending || !inviteEmail.trim()}
                     data-testid="button-send-invitation"
+                    className="w-full sm:w-auto"
                   >
                     {sendInvitationMutation.isPending ? "Sending..." : "Send Invitation"}
                   </Button>
@@ -520,18 +522,18 @@ export default function WorkspaceSettings() {
               ) : (
                 <div className="space-y-4">
                   {members.map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={member.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
                       <div className="flex items-center space-x-3">
                         <Avatar>
                           <AvatarFallback className="bg-primary text-primary-foreground">
                             {member.user.firstName[0]}{member.user.lastName[0]}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <p className="font-medium text-foreground">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-foreground truncate">
                             {member.user.firstName} {member.user.lastName}
                           </p>
-                          <p className="text-sm text-muted-foreground">{member.user.email}</p>
+                          <p className="text-sm text-muted-foreground truncate">{member.user.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
@@ -572,7 +574,7 @@ export default function WorkspaceSettings() {
                   <Plus className="h-4 w-4" />
                   <span>{t('settings.subjects.addSubject.title')}</span>
                 </h4>
-                <form onSubmit={handleAddSubject} className="flex space-x-2">
+                <form onSubmit={handleAddSubject} className="flex flex-col sm:flex-row gap-2">
                   <div className="flex-1">
                     <Input
                       placeholder={t('settings.subjects.addSubject.placeholder')}
@@ -585,6 +587,7 @@ export default function WorkspaceSettings() {
                     type="submit" 
                     disabled={addSubjectMutation.isPending || !newSubjectName.trim()}
                     data-testid="button-add-subject"
+                    className="w-full sm:w-auto"
                   >
                     {addSubjectMutation.isPending ? t('settings.subjects.addSubject.adding') : t('settings.subjects.addSubject.button')}
                   </Button>
@@ -615,14 +618,14 @@ export default function WorkspaceSettings() {
               ) : (
                 <div className="space-y-4">
                   {subjects.map((subject) => (
-                    <div key={subject.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={subject.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
                       {editingSubjectId === subject.id ? (
                         // Edit mode
-                        <div className="flex items-center space-x-3 flex-1">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 flex-1">
                           <Input
                             value={editingSubjectName}
                             onChange={(e) => setEditingSubjectName(e.target.value)}
-                            className="flex-1"
+                            className="flex-1 w-full sm:w-auto"
                             placeholder={t('settings.subjects.editSubject.namePlaceholder')}
                             data-testid={`input-edit-subject-name-${subject.id}`}
                           />
@@ -630,7 +633,7 @@ export default function WorkspaceSettings() {
                             value={editingSubjectColor}
                             onValueChange={setEditingSubjectColor}
                           >
-                            <SelectTrigger className="w-min">
+                            <SelectTrigger className="w-full sm:w-min">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>

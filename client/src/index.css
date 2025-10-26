@@ -91,9 +91,6 @@
   }
 }
 
-.kanban-column {
-  min-height: 600px;
-}
 
 .task-card {
   transition: all 0.2s ease-in-out;
