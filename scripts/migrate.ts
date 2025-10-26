@@ -13,9 +13,12 @@ async function runMigrations() {
   console.log("🔄 Starting database migrations...");
 
   try {
-    // Create database connection
+    // Create database connection with SSL
     const connectionString = process.env.DATABASE_URL!;
-    const client = postgres(connectionString, { max: 1 });
+    const client = postgres(connectionString, {
+      max: 1,
+      ssl: "require",
+    });
     const db = drizzle(client);
 
     // Check if migrations folder exists and has files
