@@ -377,6 +377,24 @@
       "joined": "Se unió:",
       "unknown": "Desconocido"
     },
+    "subjects":{
+      "title": "Asignaturas",
+      "description": "Gestionar las asignaturas de este espacio de trabajo",
+      "addSubject": {
+        "title": "Añadir Asignatura",
+        "placeholder": "Introduce el nombre de la asignatura",
+        "button": "Añadir Asignatura",
+        "adding": "Añadiendo...",
+        "note": "La asignatura se añadirá al espacio de trabajo y estará disponible para todos los estudiantes"
+      },
+      "noSubjects": {
+        "title": "Aún no hay asignaturas",
+        "description": "Añade asignaturas para organizar tus tareas de aprendizaje"
+      },
+      "editSubject": {
+        "namePlaceholder": "Introduce el nombre de la asignatura"
+      }
+    },
     "dangerZone": {
       "title": "Zona peligrosa",
       "description": "Acciones destructivas e irreversibles",
@@ -574,6 +592,69 @@
       "noTasksSelected": "No seleccionaste tareas",
       "noTasksSelectedDescription": "Selecciona al menos una tarea para asignar.",
       "sprintCompleteFailed": "No se pudo completar el sprint"
+    },
+    "invitations": {
+      "title": "Invitar Aprendices",
+      "description": "Enviar invitaciones por correo electrónico a aprendices para unirse a este espacio de trabajo",
+      "sendInvitation": "Enviar Invitación",
+      "sending": "Enviando...",
+      "inviteEmail": "Dirección de correo electrónico",
+      "inviteEmailPlaceholder": "Ingresa la dirección de correo electrónico para invitar",
+      "inviteNote": "Se enviará un correo electrónico de invitación al aprendiz. Pueden unirse incluso si aún no tienen una cuenta.",
+      "pendingInvitations": "Invitaciones Pendientes",
+      "invitedOn": "Invitado {{date}}",
+      "cancelInvitation": "Cancelar Invitación",
+      "invitationSent": "Invitación enviada exitosamente",
+      "invitationCancelled": "Invitación cancelada",
+      "invitationFailed": "No se pudo enviar la invitación",
+      "invitationCancelFailed": "No se pudo cancelar la invitación"
+    },
+    "acceptInvite": {
+      "title": "Invitación al Espacio de Trabajo",
+      "description": "Has sido invitado a unirte a un espacio de trabajo",
+      "workspaceName": "Espacio de trabajo: {{name}}",
+      "invitedBy": "Invitado por {{name}}",
+      "acceptButton": "Aceptar Invitación",
+      "declineButton": "Rechazar",
+      "accepting": "Aceptando...",
+      "verifying": "Verificando invitación...",
+      "invalidInvitation": "Invitación Inválida",
+      "invalidInvitationDescription": "Esta invitación es inválida o ha expirado",
+      "goHome": "Ir al Inicio",
+      "welcome": "¡Bienvenido a {{workspaceName}}!",
+      "accountCreated": "Tu cuenta ha sido creada. Por favor establece tu contraseña para continuar.",
+      "addedToWorkspace": "Has sido agregado al espacio de trabajo exitosamente.",
+      "redirecting": "Redirigiendo {{action}}...",
+      "redirectingToPassword": "para establecer tu contraseña",
+      "redirectingToWorkspace": "al espacio de trabajo",
+      "features": {
+        "title": "Al aceptar esta invitación, podrás:",
+        "viewTasks": "Ver y trabajar en tareas asignadas",
+        "trackProgress": "Seguir tu progreso con nuestro tablero Kanban",
+        "collaborate": "Colaborar con otros aprendices y facilitadores",
+        "planSprints": "Planificar y organizar tus sprints de aprendizaje"
+      }
+    },
+    "setPassword": {
+      "title": "Establece Tu Contraseña",
+      "description": "¡Bienvenido {{name}}! Por favor establece una contraseña para tu cuenta para continuar.",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "passwordPlaceholder": "Ingresa tu contraseña",
+      "confirmPasswordPlaceholder": "Confirma tu contraseña",
+      "setPasswordButton": "Establecer Contraseña",
+      "settingPassword": "Estableciendo Contraseña...",
+      "passwordSet": "¡Contraseña Establecida Exitosamente!",
+      "passwordSetDescription": "Tu cuenta está lista para usar. Redirigiendo al panel de control...",
+      "passwordRequired": "La contraseña es requerida",
+      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+      "passwordsDontMatch": "Las contraseñas no coinciden",
+      "passwordSetFailed": "No se pudo establecer la contraseña",
+      "requirements": {
+        "title": "Requisitos de contraseña:",
+        "minLength": "Al menos 6 caracteres de longitud",
+        "strongPassword": "Elige una contraseña fuerte y única"
+      }
     }
   }
 }

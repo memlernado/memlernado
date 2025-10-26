@@ -1,4 +1,4 @@
 ---
 alwaysApply: true
 ---
-While developing on local, we use Docker. We typically run `npm run docker:dev` to start the BE/FE so please use Docker to understand which FE port to use, to check logs etc. 
+While developing on local, we use Docker. We typically run `npm run docker:dev` to start the BE/FE, and the app is most likely already running. PLease, when trying to verify changes, use `docker ps` to understand how to check for logs, instead of running the again.

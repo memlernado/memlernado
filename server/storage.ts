@@ -6,6 +6,7 @@ import {
   tasks,
   subjects,
   passwordResetTokens,
+  workspaceInvitations,
   type User,
   type InsertUser,
   type Workspace,
@@ -23,6 +24,9 @@ import {
   type InsertSubject,
   type PasswordResetToken,
   type InsertPasswordResetToken,
+  type WorkspaceInvitation,
+  type InsertWorkspaceInvitation,
+  type WorkspaceInvitationWithRelations,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, sql, isNull, or, lt } from "drizzle-orm";
@@ -81,6 +85,13 @@ export interface IStorage {
   getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined>;
   invalidatePasswordResetToken(tokenId: string): Promise<void>;
   cleanupExpiredTokens(): Promise<void>;
+
+  // Workspace invitation operations
+  createWorkspaceInvitation(invitation: InsertWorkspaceInvitation): Promise<WorkspaceInvitation>;
+  getWorkspaceInvitationByToken(token: string): Promise<WorkspaceInvitationWithRelations | undefined>;
+  getPendingWorkspaceInvitations(workspaceId: string): Promise<WorkspaceInvitationWithRelations[]>;
+  acceptWorkspaceInvitation(invitationId: string): Promise<void>;
+  deleteWorkspaceInvitation(invitationId: string): Promise<void>;
 
   // Session store
   sessionStore: any;
@@ -561,6 +572,72 @@ export class DatabaseStorage implements IStorage {
   async cleanupExpiredTokens(): Promise<void> {
     await db.delete(passwordResetTokens)
       .where(lt(passwordResetTokens.expiresAt, new Date()));
+  }
+
+  // Workspace invitation operations
+  async createWorkspaceInvitation(invitation: InsertWorkspaceInvitation): Promise<WorkspaceInvitation> {
+    const [createdInvitation] = await db.insert(workspaceInvitations).values(invitation).returning();
+    return createdInvitation;
+  }
+
+  async getWorkspaceInvitationByToken(token: string): Promise<WorkspaceInvitationWithRelations | undefined> {
+    const results = await db
+      .select()
+      .from(workspaceInvitations)
+      .leftJoin(workspaces, eq(workspaceInvitations.workspaceId, workspaces.id))
+      .leftJoin(users, eq(workspaceInvitations.invitedBy, users.id))
+      .where(and(
+        eq(workspaceInvitations.token, token),
+        eq(workspaceInvitations.accepted, false),
+        sql`${workspaceInvitations.expiresAt} > NOW()`
+      ))
+      .limit(1);
+
+    if (!results || results.length === 0) {
+      return undefined;
+    }
+
+    const result = results[0];
+    return {
+      ...result.workspace_invitations,
+      workspace: result.workspaces!,
+      inviter: result.users!,
+    };
+  }
+
+  async getPendingWorkspaceInvitations(workspaceId: string): Promise<WorkspaceInvitationWithRelations[]> {
+    const results = await db
+      .select()
+      .from(workspaceInvitations)
+      .leftJoin(workspaces, eq(workspaceInvitations.workspaceId, workspaces.id))
+      .leftJoin(users, eq(workspaceInvitations.invitedBy, users.id))
+      .where(and(
+        eq(workspaceInvitations.workspaceId, workspaceId),
+        eq(workspaceInvitations.accepted, false),
+        sql`${workspaceInvitations.expiresAt} > NOW()`
+      ))
+      .orderBy(desc(workspaceInvitations.createdAt));
+
+    if (!results || results.length === 0) {
+      return [];
+    }
+
+    return results.map((result) => ({
+      ...result.workspace_invitations,
+      workspace: result.workspaces!,
+      inviter: result.users!,
+    }));
+  }
+
+  async acceptWorkspaceInvitation(invitationId: string): Promise<void> {
+    await db.update(workspaceInvitations)
+      .set({ accepted: true })
+      .where(eq(workspaceInvitations.id, invitationId));
+  }
+
+  async deleteWorkspaceInvitation(invitationId: string): Promise<void> {
+    await db.delete(workspaceInvitations)
+      .where(eq(workspaceInvitations.id, invitationId));
   }
 }
 

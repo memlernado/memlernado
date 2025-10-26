@@ -377,6 +377,24 @@
       "joined": "Dołączył:",
       "unknown": "Nieznany"
     },
+    "subjects":{
+      "title": "Przedmioty",
+      "description": "Zarządzaj przedmiotami w tym obszarze roboczym",
+      "addSubject": {
+        "title": "Dodaj Przedmiot",
+        "placeholder": "Wprowadź nazwę przedmiotu",
+        "button": "Dodaj Przedmiot",
+        "adding": "Dodawanie...",
+        "note": "Przedmiot zostanie dodany do obszaru roboczego i będzie dostępny dla wszystkich uczących się"
+      },
+      "noSubjects": {
+        "title": "Brak przedmiotów",
+        "description": "Dodaj przedmioty, aby uporządkować swoje zadania edukacyjne"
+      },
+      "editSubject": {
+        "namePlaceholder": "Wprowadź nazwę przedmiotu"
+      }
+    },
     "dangerZone": {
       "title": "Strefa zagrożenia",
       "description": "Nieodwracalne i destrukcyjne działania",
@@ -574,6 +592,69 @@
       "noTasksSelected": "Brak wybranych zadań",
       "noTasksSelectedDescription": "Wybierz co najmniej jedno zadanie do przypisania.",
       "sprintCompleteFailed": "Nie udało się ukończyć sprintu"
+    },
+    "invitations": {
+      "title": "Zaproś Uczniów",
+      "description": "Wyślij zaproszenia e-mail do uczniów, aby dołączyli do tej przestrzeni roboczej",
+      "sendInvitation": "Wyślij Zaproszenie",
+      "sending": "Wysyłanie...",
+      "inviteEmail": "Adres e-mail",
+      "inviteEmailPlaceholder": "Wprowadź adres e-mail do zaproszenia",
+      "inviteNote": "Zostanie wysłany e-mail z zaproszeniem do ucznia. Mogą dołączyć, nawet jeśli nie mają jeszcze konta.",
+      "pendingInvitations": "Oczekujące Zaproszenia",
+      "invitedOn": "Zaproszony {{date}}",
+      "cancelInvitation": "Anuluj Zaproszenie",
+      "invitationSent": "Zaproszenie wysłane pomyślnie",
+      "invitationCancelled": "Zaproszenie anulowane",
+      "invitationFailed": "Nie udało się wysłać zaproszenia",
+      "invitationCancelFailed": "Nie udało się anulować zaproszenia"
+    },
+    "acceptInvite": {
+      "title": "Zaproszenie do Przestrzeni Roboczej",
+      "description": "Zostałeś zaproszony do dołączenia do przestrzeni roboczej",
+      "workspaceName": "Przestrzeń robocza: {{name}}",
+      "invitedBy": "Zaproszony przez {{name}}",
+      "acceptButton": "Zaakceptuj Zaproszenie",
+      "declineButton": "Odrzuć",
+      "accepting": "Akceptowanie...",
+      "verifying": "Weryfikowanie zaproszenia...",
+      "invalidInvitation": "Nieprawidłowe Zaproszenie",
+      "invalidInvitationDescription": "To zaproszenie jest nieprawidłowe lub wygasło",
+      "goHome": "Idź do Strony Głównej",
+      "welcome": "Witaj w {{workspaceName}}!",
+      "accountCreated": "Twoje konto zostało utworzone. Ustaw hasło, aby kontynuować.",
+      "addedToWorkspace": "Zostałeś pomyślnie dodany do przestrzeni roboczej.",
+      "redirecting": "Przekierowywanie {{action}}...",
+      "redirectingToPassword": "do ustawienia hasła",
+      "redirectingToWorkspace": "do przestrzeni roboczej",
+      "features": {
+        "title": "Akceptując to zaproszenie, będziesz mógł:",
+        "viewTasks": "Przeglądać i pracować nad przypisanymi zadaniami",
+        "trackProgress": "Śledzić swój postęp za pomocą naszej tablicy Kanban",
+        "collaborate": "Współpracować z innymi uczniami i moderatorami",
+        "planSprints": "Planować i organizować swoje sprinty nauki"
+      }
+    },
+    "setPassword": {
+      "title": "Ustaw Swoje Hasło",
+      "description": "Witaj {{name}}! Ustaw hasło dla swojego konta, aby kontynuować.",
+      "password": "Hasło",
+      "confirmPassword": "Potwierdź Hasło",
+      "passwordPlaceholder": "Wprowadź swoje hasło",
+      "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
+      "setPasswordButton": "Ustaw Hasło",
+      "settingPassword": "Ustawianie Hasła...",
+      "passwordSet": "Hasło Ustawione Pomyślnie!",
+      "passwordSetDescription": "Twoje konto jest teraz gotowe do użycia. Przekierowywanie do pulpitu...",
+      "passwordRequired": "Hasło jest wymagane",
+      "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+      "passwordsDontMatch": "Hasła nie pasują do siebie",
+      "passwordSetFailed": "Nie udało się ustawić hasła",
+      "requirements": {
+        "title": "Wymagania dotyczące hasła:",
+        "minLength": "Co najmniej 6 znaków długości",
+        "strongPassword": "Wybierz silne, unikalne hasło"
+      }
     }
   }
 }

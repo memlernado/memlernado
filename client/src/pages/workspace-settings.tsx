@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import type {  WorkspaceMemberWithUser, WorkspaceWithStats, Subject } from "@shared/schema";
+import type {  WorkspaceMemberWithUser, WorkspaceWithStats, Subject, WorkspaceInvitationWithRelations } from "@shared/schema";
 import { useWorkspace } from "@/hooks/use-workspace";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -25,6 +25,7 @@ export default function WorkspaceSettings() {
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
   const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [inviteEmail, setInviteEmail] = useState("");
   const [newSubjectName, setNewSubjectName] = useState("");
   const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
   const [editingSubjectName, setEditingSubjectName] = useState("");
@@ -56,6 +57,12 @@ export default function WorkspaceSettings() {
   // Fetch workspace subjects
   const { data: subjects = [], isLoading: isSubjectsLoading } = useQuery<Subject[]>({
     queryKey: ["/api/workspaces", selectedWorkspaceId, "subjects"],
+    enabled: !!selectedWorkspaceId,
+  });
+
+  // Fetch workspace invitations
+  const { data: invitations = [], isLoading: isInvitationsLoading } = useQuery<WorkspaceInvitationWithRelations[]>({
+    queryKey: ["/api/workspaces", selectedWorkspaceId, "invitations"],
     enabled: !!selectedWorkspaceId,
   });
 
@@ -206,10 +213,69 @@ export default function WorkspaceSettings() {
     },
   });
 
+  // Send invitation mutation
+  const sendInvitationMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const response = await apiRequest("POST", `/api/workspaces/${selectedWorkspaceId}/invitations`, {
+        email,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "invitations"] });
+      setInviteEmail("");
+      toast({
+        title: t('common.buttons.save'),
+        description: "Invitation sent successfully",
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error sending invitation:", error);
+      toast({
+        title: t('common.buttons.error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Cancel invitation mutation
+  const cancelInvitationMutation = useMutation({
+    mutationFn: async (invitationId: string) => {
+      const response = await apiRequest("DELETE", `/api/invitations/${invitationId}`);
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/workspaces", selectedWorkspaceId, "invitations"] });
+      toast({
+        title: t('common.buttons.save'),
+        description: "Invitation cancelled",
+      });
+    },
+    onError: (error: Error) => {
+      console.error("Error cancelling invitation:", error);
+      toast({
+        title: t('common.buttons.error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMemberEmail.trim()) return;
     addMemberMutation.mutate(newMemberEmail.trim());
+  };
+
+  const handleSendInvitation = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inviteEmail.trim()) return;
+    sendInvitationMutation.mutate(inviteEmail.trim());
+  };
+
+  const handleCancelInvitation = (invitationId: string) => {
+    cancelInvitationMutation.mutate(invitationId);
   };
 
   const handleAddSubject = (e: React.FormEvent) => {
@@ -366,6 +432,72 @@ export default function WorkspaceSettings() {
                 </p>
               </div>
 
+              {/* Send Invitation Form */}
+              <div className="mb-6 p-4 border rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                <h4 className="font-medium text-foreground mb-3 flex items-center space-x-2">
+                  <UserPlus className="h-4 w-4" />
+                  <span>Invite Learner</span>
+                </h4>
+                <form onSubmit={handleSendInvitation} className="flex space-x-2">
+                  <div className="flex-1">
+                    <Input
+                      type="email"
+                      placeholder="Enter email address to invite"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      data-testid="input-invite-email"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    disabled={sendInvitationMutation.isPending || !inviteEmail.trim()}
+                    data-testid="button-send-invitation"
+                  >
+                    {sendInvitationMutation.isPending ? "Sending..." : "Send Invitation"}
+                  </Button>
+                </form>
+                <p className="text-xs text-muted-foreground mt-2">
+                  An invitation email will be sent to the learner. They can join even if they don't have an account yet.
+                </p>
+              </div>
+
+              {/* Pending Invitations */}
+              {invitations.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="font-medium text-foreground mb-3 flex items-center space-x-2">
+                    <UserPlus className="h-4 w-4" />
+                    <span>Pending Invitations</span>
+                  </h4>
+                  <div className="space-y-2">
+                    {invitations.map((invitation) => (
+                      <div key={invitation.id} className="flex items-center justify-between p-3 border rounded-lg bg-yellow-50 dark:bg-yellow-950/20">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
+                            <UserPlus className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-foreground">{invitation.email}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Invited {invitation.createdAt ? new Date(invitation.createdAt).toLocaleDateString() : ''}
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleCancelInvitation(invitation.id)}
+                          disabled={cancelInvitationMutation.isPending}
+                          className="text-destructive hover:text-destructive"
+                          data-testid={`button-cancel-invitation-${invitation.id}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Members List */}
               {isMembersLoading ? (
                 <div className="space-y-3">
@@ -491,7 +623,7 @@ export default function WorkspaceSettings() {
                             value={editingSubjectName}
                             onChange={(e) => setEditingSubjectName(e.target.value)}
                             className="flex-1"
-                            placeholder={t('settings.subjects.editName.placeholder')}
+                            placeholder={t('settings.subjects.editSubject.namePlaceholder')}
                             data-testid={`input-edit-subject-name-${subject.id}`}
                           />
                           <Select
@@ -499,7 +631,7 @@ export default function WorkspaceSettings() {
                             onValueChange={setEditingSubjectColor}
                           >
                             <SelectTrigger className="w-min">
-                              <SelectValue placeholder={t('settings.subjects.editColor.placeholder')} />
+                              <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {SUBJECT_COLORS.map((color) => (

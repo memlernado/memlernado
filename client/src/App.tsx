@@ -10,6 +10,8 @@ import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
+import AcceptInvite from "@/pages/accept-invite";
+import SetPassword from "@/pages/set-password";
 import HomePage from "@/pages/home-page";
 import SprintBoard from "@/pages/sprint-board";
 import Dashboard from "@/pages/dashboard";
@@ -31,6 +33,8 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <Route path="/forgot-password" component={ForgotPasswordPage} />
       <Route path="/reset-password" component={ResetPasswordPage} />
+      <Route path="/accept-invite/:token" component={AcceptInvite} />
+      <ProtectedRoute path="/set-password" component={SetPassword} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -44,7 +44,7 @@ export async function sendPasswordResetEmail(email: string, firstName: string, r
   sendSmtpEmail.subject = renderedTemplate.subject;
   sendSmtpEmail.htmlContent = renderedTemplate.htmlContent;
   sendSmtpEmail.textContent = renderedTemplate.textContent;
-  sendSmtpEmail.sender = { name: "Memlernado", email: "noreply@memlernado.com" };
+  sendSmtpEmail.sender = { name: "Memlernado", email: "hello@support.memlernado.com" };
   sendSmtpEmail.to = [{ email, name: firstName }];
 
   try {
@@ -53,5 +53,31 @@ export async function sendPasswordResetEmail(email: string, firstName: string, r
   } catch (error) {
     console.error('Failed to send password reset email:', error);
     throw new Error('Failed to send password reset email');
+  }
+}
+
+export async function sendWorkspaceInvitationEmail(email: string, inviterName: string, workspaceName: string, inviteToken: string, language: string = 'en'): Promise<void> {
+  const inviteUrl = `${baseUrl}/accept-invite/${inviteToken}`;
+  
+  const template = EmailTemplateLoader.loadTemplate(language, 'workspace-invitation');
+  const renderedTemplate = EmailTemplateLoader.renderTemplate(template, { 
+    inviterName, 
+    workspaceName, 
+    inviteUrl 
+  });
+  
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  sendSmtpEmail.subject = renderedTemplate.subject;
+  sendSmtpEmail.htmlContent = renderedTemplate.htmlContent;
+  sendSmtpEmail.textContent = renderedTemplate.textContent;
+  sendSmtpEmail.sender = { name: "Memlernado", email: "hello@support.memlernado.com" };
+  sendSmtpEmail.to = [{ email, name: email.split('@')[0] }]; // Use email prefix as name
+
+  try {
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`Workspace invitation email sent to ${email} in ${language}`);
+  } catch (error) {
+    console.error('Failed to send workspace invitation email:', error);
+    throw new Error('Failed to send workspace invitation email');
   }
 }

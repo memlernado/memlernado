@@ -88,6 +88,18 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Workspace invitations table
+export const workspaceInvitations = pgTable("workspace_invitations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workspaceId: varchar("workspace_id").notNull().references(() => workspaces.id),
+  email: text("email").notNull(),
+  invitedBy: varchar("invited_by").notNull().references(() => users.id),
+  token: text("token").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  accepted: boolean("accepted").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   createdWorkspaces: many(workspaces),
@@ -167,6 +179,17 @@ export const passwordResetTokensRelations = relations(passwordResetTokens, ({ on
   }),
 }));
 
+export const workspaceInvitationsRelations = relations(workspaceInvitations, ({ one }) => ({
+  workspace: one(workspaces, {
+    fields: [workspaceInvitations.workspaceId],
+    references: [workspaces.id],
+  }),
+  inviter: one(users, {
+    fields: [workspaceInvitations.invitedBy],
+    references: [users.id],
+  }),
+}));
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
@@ -208,6 +231,11 @@ export const insertPasswordResetTokenSchema = createInsertSchema(passwordResetTo
   createdAt: true,
 });
 
+export const insertWorkspaceInvitationSchema = createInsertSchema(workspaceInvitations).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -240,6 +268,9 @@ export type InsertSubject = z.infer<typeof insertSubjectSchema>;
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
 export type InsertPasswordResetToken = z.infer<typeof insertPasswordResetTokenSchema>;
 
+export type WorkspaceInvitation = typeof workspaceInvitations.$inferSelect;
+export type InsertWorkspaceInvitation = z.infer<typeof insertWorkspaceInvitationSchema>;
+
 // Extended types for enriched data
 export type TaskWithRelations = Task & { 
   assignee?: User; 
@@ -248,6 +279,11 @@ export type TaskWithRelations = Task & {
 
 export type WorkspaceMemberWithUser = WorkspaceMember & { 
   user: User; 
+};
+
+export type WorkspaceInvitationWithRelations = WorkspaceInvitation & {
+  workspace: Workspace;
+  inviter: User;
 };
 
 export type WorkspaceWithStats = Workspace & {

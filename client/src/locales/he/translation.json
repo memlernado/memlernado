@@ -377,6 +377,24 @@
       "joined": "הצטרף:",
       "unknown": "לא מוכר"
     },
+    "subjects":{
+      "title": "מקצועות",
+      "description": "נהל את המקצועות עבור סביבת עבודה זו",
+      "addSubject": {
+        "title": "הוסף מקצוע",
+        "placeholder": "הזן שם מקצוע",
+        "button": "הוסף מקצוע",
+        "adding": "מוסיף...",
+        "note": "המקצוע יתווסף לסביבת העבודה ויהיה זמין לכל הלומדים"
+      },
+      "noSubjects": {
+        "title": "עדיין אין מקצועות",
+        "description": "הוסף מקצועות כדי לארגן את משימות הלמידה שלך"
+      },
+      "editSubject": {
+        "namePlaceholder": "הזן שם מקצוע"
+      }
+    },
     "dangerZone": {
       "title": "אזור סכנה",
       "description": "פעולות בלתי הפיכות והרסניות",
@@ -574,6 +592,69 @@
       "noTasksSelected": "לא נבחרו משימות",
       "noTasksSelectedDescription": "אנא בחר לפחות משימה אחת להקצאה.",
       "sprintCompleteFailed": "השלמת הספרינט נכשלה"
+    },
+    "invitations": {
+      "title": "הזמן תלמידים",
+      "description": "שלח הזמנות בדוא\"ל לתלמידים להצטרף למרחב העבודה הזה",
+      "sendInvitation": "שלח הזמנה",
+      "sending": "שולח...",
+      "inviteEmail": "כתובת דוא\"ל",
+      "inviteEmailPlaceholder": "הכנס כתובת דוא\"ל להזמנה",
+      "inviteNote": "יישלח דוא\"ל הזמנה לתלמיד. הם יכולים להצטרף גם אם אין להם עדיין חשבון.",
+      "pendingInvitations": "הזמנות ממתינות",
+      "invitedOn": "הוזמן {{date}}",
+      "cancelInvitation": "בטל הזמנה",
+      "invitationSent": "ההזמנה נשלחה בהצלחה",
+      "invitationCancelled": "ההזמנה בוטלה",
+      "invitationFailed": "שליחת ההזמנה נכשלה",
+      "invitationCancelFailed": "ביטול ההזמנה נכשל"
+    },
+    "acceptInvite": {
+      "title": "הזמנה למרחב עבודה",
+      "description": "הוזמנת להצטרף למרחב עבודה",
+      "workspaceName": "מרחב עבודה: {{name}}",
+      "invitedBy": "הוזמן על ידי {{name}}",
+      "acceptButton": "קבל הזמנה",
+      "declineButton": "דחה",
+      "accepting": "מקבל...",
+      "verifying": "מאמת הזמנה...",
+      "invalidInvitation": "הזמנה לא תקינה",
+      "invalidInvitationDescription": "ההזמנה הזו לא תקינה או פגה",
+      "goHome": "עבור לעמוד הבית",
+      "welcome": "ברוכים הבאים ל-{{workspaceName}}!",
+      "accountCreated": "החשבון שלך נוצר. אנא הגדר סיסמה כדי להמשיך.",
+      "addedToWorkspace": "הוספת בהצלחה למרחב העבודה.",
+      "redirecting": "מפנה {{action}}...",
+      "redirectingToPassword": "להגדרת הסיסמה",
+      "redirectingToWorkspace": "למרחב העבודה",
+      "features": {
+        "title": "על ידי קבלת ההזמנה הזו, תוכל:",
+        "viewTasks": "לצפות ולעבוד על משימות שהוקצו לך",
+        "trackProgress": "לעקוב אחר ההתקדמות שלך עם לוח הקנבן שלנו",
+        "collaborate": "לשתף פעולה עם תלמידים ומנחים אחרים",
+        "planSprints": "לתכנן ולארגן את ספרינטים הלימודיים שלך"
+      }
+    },
+    "setPassword": {
+      "title": "הגדר את הסיסמה שלך",
+      "description": "ברוך הבא {{name}}! אנא הגדר סיסמה לחשבון שלך כדי להמשיך.",
+      "password": "סיסמה",
+      "confirmPassword": "אשר סיסמה",
+      "passwordPlaceholder": "הכנס את הסיסמה שלך",
+      "confirmPasswordPlaceholder": "אשר את הסיסמה שלך",
+      "setPasswordButton": "הגדר סיסמה",
+      "settingPassword": "מגדיר סיסמה...",
+      "passwordSet": "הסיסמה הוגדרה בהצלחה!",
+      "passwordSetDescription": "החשבון שלך מוכן לשימוש. מפנה לדשבורד...",
+      "passwordRequired": "הסיסמה נדרשת",
+      "passwordTooShort": "הסיסמה חייבת להיות באורך של לפחות 6 תווים",
+      "passwordsDontMatch": "הסיסמאות לא תואמות",
+      "passwordSetFailed": "הגדרת הסיסמה נכשלה",
+      "requirements": {
+        "title": "דרישות סיסמה:",
+        "minLength": "לפחות 6 תווים באורך",
+        "strongPassword": "בחר סיסמה חזקה וייחודית"
+      }
     }
   }
 }

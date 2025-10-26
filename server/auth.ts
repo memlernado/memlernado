@@ -177,4 +177,32 @@ export function setupAuth(app: Express) {
       res.status(400).json({ message: "Invalid or expired token" });
     }
   });
+
+  // Set password endpoint for newly invited users
+  app.post("/api/set-password", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { password } = req.body;
+    
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
+    try {
+      // Update user password
+      const hashedPassword = await hashPassword(password);
+      await storage.updateUser(req.user!.id, { password: hashedPassword });
+      
+      res.json({ message: "Password set successfully" });
+    } catch (error) {
+      console.error('Set password error:', error);
+      res.status(500).json({ message: "Failed to set password" });
+    }
+  });
 }

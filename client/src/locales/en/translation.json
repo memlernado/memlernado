@@ -377,6 +377,24 @@
       "joined": "Joined:",
       "unknown": "Unknown"
     },
+    "subjects":{
+      "title": "Subjects",
+      "description": "Manage the subjects for this workspace",
+      "addSubject": {
+        "title": "Add Subject",
+        "placeholder": "Enter subject name",
+        "button": "Add Subject",
+        "adding": "Adding...",
+        "note": "The subject will be added to the workspace and will be available to all learners"
+      },
+      "noSubjects": {
+        "title": "No subjects yet",
+        "description": "Add subjects to organize your learning tasks"
+      },
+      "editSubject": {
+        "namePlaceholder": "Enter subject name"
+      }
+    },
     "dangerZone": {
       "title": "Danger Zone",
       "description": "Irreversible and destructive actions",
@@ -574,6 +592,69 @@
       "noTasksSelected": "No tasks selected",
       "noTasksSelectedDescription": "Please select at least one task to assign.",
       "sprintCompleteFailed": "Failed to complete sprint"
+    },
+    "invitations": {
+      "title": "Invite Learners",
+      "description": "Send email invitations to learners to join this workspace",
+      "sendInvitation": "Send Invitation",
+      "sending": "Sending...",
+      "inviteEmail": "Email address",
+      "inviteEmailPlaceholder": "Enter email address to invite",
+      "inviteNote": "An invitation email will be sent to the learner. They can join even if they don't have an account yet.",
+      "pendingInvitations": "Pending Invitations",
+      "invitedOn": "Invited {{date}}",
+      "cancelInvitation": "Cancel Invitation",
+      "invitationSent": "Invitation sent successfully",
+      "invitationCancelled": "Invitation cancelled",
+      "invitationFailed": "Failed to send invitation",
+      "invitationCancelFailed": "Failed to cancel invitation"
+    },
+    "acceptInvite": {
+      "title": "Workspace Invitation",
+      "description": "You've been invited to join a workspace",
+      "workspaceName": "Workspace: {{name}}",
+      "invitedBy": "Invited by {{name}}",
+      "acceptButton": "Accept Invitation",
+      "declineButton": "Decline",
+      "accepting": "Accepting...",
+      "verifying": "Verifying invitation...",
+      "invalidInvitation": "Invalid Invitation",
+      "invalidInvitationDescription": "This invitation is invalid or has expired",
+      "goHome": "Go Home",
+      "welcome": "Welcome to {{workspaceName}}!",
+      "accountCreated": "Your account has been created. Please set your password to continue.",
+      "addedToWorkspace": "You've been added to the workspace successfully.",
+      "redirecting": "Redirecting you {{action}}...",
+      "redirectingToPassword": "to set your password",
+      "redirectingToWorkspace": "to the workspace",
+      "features": {
+        "title": "By accepting this invitation, you'll be able to:",
+        "viewTasks": "View and work on assigned tasks",
+        "trackProgress": "Track your progress with our Kanban board",
+        "collaborate": "Collaborate with other learners and facilitators",
+        "planSprints": "Plan and organize your learning sprints"
+      }
+    },
+    "setPassword": {
+      "title": "Set Your Password",
+      "description": "Welcome {{name}}! Please set a password for your account to continue.",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "setPasswordButton": "Set Password",
+      "settingPassword": "Setting Password...",
+      "passwordSet": "Password Set Successfully!",
+      "passwordSetDescription": "Your account is now ready to use. Redirecting you to the dashboard...",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 6 characters long",
+      "passwordsDontMatch": "Passwords do not match",
+      "passwordSetFailed": "Failed to set password",
+      "requirements": {
+        "title": "Password requirements:",
+        "minLength": "At least 6 characters long",
+        "strongPassword": "Choose a strong, unique password"
+      }
     }
   }
 }

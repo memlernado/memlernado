@@ -2,7 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
-import { insertWorkspaceSchema, insertSprintSchema, insertTaskSchema } from "@shared/schema";
+import { insertWorkspaceSchema, insertSprintSchema, insertTaskSchema, insertWorkspaceInvitationSchema } from "@shared/schema";
+import { sendWorkspaceInvitationEmail } from "./email";
+import { randomBytes } from "crypto";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -155,6 +157,208 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error adding workspace member:", error);
       res.status(500).json({ message: "Failed to add workspace member" });
+    }
+  });
+
+  // Workspace invitation routes
+  app.post("/api/workspaces/:id/invitations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can send invitations
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can send invitations" });
+    }
+
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      // Check if user is already a member
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        const isAlreadyMember = await storage.isWorkspaceMember(req.params.id, existingUser.id);
+        if (isAlreadyMember) {
+          return res.status(409).json({ message: "User is already a member of this workspace" });
+        }
+      }
+
+      // Check if there's already a pending invitation
+      const pendingInvitations = await storage.getPendingWorkspaceInvitations(req.params.id);
+      const existingInvitation = pendingInvitations.find(inv => inv.email === email);
+      if (existingInvitation) {
+        return res.status(409).json({ message: "An invitation has already been sent to this email" });
+      }
+
+      // Generate invitation token
+      const token = randomBytes(32).toString('hex');
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 14); // 2 weeks
+
+      // Create invitation
+      const invitation = await storage.createWorkspaceInvitation({
+        workspaceId: req.params.id,
+        email,
+        invitedBy: req.user!.id,
+        token,
+        expiresAt,
+      });
+
+      // Get workspace details for email
+      const workspace = await storage.getWorkspace(req.params.id);
+      if (!workspace) {
+        return res.status(404).json({ message: "Workspace not found" });
+      }
+
+      // Send invitation email
+      try {
+        await sendWorkspaceInvitationEmail(
+          email,
+          `${req.user!.firstName} ${req.user!.lastName}`,
+          workspace.name,
+          token,
+          req.user!.language
+        );
+      } catch (error) {
+        console.error('Failed to send invitation email:', error);
+        // Continue with invitation creation even if email fails
+      }
+
+      res.status(201).json(invitation);
+    } catch (error) {
+      console.error("Error creating workspace invitation:", error);
+      res.status(500).json({ message: "Failed to create invitation" });
+    }
+  });
+
+  app.get("/api/workspaces/:id/invitations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can view invitations
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can view invitations" });
+    }
+
+    try {
+      const invitations = await storage.getPendingWorkspaceInvitations(req.params.id);
+      res.json(invitations);
+    } catch (error) {
+      console.error("Error fetching workspace invitations:", error);
+      res.status(500).json({ message: "Failed to fetch invitations" });
+    }
+  });
+
+  app.delete("/api/invitations/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only facilitators can cancel invitations
+    if (req.user!.role !== 'facilitator') {
+      return res.status(403).json({ message: "Only facilitators can cancel invitations" });
+    }
+
+    try {
+      await storage.deleteWorkspaceInvitation(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting workspace invitation:", error);
+      res.status(500).json({ message: "Failed to delete invitation" });
+    }
+  });
+
+  app.get("/api/invitations/verify/:token", async (req, res) => {
+    try {
+      const invitation = await storage.getWorkspaceInvitationByToken(req.params.token);
+      
+      if (!invitation) {
+        return res.status(404).json({ message: "Invalid or expired invitation" });
+      }
+      
+      res.json({ 
+        message: "Invitation is valid",
+        workspaceName: invitation.workspace.name,
+        inviterName: `${invitation.inviter.firstName} ${invitation.inviter.lastName}`
+      });
+    } catch (error) {
+      console.error("Error verifying invitation:", error);
+      res.status(400).json({ message: "Invalid or expired invitation" });
+    }
+  });
+
+  app.post("/api/invitations/accept/:token", async (req, res) => {
+    try {
+      const invitation = await storage.getWorkspaceInvitationByToken(req.params.token);
+      
+      if (!invitation) {
+        return res.status(404).json({ message: "Invalid or expired invitation" });
+      }
+
+      // Check if user already exists
+      let user = await storage.getUserByEmail(invitation.email);
+      let isNewUser = false;
+
+      if (!user) {
+        // Create new user account
+        const emailPrefix = invitation.email.split('@')[0];
+        const tempPassword = randomBytes(16).toString('hex');
+        
+        user = await storage.createUser({
+          username: invitation.email, // Use email as username initially
+          password: tempPassword, // Temporary password, user will set real one
+          firstName: emailPrefix,
+          lastName: '',
+          email: invitation.email,
+          role: 'learner',
+          language: 'en', // Default language, user can change later
+        });
+        isNewUser = true;
+      }
+
+      // Add user to workspace
+      await storage.addWorkspaceMember({
+        workspaceId: invitation.workspaceId,
+        userId: user.id,
+        role: "learner",
+      });
+
+      // Mark invitation as accepted
+      await storage.acceptWorkspaceInvitation(invitation.id);
+
+      // Auto-login the user
+      req.login(user, (err) => {
+        if (err) {
+          console.error('Auto-login failed:', err);
+          return res.status(500).json({ message: "Failed to login user" });
+        }
+        
+        res.json({ 
+          message: "Invitation accepted successfully",
+          isNewUser,
+          user: {
+            id: user.id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role,
+            language: user.language
+          },
+          workspace: {
+            id: invitation.workspace.id,
+            name: invitation.workspace.name
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+      res.status(500).json({ message: "Failed to accept invitation" });
     }
   });
 
